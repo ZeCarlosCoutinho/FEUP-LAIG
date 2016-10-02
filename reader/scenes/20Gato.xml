@@ -1,47 +1,49 @@
 <dsx>
 	<scene root="ola" axis_length="10" />
-	 <views default="ola" >
-        <perspective id="ola" near="10" far="10" angle="10">
+	
+	 <views default="view_default" >
+        <perspective id="view_default" near="10" far="10" angle="10">
             <from x="10" y="10" z="10" />
-            <to x="10" y="10" z="10" />
+            <to x="0" y="15" z="30" />
         </perspective>
 	 </views>
+	 
 	 <illumination doublesided="true" local="true" >
     
-        <ambient r="10" g="10" b="10" a="10" />
-        <background r="10" g="10" b="10" a="10" />
+        <ambient r="10" g="9" b="8" a="10" />
+        <background r="5" g="6" b="7" a="15" />
         
     </illumination>
      <lights>
-            <omni id="ola" enabled="true" >
-            <location x="10" y="10" z="10" w="10" />
-            <ambient r="10" g="10" b="10" a="10" />
-            <di10use r="10" g="10" b="10" a="10" />
-            <specular r="10" g="10" b="10" a="10" />
+            <omni id="omni_light1" enabled="true" >
+            <location x="0" y="0" z="0" w="10" />
+            <ambient r="1" g="2" b="3" a="20" />
+            <diffuse r="5" g="6" b="7" a="10" />
+            <specular r="8" g="9" b="10" a="5" />
         </omni>
         
-        <spot id="ola" enabled="true" angle="10" exponent="10">            		 <target x="10" y="10" z="10" />
-            <location x="10" y="10" z="10" />
-            <ambient r="10" g="10" b="10" a="10" />
-            <di10use r="10" g="10" b="10" a="10" />
-            <specular r="10" g="10" b="10" a="10" />
+        <spot id="spot_light1" enabled="true" angle="10" exponent="10">            		 <target x="10" y="10" z="10" />
+            <location x="20" y="30" z="40" />
+            <ambient r="1" g="2" b="3" a="20" />
+            <diffuse r="5" g="6" b="7" a="10" />
+            <specular r="8" g="9" b="10" a="5" />
         </spot>
     </lights>    
 
 	<textures>
-            <texture id="ola" file="ola" length_s="10" length_t="10" />  
+            <texture id="texture1" file="nofile.jpg" length_s="10" length_t="10" />  
         
     </textures>
 
     
     <materials>
     
-         <material id="ola" >
-            <emiolaion r="10" g="10" b="10" a="10" />
-            <ambient r="10" g="10" b="10" a="10" />
-            <di10use r="10" g="10" b="10" a="10" />
-            <specular r="10" g="10" b="10" a="10" />
-            <shinineola value="10" />
+         <material id="material1" >
+            <emission r="10" g="9" b="8" a="40" />
+            <ambient r="7" g="6" b="5" a="30" />
+            <diffuse r="4" g="3" b="2" a="20" />
+            <specular r="3" g="2" b="1" a="10" />
+            <shininess value="40" />
         </material>
         
     </materials>
