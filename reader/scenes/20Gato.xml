@@ -50,7 +50,7 @@
 	
 	<primitives>
 		<primitive id="primitive1">
-			<rectangle x1="10.1" y1="1.5" x2="4.6" y2="2.3" />
+			<cylinder base="10.1" top="1.5" height="4.6" slices="2" stacks="3" />
 		</primitive>
 		
 		<primitive id="primitive2">
