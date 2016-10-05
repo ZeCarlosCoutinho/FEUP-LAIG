@@ -478,12 +478,12 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		return "either zero or more than one 'primitives' element found.";
 	}
 
-	// Create Materials Data Structure
+	// Create Primitive Data Structure
 	var primitives = elems[0].getElementsByTagName('primitive');
 	this.primitives = [];
 	
 	// iterate over every element
-	var nPrimitives = materials.length;
+	var nPrimitives = primitives.length;
 
 	if (nPrimitives == 0)
 		return "no primitives were found.";
@@ -500,50 +500,28 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		//Initiate Primitive
 		var currentPrimitive = primitives[i];
 		var currentPrimitive_id = this.reader.getString(currentPrimitive, 'id');
-		this.materials[currentPrimitive_id] = new Material(currentPrimitive_id);
-		
-		
-		
-		
-		
-		/* TODO
-		******************************************************************
-		------------------ A PARTIR DAQUI AINDA NÃO MUDEI. TIVE DE SAIR Á PRESSA --------------------------------
-		*******************************************************************
-		*/
-		
-		
-		
+		this.primitives[currentPrimitive_id] = new Material(currentPrimitive_id);	
 		
 
 		//Get attributes
-		var emission = currentMaterial.children[0];
-		this.materials[currentMaterial_id].emission[0] = this.reader.getFloat(emission, 'r');
-		this.materials[currentMaterial_id].emission[1] = this.reader.getFloat(emission, 'g');
-		this.materials[currentMaterial_id].emission[2] = this.reader.getFloat(emission, 'b');
-		this.materials[currentMaterial_id].emission[3] = this.reader.getFloat(emission, 'a');
-
-		var ambient = currentMaterial.children[1];
-		this.materials[currentMaterial_id].ambient[0] = this.reader.getFloat(ambient, 'r');
-		this.materials[currentMaterial_id].ambient[1] = this.reader.getFloat(ambient, 'g');
-		this.materials[currentMaterial_id].ambient[2] = this.reader.getFloat(ambient, 'b');
-		this.materials[currentMaterial_id].ambient[3] = this.reader.getFloat(ambient, 'a');
-
-		var diffuse = currentMaterial.children[2];
-		this.materials[currentMaterial_id].diffuse[0] = this.reader.getFloat(diffuse, 'r');
-		this.materials[currentMaterial_id].diffuse[1] = this.reader.getFloat(diffuse, 'g');
-		this.materials[currentMaterial_id].diffuse[2] = this.reader.getFloat(diffuse, 'b');
-		this.materials[currentMaterial_id].diffuse[3] = this.reader.getFloat(diffuse, 'a');
-
-		var specular = currentMaterial.children[3];
-		this.materials[currentMaterial_id].specular[0] = this.reader.getFloat(specular, 'r');
-		this.materials[currentMaterial_id].specular[1] = this.reader.getFloat(specular, 'g');
-		this.materials[currentMaterial_id].specular[2] = this.reader.getFloat(specular, 'b');
-		this.materials[currentMaterial_id].specular[3] = this.reader.getFloat(specular, 'a');
+		//There should only be 1 primitive type
+		var primitive_param = primitives[i].getElementsByTagName('rectangle');
 		
-		var shininess = currentMaterial.children[4];
-		this.materials[currentMaterial_id].shininess = this.reader.getFloat(shininess, 'value');
+		/*
+		*----------------------------------------------------------
+		* Nao sei se sera a maneira mais eficiente de fazer isto
+		* Leio so a primeira tag, e ignoro as restantes
+		*----------------------------------------------------------
+		*/
+		if(primitive_param != null)
+		{
+			currentPrimitive.
+		}
+		
+		console.log("primitives[" + i + "]: no rectangle tag found");
 
+
+		
 		this.materials[currentMaterial_id].loaded = true;
 		
 		console.log(this.materials[currentMaterial_id].toString());
