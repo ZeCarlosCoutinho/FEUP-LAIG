@@ -34,6 +34,8 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errorTextures = this.parseTextures(rootElement);
 	var errorMaterials = this.parseMaterials(rootElement);
 	
+	var errorPrimitives = this.parsePrimitives(rootElement);
+	
 	if (errorScene != null) {
 		this.onXMLError(error);
 		return;
@@ -90,9 +92,7 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 
 };
 
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
+
 MySceneGraph.prototype.parseScene= function(rootElement) {
 
 	var elems =  rootElement.getElementsByTagName('scene');
@@ -115,9 +115,6 @@ MySceneGraph.prototype.parseScene= function(rootElement) {
 	console.log("Scene read from file: {root=" + this.root + ", axis_length=" + this.axis_length + "}");
 };
 
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
 MySceneGraph.prototype.parseViews= function(rootElement) {
 
 	var elems =  rootElement.getElementsByTagName('views');
@@ -177,9 +174,6 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 
 };
 
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
 MySceneGraph.prototype.parseIllumination= function(rootElement) {
 
 	var elems =  rootElement.getElementsByTagName('illumination');
@@ -215,9 +209,6 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
 
 };
 
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
 MySceneGraph.prototype.parseLights= function(rootElement) {
 	var elems =  rootElement.getElementsByTagName('lights');
 	if (elems == null) {
@@ -340,9 +331,6 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 
 };
 
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
 MySceneGraph.prototype.parseTextures= function(rootElement) {
 
 	var elems =  rootElement.getElementsByTagName('textures');
@@ -392,9 +380,6 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 
 };
 
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
 MySceneGraph.prototype.parseMaterials= function(rootElement) {
 
 	var elems =  rootElement.getElementsByTagName('materials');
@@ -500,31 +485,95 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		//Initiate Primitive
 		var currentPrimitive = primitives[i];
 		var currentPrimitive_id = this.reader.getString(currentPrimitive, 'id');
-		this.primitives[currentPrimitive_id] = new Material(currentPrimitive_id);	
+		
+		/*
+		* ------------------------------------------------------
+		* Da para ter objetos de diferentes tipos na mesma lista?
+		* Seria necessario, porque temos 5 tipos de primitivas diferentes
+		* ------------------------------------------------------
+		*/	
 		
 
 		//Get attributes
 		//There should only be 1 primitive type
-		var primitive_param = primitives[i].getElementsByTagName('rectangle');
-		
 		/*
 		*----------------------------------------------------------
 		* Nao sei se sera a maneira mais eficiente de fazer isto
 		* Leio so a primeira tag, e ignoro as restantes
 		*----------------------------------------------------------
 		*/
+		var primitive_param = primitives[i].getElementsByTagName('rectangle');
 		if(primitive_param != null)
 		{
-			currentPrimitive.
+			this.primitives[currentPrimitive_id] = new Prim_Rectangle(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(currentPrimitive, 'x1');
+			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(currentPrimitive, 'y1');
+			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(currentPrimitive, 'x2');
+			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(currentPrimitive, 'y2');
+			console.log(this.primitives[currentPrimitive_id].toString());
+			continue;
 		}
 		
 		console.log("primitives[" + i + "]: no rectangle tag found");
-
-
+		primitive_param = primitives[i].getElementsByTagName('triangle');
+		if(primitive_param != null)
+		{
+			this.primitives[currentPrimitive_id] = new Prim_Triangle(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(currentPrimitive, 'x1');
+			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(currentPrimitive, 'y1');
+			this.primitives[currentPrimitive_id].z1 = this.reader.getFloat(currentPrimitive, 'z1');
+			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(currentPrimitive, 'x2');
+			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(currentPrimitive, 'y2');
+			this.primitives[currentPrimitive_id].z2 = this.reader.getFloat(currentPrimitive, 'z2');
+			this.primitives[currentPrimitive_id].x3 = this.reader.getFloat(currentPrimitive, 'x3');
+			this.primitives[currentPrimitive_id].y3 = this.reader.getFloat(currentPrimitive, 'y3');
+			this.primitives[currentPrimitive_id].z3 = this.reader.getFloat(currentPrimitive, 'z3');
+			console.log(this.primitives[currentPrimitive_id].toString());
+			continue;
+		}
 		
-		this.materials[currentMaterial_id].loaded = true;
+		console.log("primitives[" + i + "]: no triangle tag found");
+		primitive_param = primitives[i].getElementsByTagName('cylinder');
+		if(primitive_param != null)
+		{
+			this.primitives[currentPrimitive_id] = new Prim_Cylinder(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].base = this.reader.getFloat(currentPrimitive, 'base');
+			this.primitives[currentPrimitive_id].top = this.reader.getFloat(currentPrimitive, 'top');
+			this.primitives[currentPrimitive_id].height = this.reader.getFloat(currentPrimitive, 'height');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(currentPrimitive, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(currentPrimitive, 'stacks');
+			console.log(this.primitives[currentPrimitive_id].toString());
+			continue;
+		}
 		
-		console.log(this.materials[currentMaterial_id].toString());
+		console.log("primitives[" + i + "]: no cylinder tag found");
+		primitive_param = primitives[i].getElementsByTagName('sphere');
+		if(primitive_param != null)
+		{
+			this.primitives[currentPrimitive_id] = new Prim_Sphere(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].radius = this.reader.getFloat(currentPrimitive, 'radius');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(currentPrimitive, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(currentPrimitive, 'stacks');
+			console.log(this.primitives[currentPrimitive_id].toString());
+			continue;
+		}
+		
+		console.log("primitives[" + i + "]: no sphere tag found");
+		primitive_param = primitives[i].getElementsByTagName('thorus');
+		if(primitive_param != null)
+		{
+			this.primitives[currentPrimitive_id] = new Prim_Thorus(currentPrimitive_id);
+			this.primitive[currentPrimitive_id].inner = this.reader.getFloat(currentPrimitive, 'inner');
+			this.primitive[currentPrimitive_id].outer = this.reader.getFloat(currentPrimitive, 'outer');
+			this.primitive[currentPrimitive_id].slices = this.reader.getInteger(currentPrimitive, 'slices');
+			this.primitive[currentPrimitive_id].stacks = this.reader.getInteger(currentPrimitive, 'stacks');
+			console.log(this.primitives[currentPrimitive_id].toString());
+			continue;
+		}
+		
+		console.log("primitives[" + i + "]: no thorus tag found");
+		
+		console.log("primitives[" + i + "]: no primitive type found");
 	}
 	
 }
