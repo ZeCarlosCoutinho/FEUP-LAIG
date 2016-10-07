@@ -244,11 +244,34 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 		 * FALTA VERIFICAR IDS IGUAIS
 		 * IMPORTANTE
 		 * TO DO
+		 
+		 * EDIT1: FEITO MAIS ABAIXO
+		 * ATENCAO QUE REPETE NO SPOTLIGHT
+		 * QUALQUER ALTERACAO TEM DE SER FEITA LA TAMBEM
 		 */
 		
 		//Initiate Light
 		var currentLight = omniLights[i];
 		var currentLight_id = this.reader.getString(currentLight, 'id');
+		
+		var existentLight = this.omniLights[currentLight_id];
+		if (existentLight != null)
+		{
+			/* 
+			* Returns error and doesnt read the remaining lights
+			
+			return "light[" + i + "] already exists";
+			*/
+			
+			// OR
+			
+			/*
+			* Shows the error, ignores it, and processes de remaining lights
+			*/
+			console.log("light[" + i + "] already exists");
+			continue;
+		}
+		
 		this.omniLights[currentLight_id] = new OmniLight(currentLight_id);
 
 		//Get attributes
@@ -289,6 +312,14 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 		//Initiate Light
 		var currentLight = spotLights[i];
 		var currentLight_id = this.reader.getString(currentLight, 'id');
+		
+		var existentLight = this.omniLights[currentLight_id];
+		if(existentLight != null)
+		{
+			console.log("light[" + i + "] already exists");
+			continue;
+		}
+
 		this.spotLights[currentLight_id] = new SpotLight(currentLight_id);
 
 		//Get attributes
@@ -587,6 +618,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 	}
 	
 }
+
 
 /*
  * Callback to be executed on any read error
