@@ -48,6 +48,12 @@
         
     </materials>
 	
+	<transformations>
+		<transformation id="transformation1">
+			<translate x="2" y="2" z="1"/>
+		</transformation>
+	</transformations>
+	
 	<primitives>
 		<primitive id="primitive1">
 			<cylinder base="10.1" top="1.5" height="4.6" slices="2" stacks="3" />

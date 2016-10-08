@@ -33,7 +33,8 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errorLights = this.parseLights(rootElement);
 	var errorTextures = this.parseTextures(rootElement);
 	var errorMaterials = this.parseMaterials(rootElement);
-	
+	var errorTransformations = this.parseTransformations(rootElement);
+	console.log("ola");
 	var errorPrimitives = this.parsePrimitives(rootElement);
 	
 	if (errorScene != null) {
@@ -483,6 +484,77 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 
 };
 
+MySceneGraph.prototype.parseTransformations= function(rootElement) {
+	console.log("Ola 2");
+	var elems =  rootElement.getElementsByTagName('transformations');
+	if (elems == null) {
+		return "transformations element is missing.";
+	}
+
+	if (elems.length != 1) {
+		return "either zero or more than one 'transformations' element found.";
+	}
+	console.log("Ola 3");
+	var transformations = elems[0].getElementsByTagName('transformation');
+	this.transformations = [];
+	
+	var nTransformations = transformations.length;
+	
+	if(nTransformations == 0)
+		return "no transformations were found.";
+	
+	for(var i = 0; i < nTransformations; i++)
+	{
+		var currentTransformation = transformations[i];
+		var currentTransformation_id = this.reader.getString(currentTransformation, 'id');
+		
+		var transformationMatrix = [[1, 0, 0, 0],
+									[0, 1, 0, 0],
+									[0, 0, 1, 0],
+									[0, 0, 0, 1]];
+		
+		this.setMatrix(transformationMatrix);
+		
+		var transformationLength = currentTransformation.lenght;
+		for(var i = 0; i < transformationLength; i++)
+		{
+			var transformationType = currentTransformation[i].tagName;
+			var matrix = [];
+			
+			if(transformationType == "translate")
+			{
+				var x = this.reader.getFloat(currentTransformation, 'x');
+				var y = this.reader.getFloat(currentTransformation, 'y');
+				var z = this.reader.getFloat(currentTransformation, 'z');
+				matrix = this.buildMatrixTranslation(x, y, z);
+			}
+			else if(transformationType == "scale")
+			{
+				var x = this.reader.getFloat(currentTransformation, 'x');
+				var y = this.reader.getFloat(currentTransformation, 'y');
+				var z = this.reader.getFloat(currentTransformation, 'z');
+				matrix = this.buildMatrixScaling(x, y, z);
+			}
+			else if(transformationType == "rotate")
+			{
+				var axis = this.reader.getString(currentTransformation, 'axis');
+				var angle = this.reader.getFloat(currentTransformation, 'angle');
+				matrix = this.buildMatrixRotation(axis, angle);
+			}
+			else
+			{
+				return "Error: invalid transformation";
+			}
+			
+			multMatrix(matrix);
+		}
+		
+		//Puts the transformation matrix in the list
+		this.tranformations.push(this.getMatrix());
+		console.log(this.tranformations[i]);
+	}
+}
+
 MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 	
 	var elems =  rootElement.getElementsByTagName('primitives');
@@ -520,7 +592,6 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		//Initiate Primitive
 		var currentPrimitive = primitives[i];
 		var currentPrimitive_id = this.reader.getString(currentPrimitive, 'id');
-		
 		/*
 		* ------------------------------------------------------
 		* TODO
@@ -619,6 +690,58 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 	
 }
 
+MySceneGraph.prototype.buildMatrixTranslation = function(x, y, z)
+{
+	var matrix =[[1.0, 0.0, 0.0, x]
+				 [0.0, 1.0, 0.0, y]
+				 [0.0, 0.0, 1.0, z]
+				 [0.0, 0.0, 0.0, 1.0]];
+				 
+	return matrix;
+}
+
+MySceneGraph.prototype.buildMatrixScaling = function(x, y, z)
+{
+	var matrix =[[x, 0.0, 0.0, 0.0]
+				 [0.0, y, 0.0, 0.0]
+				 [00, 0.0, z, 0.0]
+				 [0.0, 0.0, 0.0, 1.0]];
+				 
+	return matrix;
+}
+
+MySceneGraph.prototype.buildMatrixRotation = function(axis, angle)
+{
+	var matrix = []
+	if(axis == 'x')
+	{
+		atrix =[[1, 0.0, 0.0, 0.0]
+				[0.0, Math.cos(angle), -1*Math.sin(angle), 0.0]
+				[0.0, Math.sin(angle), Math.cos(angle), 0.0]
+				[0.0, 0.0, 0.0, 1.0]];
+	}
+	else if(axis == 'y')
+	{
+		matrix =[[Math.cos(angle), 0.0, Math.sin(angle), 0.0]
+				 [0.0, 1.0, 0.0, 0.0]
+				 [-1*Math.sin(angle), 0.0, Math.cos(angle), 0.0]
+				 [0.0, 0.0, 0.0, 1.0]];
+	}
+	else if(axis == 'z')
+	{
+		matrix =[[Math.cos(angle), -1*Math.sin(angle), 0.0, 0.0]
+				 [Math.sin(angle), Math.cos(angle), 0.0, 0.0]
+				 [0.0, 0.0, 1.0, 0.0]
+				 [0.0, 0.0, 0.0, 1.0]];
+	}
+	else
+	{
+		console.log("Invalid axis");
+	}
+	
+	return matrix;
+	
+}
 
 /*
  * Callback to be executed on any read error
