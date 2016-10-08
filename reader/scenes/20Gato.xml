@@ -51,6 +51,12 @@
 	<transformations>
 		<transformation id="transformation1">
 			<translate x="2" y="2" z="1"/>
+			<scale x="1" y="1" z="3" />
+		</transformation>
+		
+		<transformation id="transformation2">
+			<translate x="3" y="1" z="2" />
+			<rotate angle="50" axis="x" />
 		</transformation>
 	</transformations>
 	

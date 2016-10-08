@@ -497,61 +497,84 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 	console.log("Ola 3");
 	var transformations = elems[0].getElementsByTagName('transformation');
 	this.transformations = [];
-	
+	console.log(transformations);
 	var nTransformations = transformations.length;
-	
+	console.log("nTransformations = " + nTransformations);
 	if(nTransformations == 0)
 		return "no transformations were found.";
 	
 	for(var i = 0; i < nTransformations; i++)
 	{
+		console.log("This is the transformation " + i);
 		var currentTransformation = transformations[i];
 		var currentTransformation_id = this.reader.getString(currentTransformation, 'id');
+		var currentTransformationElements = currentTransformation.getElementsByTagName('*');
+		console.log(currentTransformation);
+		this.scene.loadIdentity();
 		
-		var transformationMatrix = [[1, 0, 0, 0],
-									[0, 1, 0, 0],
-									[0, 0, 1, 0],
-									[0, 0, 0, 1]];
-		
-		this.setMatrix(transformationMatrix);
-		
-		var transformationLength = currentTransformation.lenght;
-		for(var i = 0; i < transformationLength; i++)
+		var transformationLength = currentTransformationElements.length;
+		console.log(transformationLength);
+		for(var j = 0; j < transformationLength; j++)
 		{
-			var transformationType = currentTransformation[i].tagName;
+			var transformationType = currentTransformationElements[j].tagName;
 			var matrix = [];
+			console.log("Transformation type : " + transformationType);
 			
 			if(transformationType == "translate")
 			{
-				var x = this.reader.getFloat(currentTransformation, 'x');
-				var y = this.reader.getFloat(currentTransformation, 'y');
-				var z = this.reader.getFloat(currentTransformation, 'z');
-				matrix = this.buildMatrixTranslation(x, y, z);
+				console.log("Processing translate");
+				var x = this.reader.getFloat(currentTransformationElements[j], 'x');
+				var y = this.reader.getFloat(currentTransformationElements[j], 'y');
+				var z = this.reader.getFloat(currentTransformationElements[j], 'z');
+				/*matrix = this.buildMatrixTranslation(x, y, z);*/
+				console.log(x);
+				console.log(y);
+				console.log(z);
+				this.scene.translate(x, y, z);
 			}
 			else if(transformationType == "scale")
 			{
-				var x = this.reader.getFloat(currentTransformation, 'x');
-				var y = this.reader.getFloat(currentTransformation, 'y');
-				var z = this.reader.getFloat(currentTransformation, 'z');
-				matrix = this.buildMatrixScaling(x, y, z);
+				var x = this.reader.getFloat(currentTransformationElements[j], 'x');
+				var y = this.reader.getFloat(currentTransformationElements[j], 'y');
+				var z = this.reader.getFloat(currentTransformationElements[j], 'z');
+				/*matrix = this.buildMatrixScaling(x, y, z);*/
+				this.scene.scale(x, y, z);
 			}
 			else if(transformationType == "rotate")
 			{
-				var axis = this.reader.getString(currentTransformation, 'axis');
-				var angle = this.reader.getFloat(currentTransformation, 'angle');
-				matrix = this.buildMatrixRotation(axis, angle);
+				var axis = this.reader.getString(currentTransformationElements[j], 'axis');
+				var angle = this.reader.getFloat(currentTransformationElements[j], 'angle');
+				/*matrix = this.buildMatrixRotation(axis, angle);*/
+				if(axis == 'x')
+				{
+					this.scene.rotate(rtoa(angle), 1, 0, 0);
+				}
+				else if(axis == 'y')
+				{
+					this.scene.rotate(rtoa(angle), 0, 1, 0);
+				}
+				else if(axis == 'z')
+				{
+					this.scene.rotate(rtoa(angle), 0,0, 1);
+				}
+				else
+				{
+					return "Error: invalid axis";
+				}
 			}
 			else
 			{
 				return "Error: invalid transformation";
 			}
 			
-			multMatrix(matrix);
+			//multMatrix(matrix);
 		}
 		
 		//Puts the transformation matrix in the list
-		this.tranformations.push(this.getMatrix());
-		console.log(this.tranformations[i]);
+		this.transformations.push(this.scene.getMatrix());
+		console.log(this.scene.getMatrix());
+		console.log(this.transformations[i]);
+		console.log(this.transformations);
 	}
 }
 
@@ -743,6 +766,10 @@ MySceneGraph.prototype.buildMatrixRotation = function(axis, angle)
 	
 }
 
+rtoa = function(degree)
+{
+	return (degree*Math.PI)/180;
+}
 /*
  * Callback to be executed on any read error
  */
