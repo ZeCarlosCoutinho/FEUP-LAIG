@@ -143,6 +143,26 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 	{
 		var perspective = views.children[i];
 		var perspective_id = this.reader.getString(perspective, 'id');
+		
+		// Verify if the id already exists
+		var existentView = this.viewsList[perspective_id];
+		if (existentView != null)
+		{
+			
+			//Returns error and doesnt read the remaining lights
+			
+			return "ID ERROR: view[" + i + "] already exists";
+			
+			
+			// OR
+			
+			/*
+			* Shows the error, ignores it, and processes de remaining lights
+			
+			console.log("light[" + i + "] already exists");
+			continue;*/
+		}
+		
 		// process each perspective and store its information
 		this.viewsList[perspective_id] = new MyView(perspective_id);
 		this.viewsList[perspective_id].near = this.reader.getFloat(perspective, 'near');
@@ -257,20 +277,18 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 		
 		var existentLight = this.omniLights[currentLight_id];
 		if (existentLight != null)
-		{
-			/* 
-			* Returns error and doesnt read the remaining lights
+		{ 
+			// Returns error and doesnt read the remaining lights
 			
-			return "light[" + i + "] already exists";
-			*/
+			return "ID ERROR: light[" + i + "] already exists";
 			
 			// OR
 			
 			/*
 			* Shows the error, ignores it, and processes de remaining lights
-			*/
+			
 			console.log("light[" + i + "] already exists");
-			continue;
+			continue;*/
 		}
 		
 		this.omniLights[currentLight_id] = new OmniLight(currentLight_id);
@@ -317,8 +335,7 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 		var existentLight = this.omniLights[currentLight_id];
 		if(existentLight != null)
 		{
-			console.log("light[" + i + "] already exists");
-			continue;
+			return "ID ERROR: light[" + i + "] already exists";
 		}
 
 		this.spotLights[currentLight_id] = new SpotLight(currentLight_id);
@@ -393,9 +410,17 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 		 * TO DO
 		 */
 		
-		//Initiate Light
+		//Initiate Texture
 		var currentTexture = textures[i];
 		var currentTexture_id = this.reader.getString(currentTexture, 'id');
+		
+		//Verify the id of the Texture
+		var existentTexture = this.textures[currentTexture_id];
+		if(existentTexture != null)
+		{
+			return "ID ERROR: texture[" + i + "] already exists";
+		}
+		
 		this.textures[currentTexture_id] = new Texture(currentTexture_id);
 
 		//Get attributes
@@ -442,9 +467,16 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 		 * TO DO
 		 */
 		
-		//Initiate Light
+		//Initiate Materials
 		var currentMaterial = materials[i];
 		var currentMaterial_id = this.reader.getString(currentMaterial, 'id');
+		
+		var existentMaterial = this.materials[currentMaterial_id];
+		if(existentMaterial != null)
+		{
+			return "ID ERROR: materials[" + i + "] already exists";
+		}
+		
 		this.materials[currentMaterial_id] = new Material(currentMaterial_id);
 
 		//Get attributes
@@ -508,6 +540,16 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 		console.log("This is the transformation " + i);
 		var currentTransformation = transformations[i];
 		var currentTransformation_id = this.reader.getString(currentTransformation, 'id');
+		
+		//Verify if id is valid
+		var existentTransformation = this.transformations[currentTransformation_id];
+		console.log("Existent Transformation [" + i + "] :" + existentTransformation);
+		if(existentTransformation != null)
+		{
+			console.log("DETECTED COPY");
+			return "ID ERROR: transformations[" + i + "] already exists";
+		}
+		
 		var currentTransformationElements = currentTransformation.getElementsByTagName('*');
 		console.log(currentTransformation);
 		this.scene.loadIdentity();
@@ -539,6 +581,7 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 				var z = this.reader.getFloat(currentTransformationElements[j], 'z');
 				/*matrix = this.buildMatrixScaling(x, y, z);*/
 				this.scene.scale(x, y, z);
+				console.log(this.scene.getMatrix());
 			}
 			else if(transformationType == "rotate")
 			{
@@ -571,11 +614,17 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 		}
 		
 		//Puts the transformation matrix in the list
-		this.transformations.push(this.scene.getMatrix());
+		this.transformations[currentTransformation_id] = new Transformation(currentTransformation_id);
+		this.transformations[currentTransformation_id].matrix = this.scene.getMatrix();
+		
 		console.log(this.scene.getMatrix());
 		console.log(this.transformations[i]);
-		console.log(this.transformations);
+	/*
+		//Cleans the transformation matrix
+		this.scene.popMatrix();*/
 	}
+
+	console.log(this.transformations);
 }
 
 MySceneGraph.prototype.parsePrimitives= function(rootElement) {
@@ -591,12 +640,14 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 
 	// Create Primitive Data Structure
 	var primitives = elems[0].getElementsByTagName('primitive');
+	/*
 	this.rectangles = [];
 	this.triangles = [];
 	this.cylinders = [];
 	this.spheres = [];
 	this.thoruses = [];
-	
+	*/
+	this.primitives = [];
 	// iterate over every element
 	var nPrimitives = primitives.length;
 
@@ -615,6 +666,13 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		//Initiate Primitive
 		var currentPrimitive = primitives[i];
 		var currentPrimitive_id = this.reader.getString(currentPrimitive, 'id');
+		
+		var existingPrimitive = this.primitives[currentPrimitive_id];
+		if(existingPrimitive != null)
+		{
+			return "ID ERROR: primitives[" + i + "] already exists";
+		}
+		
 		/*
 		* ------------------------------------------------------
 		* TODO
@@ -636,12 +694,12 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			this.rectangles[currentPrimitive_id] = new Prim_Rectangle(currentPrimitive_id);
-			this.rectangles[currentPrimitive_id].x1 = this.reader.getFloat(primitive_type, 'x1');
-			this.rectangles[currentPrimitive_id].y1 = this.reader.getFloat(primitive_type, 'y1');
-			this.rectangles[currentPrimitive_id].x2 = this.reader.getFloat(primitive_type, 'x2');
-			this.rectangles[currentPrimitive_id].y2 = this.reader.getFloat(primitive_type, 'y2');
-			console.log(this.rectangles[currentPrimitive_id].toString());
+			this.primitives[currentPrimitive_id] = new Prim_Rectangle(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_type, 'x1');
+			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_type, 'y1');
+			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_type, 'x2');
+			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_type, 'y2');
+			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
 		
@@ -650,17 +708,17 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			this.triangles[currentPrimitive_id] = new Prim_Triangle(currentPrimitive_id);
-			this.triangles[currentPrimitive_id].x1 = this.reader.getFloat(primitive_type, 'x1');
-			this.triangles[currentPrimitive_id].y1 = this.reader.getFloat(primitive_type, 'y1');
-			this.triangles[currentPrimitive_id].z1 = this.reader.getFloat(primitive_type, 'z1');
-			this.triangles[currentPrimitive_id].x2 = this.reader.getFloat(primitive_type, 'x2');
-			this.triangles[currentPrimitive_id].y2 = this.reader.getFloat(primitive_type, 'y2');
-			this.triangles[currentPrimitive_id].z2 = this.reader.getFloat(primitive_type, 'z2');
-			this.triangles[currentPrimitive_id].x3 = this.reader.getFloat(primitive_type, 'x3');
-			this.triangles[currentPrimitive_id].y3 = this.reader.getFloat(primitive_type, 'y3');
-			this.triangles[currentPrimitive_id].z3 = this.reader.getFloat(primitive_type, 'z3');
-			console.log(this.triangles[currentPrimitive_id].toString());
+			this.primitives[currentPrimitive_id] = new Prim_Triangle(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_type, 'x1');
+			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_type, 'y1');
+			this.primitives[currentPrimitive_id].z1 = this.reader.getFloat(primitive_type, 'z1');
+			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_type, 'x2');
+			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_type, 'y2');
+			this.primitives[currentPrimitive_id].z2 = this.reader.getFloat(primitive_type, 'z2');
+			this.primitives[currentPrimitive_id].x3 = this.reader.getFloat(primitive_type, 'x3');
+			this.primitives[currentPrimitive_id].y3 = this.reader.getFloat(primitive_type, 'y3');
+			this.primitives[currentPrimitive_id].z3 = this.reader.getFloat(primitive_type, 'z3');
+			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
 		
@@ -669,13 +727,13 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			this.cylinders[currentPrimitive_id] = new Prim_Cylinder(currentPrimitive_id);
-			this.cylinders[currentPrimitive_id].base = this.reader.getFloat(primitive_type, 'base');
-			this.cylinders[currentPrimitive_id].top = this.reader.getFloat(primitive_type, 'top');
-			this.cylinders[currentPrimitive_id].height = this.reader.getFloat(primitive_type, 'height');
-			this.cylinders[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
-			this.cylinders[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
-			console.log(this.cylinders[currentPrimitive_id].toString());
+			this.primitives[currentPrimitive_id] = new Prim_Cylinder(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].base = this.reader.getFloat(primitive_type, 'base');
+			this.primitives[currentPrimitive_id].top = this.reader.getFloat(primitive_type, 'top');
+			this.primitives[currentPrimitive_id].height = this.reader.getFloat(primitive_type, 'height');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
+			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
 		
@@ -684,11 +742,11 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			this.spheres[currentPrimitive_id] = new Prim_Sphere(currentPrimitive_id);
-			this.spheres[currentPrimitive_id].radius = this.reader.getFloat(primitive_type, 'radius');
-			this.spheres[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
-			this.spheres[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
-			console.log(this.spheres[currentPrimitive_id].toString());
+			this.primitives[currentPrimitive_id] = new Prim_Sphere(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].radius = this.reader.getFloat(primitive_type, 'radius');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
+			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
 		
@@ -697,12 +755,12 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			this.thoruses[currentPrimitive_id] = new Prim_Thorus(currentPrimitive_id);
-			this.thoruses[currentPrimitive_id].inner = this.reader.getFloat(primitive_type, 'inner');
-			this.thoruses[currentPrimitive_id].outer = this.reader.getFloat(primitive_type, 'outer');
-			this.thoruses[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
-			this.thoruses[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
-			console.log(this.thoruses[currentPrimitive_id].toString());
+			this.primitives[currentPrimitive_id] = new Prim_Thorus(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].inner = this.reader.getFloat(primitive_type, 'inner');
+			this.primitives[currentPrimitive_id].outer = this.reader.getFloat(primitive_type, 'outer');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
+			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
 		
@@ -713,63 +771,10 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 	
 }
 
-MySceneGraph.prototype.buildMatrixTranslation = function(x, y, z)
-{
-	var matrix =[[1.0, 0.0, 0.0, x]
-				 [0.0, 1.0, 0.0, y]
-				 [0.0, 0.0, 1.0, z]
-				 [0.0, 0.0, 0.0, 1.0]];
-				 
-	return matrix;
-}
-
-MySceneGraph.prototype.buildMatrixScaling = function(x, y, z)
-{
-	var matrix =[[x, 0.0, 0.0, 0.0]
-				 [0.0, y, 0.0, 0.0]
-				 [00, 0.0, z, 0.0]
-				 [0.0, 0.0, 0.0, 1.0]];
-				 
-	return matrix;
-}
-
-MySceneGraph.prototype.buildMatrixRotation = function(axis, angle)
-{
-	var matrix = []
-	if(axis == 'x')
-	{
-		atrix =[[1, 0.0, 0.0, 0.0]
-				[0.0, Math.cos(angle), -1*Math.sin(angle), 0.0]
-				[0.0, Math.sin(angle), Math.cos(angle), 0.0]
-				[0.0, 0.0, 0.0, 1.0]];
-	}
-	else if(axis == 'y')
-	{
-		matrix =[[Math.cos(angle), 0.0, Math.sin(angle), 0.0]
-				 [0.0, 1.0, 0.0, 0.0]
-				 [-1*Math.sin(angle), 0.0, Math.cos(angle), 0.0]
-				 [0.0, 0.0, 0.0, 1.0]];
-	}
-	else if(axis == 'z')
-	{
-		matrix =[[Math.cos(angle), -1*Math.sin(angle), 0.0, 0.0]
-				 [Math.sin(angle), Math.cos(angle), 0.0, 0.0]
-				 [0.0, 0.0, 1.0, 0.0]
-				 [0.0, 0.0, 0.0, 1.0]];
-	}
-	else
-	{
-		console.log("Invalid axis");
-	}
-	
-	return matrix;
-	
-}
-
-rtoa = function(degree)
-{
+rtoa = function(degree){
 	return (degree*Math.PI)/180;
 }
+
 /*
  * Callback to be executed on any read error
  */

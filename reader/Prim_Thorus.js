@@ -15,7 +15,7 @@ Prim_Thorus.prototype.isLoaded=function(){
 
 Prim_Thorus.prototype.toString=function(){
 	return "Primitive Thorus Item " + this.id + "    Loaded? " + this.loaded 
-	+ "\n Inner :" + this.inner + " Outer :" + this.outer´
+	+ "\n Inner :" + this.inner + " Outer :" + this.outer
 	+ "\n Slices: " + this.slices + " Loops: " + this.loops
 	+ "\n";
 }
