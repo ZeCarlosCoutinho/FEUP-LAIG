@@ -800,7 +800,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		 * TO DO
 		 */
 		
-		//Initiate Materials
+		//Initiate Components
 		var currentComponent = components[i];
 		var currentComponent_id = this.reader.getString(currentComponent, 'id');
 		var currentComponentTransformation = currentComponent.children[0];
@@ -873,7 +873,8 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
 
 	}
-
+	
+	
 
 
 };
@@ -903,4 +904,18 @@ MySceneGraph.prototype.transformationIdVerification = function(component)
 	var existingTranformation = this.transformations[component.transformation_id];
 	if(existingTranformation == null)
 		return "Transformation ID " + component.transformation_id + " non existent";
+}
+
+MySceneGraph.prototype.materialIdVerification = function(component)
+{
+	for(var i = 0; i < component.material_ids.length; i++)
+	{
+		var existingMaterial = this.materials[component.material_ids[i]];
+		if(existingMaterial == null)
+		{
+			return "Material ID " + component.material_ids[i] + " non existent";
+		}
+		
+		//TODO verificar se falta algo nesta função
+	}
 }
