@@ -564,7 +564,6 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 			
 			if(transformationType == "translate")
 			{
-				console.log("Processing translate");
 				var x = this.reader.getFloat(currentTransformationElements[j], 'x');
 				var y = this.reader.getFloat(currentTransformationElements[j], 'y');
 				var z = this.reader.getFloat(currentTransformationElements[j], 'z');
@@ -771,6 +770,114 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 	
 }
 
+MySceneGraph.prototype.parseComponents= function(rootElement) {
+
+	var elems =  rootElement.getElementsByTagName('components');
+	if (elems == null) {
+		return "components element is missing.";
+	}
+
+	if (elems.length != 1) {
+		return "either zero or more than one 'components' element found.";
+	}
+
+	// Create Materials Data Structure
+	var components = elems[0].getElementsByTagName('component');
+	this.components = [];
+	
+	// iterate over every element
+	var nComponents = components.length;
+
+	if (nComponents == 0)
+		return "no components were found.";
+
+	//Components
+	for (var i=0; i < nComponents; i++)
+	{
+		/*
+		 * FALTA VERIFICAR IDS IGUAIS
+		 * IMPORTANTE
+		 * TO DO
+		 */
+		
+		//Initiate Materials
+		var currentComponent = components[i];
+		var currentComponent_id = this.reader.getString(currentComponent, 'id');
+		var currentComponentTransformation = currentComponent.children[0];
+		var currentComponentMaterials = currentComponent.children[1];
+		var currentComponentTexture = currentComponent.children[2];
+		var currentComponentChildren = currentComponent.children[3];
+
+		var existentComponent = this.materials[currentComponent_id];
+		if(existentComponent != null)
+		{
+			return "ID ERROR: components[" + i + "] already exists";
+		}
+		
+		this.components[currentComponent_id] = new Component(currentComponent_id);
+		
+	//Parse the transformations
+
+		var transformationref = this.reader.getString(currentComponentTransformation.children[0], 'id');
+		this.components[currentComponent_id].transformation_id = transformationref;
+		//If there's no reference to a transformation
+		if(transformationref == null)
+		{
+			this.components[currentComponent_id].transformation_matrix = readTransformations(currentComponentTransformation);
+		}
+		
+
+	//Parse the material
+		var currentComponentMaterialsElements = currentComponentMaterials.getElementsByTagName('*');
+		var materialsElementsLength = currentComponentMaterialsElements.length;
+
+		if(materialsElementsLength == 0)
+			return "Component material in component[" + currentComponent_id + "] missing";
+
+		for(var j = 0; j < materialsElementsLength; j++)
+		{
+			var currentMaterial = currentComponentMaterialsElements[j];
+			this.components[currentComponent_id].material_ids[j] = this.reader.getString(currentMaterial, 'id');
+		}
+
+		
+	//Parse the texture
+		 var currentTexture = this.reader.getString(currentComponentTexture, 'id');
+		 if(currentTexture == null)
+		 	return "Component texture in component[" + currentComponent_id + "] missing";
+
+		 this.components[currentComponent_id].texture_id = currentTexture;
+
+	
+	//Parse the children
+		 var currentComponentChildrenElements = currentComponentChildren.getElementsByTagName('*');
+		 var childrenLength = currentComponentChildrenElements.length;
+		 for(var j = 0; j < childrenLength; i++)
+		 {
+		 	var currentChild = currentComponentChildrenElements[j];
+			if(currentChild.tagName == "componentref")
+			{
+				this.components[currentComponent_id].component_refs.push(this.reader.getString(currentChild, 'id'));
+			}
+			else if(currentChild.tagName == "primitiveref")
+			{
+				this.components[currentComponent_id].primitive_refs.push(this.reader.getString(currentChild, 'id'));
+			}
+			else
+			{
+				return "Invalid tag in child[" + j + "]"; 
+			}
+		 }
+
+	//Verify id's
+
+
+	}
+
+
+
+};
+
 rtoa = function(degree){
 	return (degree*Math.PI)/180;
 }
@@ -783,4 +890,17 @@ MySceneGraph.prototype.onXMLError=function (message) {
 	this.loadedOk=false;
 };
 
+//TODO Verificar se as tags que sao obrigatorias existem
 
+MySceneGraph.prototype.idVerification = function(component)
+{
+	var transformationError = this.transformationIdVerification(component);
+	//TODO resto dos erros
+}
+
+MySceneGraph.prototype.transformationIdVerification = function(component)
+{
+	var existingTranformation = this.transformations[component.transformation_id];
+	if(existingTranformation == null)
+		return "Transformation ID " + component.transformation_id + " non existent";
+}
