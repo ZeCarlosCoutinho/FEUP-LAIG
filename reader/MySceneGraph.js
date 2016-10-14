@@ -34,8 +34,8 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errorTextures = this.parseTextures(rootElement);
 	var errorMaterials = this.parseMaterials(rootElement);
 	var errorTransformations = this.parseTransformations(rootElement);
-	console.log("ola");
 	var errorPrimitives = this.parsePrimitives(rootElement);
+	var errorComponents = this.parseComponents(rootElement);
 	
 	if (errorScene != null) {
 		this.onXMLError(error);
@@ -537,7 +537,6 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 	
 	for(var i = 0; i < nTransformations; i++)
 	{
-		console.log("This is the transformation " + i);
 		var currentTransformation = transformations[i];
 		var currentTransformation_id = this.reader.getString(currentTransformation, 'id');
 		
@@ -551,26 +550,20 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 		}
 		
 		var currentTransformationElements = currentTransformation.getElementsByTagName('*');
-		console.log(currentTransformation);
 		this.scene.loadIdentity();
 		
 		var transformationLength = currentTransformationElements.length;
-		console.log(transformationLength);
 		for(var j = 0; j < transformationLength; j++)
 		{
 			var transformationType = currentTransformationElements[j].tagName;
 			var matrix = [];
-			console.log("Transformation type : " + transformationType);
-			
+						
 			if(transformationType == "translate")
 			{
 				var x = this.reader.getFloat(currentTransformationElements[j], 'x');
 				var y = this.reader.getFloat(currentTransformationElements[j], 'y');
 				var z = this.reader.getFloat(currentTransformationElements[j], 'z');
 				/*matrix = this.buildMatrixTranslation(x, y, z);*/
-				console.log(x);
-				console.log(y);
-				console.log(z);
 				this.scene.translate(x, y, z);
 			}
 			else if(transformationType == "scale")
@@ -580,7 +573,6 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 				var z = this.reader.getFloat(currentTransformationElements[j], 'z');
 				/*matrix = this.buildMatrixScaling(x, y, z);*/
 				this.scene.scale(x, y, z);
-				console.log(this.scene.getMatrix());
 			}
 			else if(transformationType == "rotate")
 			{
@@ -616,14 +608,11 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 		this.transformations[currentTransformation_id] = new Transformation(currentTransformation_id);
 		this.transformations[currentTransformation_id].matrix = this.scene.getMatrix();
 		
-		console.log(this.scene.getMatrix());
-		console.log(this.transformations[i]);
+		console.log(this.transformations[currentTransformation_id].toString());
 	/*
 		//Cleans the transformation matrix
 		this.scene.popMatrix();*/
 	}
-
-	console.log(this.transformations);
 }
 
 MySceneGraph.prototype.parsePrimitives= function(rootElement) {
