@@ -15,7 +15,8 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyView.js', '
 	'primitives/MyRectangle.js',
 	'primitives/MyTriangle.js',
 	'primitives/MyCircle.js',
-	
+	'primitives/MySphere.js',
+
 main=function()
 {
 	// Standard application, scene and interface setup

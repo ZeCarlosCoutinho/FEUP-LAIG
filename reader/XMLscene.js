@@ -28,6 +28,8 @@ XMLscene.prototype.init = function (application) {
 	this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/primitives/carrotsPattern.png");
 
+/*	this.test = new MySphere(this, 3, 10, 10);//*/
+
 /*	this.test = new MyCircle(this, 4);
 //*/
 /*	this.test = new MyRectangle(this, 	0,0,
@@ -96,7 +98,7 @@ XMLscene.prototype.display = function () {
 		this.lights[0].update();
 	};	
 	this.pushMatrix();
-		this.testAppearance.apply();
+		this.testAppearance2.apply();
 		this.test.display();
 	this.popMatrix();
 
