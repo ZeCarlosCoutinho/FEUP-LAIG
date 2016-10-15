@@ -27,9 +27,11 @@ XMLscene.prototype.init = function (application) {
 	this.testAppearance.loadTexture("../reader/primitives/board.png");
 	this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/primitives/carrotsPattern.png");
+	
 
-	this.test = new MySphere(this, 3, 10, 10);//*/
-
+	/*this.test = new MySphere(this, 3, 10, 10);//*/
+	/*this.test = new MyCylinder(this, 2, 2, 1, 3, 6);//*/
+	this.test = new MyCylinderWithTops(this, 2, 2, 1.5, 3, 6);//*/
 /*	this.test = new MyCircle(this, 4);
 //*/
 /*	this.test = new MyRectangle(this, 	0,0,
