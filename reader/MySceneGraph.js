@@ -444,6 +444,7 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 		return "materials element is missing.";
 	}
 
+/*TODO Encontrar maneira de so ler as tags principais*/
 	if (elems.length != 1) {
 		return "either zero or more than one 'materials' element found.";
 	}
@@ -797,7 +798,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		var currentComponentTexture = currentComponent.children[2];
 		var currentComponentChildren = currentComponent.children[3];
 
-		var existentComponent = this.materials[currentComponent_id];
+		var existentComponent = this.components[currentComponent_id];
 		if(existentComponent != null)
 		{
 			return "ID ERROR: components[" + i + "] already exists";
@@ -817,7 +818,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		
 
 	//Parse the material
-		var currentComponentMaterialsElements = currentComponentMaterials.getElementsByTagName('*');
+		var currentComponentMaterialsElements = currentComponentMaterials.getElementsByTagName('material');
 		var materialsElementsLength = currentComponentMaterialsElements.length;
 
 		if(materialsElementsLength == 0)
@@ -841,7 +842,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 	//Parse the children
 		 var currentComponentChildrenElements = currentComponentChildren.getElementsByTagName('*');
 		 var childrenLength = currentComponentChildrenElements.length;
-		 for(var j = 0; j < childrenLength; i++)
+		 for(var j = 0; j < childrenLength; j++)
 		 {
 		 	var currentChild = currentComponentChildrenElements[j];
 			if(currentChild.tagName == "componentref")
@@ -859,8 +860,11 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		 }
 
 	//Verify id's
-
-
+	var existingError = this.idVerification(this.components[currentComponent_id]);
+	if(existingError != null)
+		return existingError;
+		
+	console.log(this.components[currentComponent_id]);
 	}
 	
 	
@@ -885,14 +889,21 @@ MySceneGraph.prototype.onXMLError=function (message) {
 MySceneGraph.prototype.idVerification = function(component)
 {
 	var transformationError = this.transformationIdVerification(component);
-	//TODO resto dos erros
+	var materialsError = this.materialIdVerification(component);
+	var textureError = this.textureIdVerification(component);
+	var childrenError = this.childrenIdVerification(component);
+
+	if(transformationError != null || materialsError != null || textureError != null || childrenError != null)
+	{
+		return transformationError + materialsError + textureError + childrenError;
+	}
 }
 
 MySceneGraph.prototype.transformationIdVerification = function(component)
 {
 	var existingTranformation = this.transformations[component.transformation_id];
 	if(existingTranformation == null)
-		return "Transformation ID " + component.transformation_id + " non existent";
+		return "Transformation ID " + component.transformation_id + " non existent ";
 }
 
 MySceneGraph.prototype.materialIdVerification = function(component)
@@ -902,9 +913,37 @@ MySceneGraph.prototype.materialIdVerification = function(component)
 		var existingMaterial = this.materials[component.material_ids[i]];
 		if(existingMaterial == null)
 		{
-			return "Material ID " + component.material_ids[i] + " non existent";
+			return "Material ID " + component.material_ids[i] + " non existent ";
 		}
-		
-		//TODO verificar se falta algo nesta função
+	}
+}
+
+MySceneGraph.prototype.textureIdVerification = function(component)
+{
+	var existingTexture = this.textures[component.texture_id];
+	if(existingTexture == null)
+	{
+		return "Texture ID " + component.texture_id + " non existent ";
+	}
+}
+
+MySceneGraph.prototype.childrenIdVerification = function(component)
+{
+	for(var i = 0; i < component.component_refs.length; i++)
+	{
+		var existentComponent = this.components[component.component_refs[i]];
+		if(existentComponent == null)
+		{
+			return "Component ID " + component.component_refs[i] + " non existent ";
+		}
+	}
+
+	for(var i = 0; i < component.primitive_refs.length; i++)
+	{
+		var existentPrimitive = this.primitives[component.primitive_refs[i]];
+		if(existentPrimitive == null)
+		{
+			return "Primitive ID " + component.primitive_refs[i] + " non existent ";
+		}
 	}
 }

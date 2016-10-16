@@ -80,12 +80,12 @@
 	<components>
 		<component id="component1">
 			<transformation>
-				<transformationref id="transformation2">
+				<transformationref id="transformation2"/>
 			</transformation>
 			
 			<materials>
-				<material id="material1">
-				<material id="material2">
+				<material id="material1" />
+				<material id="material2" />
 			</materials>
 			
 			<texture id="texture1" />
