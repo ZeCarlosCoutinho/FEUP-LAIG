@@ -12,6 +12,7 @@ function getUrlVars() {
 }	 
 
 serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyView.js', 'Illumination.js', 'OmniLight.js', 'SpotLight.js', 'Texture.js', 'Material.js',
+'Transformation.js', 'Component.js',
 	'primitives/MyRectangle.js',
 	'primitives/MyTriangle.js',
 	'primitives/MyCircle.js',
