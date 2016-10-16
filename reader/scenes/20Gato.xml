@@ -15,7 +15,7 @@
         
     </illumination>
      <lights>
-            <omni id="omni_light1" enabled="true" >
+        <omni id="omni_light1" enabled="true" >
             <location x="0" y="0" z="0" w="10" />
             <ambient r="1" g="2" b="3" a="20" />
             <diffuse r="5" g="6" b="7" a="10" />

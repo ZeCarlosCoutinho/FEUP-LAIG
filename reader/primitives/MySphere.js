@@ -2,8 +2,11 @@
  * MySphere
  * @constructor
  */
- function MySphere(scene, radius, slices, stacks) {
+ function MySphere(scene, primitive_id, radius, slices, stacks) {
  	CGFobject.call(this,scene);
+	
+	this.id = primitive_id;
+	this.loaded = false;
 	
 	this.radius = radius;
 
@@ -60,3 +63,14 @@ MySphere.prototype.initBuffers = function() {
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
  };
+
+ MySphere.prototype.isLoaded=function(){
+	return this.loaded;
+}
+
+MySphere.prototype.toString=function(){
+	return "Primitive Sphere Item " + this.id + "    Loaded? " + this.loaded 
+	+ "\n Radius :" + this.radius
+	+ "\n Slices: " + this.slices + " Stacks: " + this.stacks
+	+ "\n";
+}

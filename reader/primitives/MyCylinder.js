@@ -2,8 +2,11 @@
  * MyPrism
  * @constructor
  */
-function MyCylinder(scene, height, bRadius, tRadius, stacks, slices) {
+function MyCylinder(scene, primitive_id, height, bRadius, tRadius, stacks, slices) {
  	CGFobject.call(this, scene);
+	
+	this.id = primitive_id;
+	this.loaded = false;
 	
 	this.slices = slices;
 	this.stacks = stacks;
@@ -59,3 +62,14 @@ MyCylinder.prototype.initBuffers = function() {
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
  };
+ 
+ MyCylinder.prototype.isLoaded=function(){
+	return this.loaded;
+}
+
+MyCylinder.prototype.toString=function(){
+	return "Primitive Cylinder Item " + this.id + "    Loaded? " + this.loaded 
+	+ "\nBase: " + this.base + " Top: " + this.top + " Height: " + this.height
+	+ "\n Slices: " + this.slices + " Stacks: " + this.stacks
+	+ "\n";
+}

@@ -2,8 +2,11 @@
  * MyTriangle
  * @constructor
  */
- function MyTriangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
+ function MyTriangle(scene, primitive_id, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
  	CGFobject.call(this,scene);
+	
+	this.id = primitive_id;
+	this.loaded = false;
 
  	this.x1 = x1;
  	this.y1 = y1;
@@ -77,3 +80,15 @@
     this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
  };
+ 
+ MyTriangle.prototype.isLoaded=function(){
+	return this.loaded;
+}
+
+MyTriangle.prototype.toString=function(){
+	return "Primitive Triangle Item " + this.id + "    Loaded? " + this.loaded 
+	+ "\n(X1, Y1, Z1): (" + this.x1 + "," + this.y1 + "," + this.z1
+	+ "\n(X2, Y2, Z2): (" + this.x2 + "," + this.y2 + "," + this.z2
+	+ "\n(X3, Y3, Z3): (" + this.x3 + "," + this.y3 + "," + this.z3
+	+ "\n";
+}
