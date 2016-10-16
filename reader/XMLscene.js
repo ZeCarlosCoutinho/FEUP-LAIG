@@ -20,6 +20,27 @@ XMLscene.prototype.init = function (application) {
 	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+	
+
+	this.enableTextures(true); //È necessário para texturas
+	this.testAppearance = new CGFappearance(this);
+	this.testAppearance.loadTexture("../reader/primitives/board.png");
+	this.testAppearance2 = new CGFappearance(this);
+	this.testAppearance2.loadTexture("../reader/primitives/carrotsPattern.png");
+	
+	/*this.test = new MyTorus(this, 1, 2, 10, 10);//*/
+	/*this.test = new MySphere(this, 3, 10, 10);//*/
+	/*this.test = new MyCylinder(this, 2, 2, 1, 3, 6);//*/
+	/*this.test = new MyCylinderWithTops(this, 2, 2, 1.5, 3, 6);//*/
+/*	this.test = new MyCircle(this, 4);
+//*/
+/*	this.test = new MyRectangle(this, 	0,0,
+    									1,1);//*/
+/*
+    this.test = new MyTriangle(this, 	1,1,0,
+    									0,0,0,
+    									2,0,0);//*/
+
 	this.axis=new CGFaxis(this);
 };
 
@@ -78,5 +99,10 @@ XMLscene.prototype.display = function () {
 	{
 		this.lights[0].update();
 	};	
+	this.pushMatrix();
+		this.testAppearance2.apply();
+		this.test.display();
+	this.popMatrix();
+
 };
 
