@@ -13,6 +13,7 @@ function getUrlVars() {
 
 serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyView.js', 'Illumination.js', 'OmniLight.js', 'SpotLight.js', 'Texture.js', 'Material.js',
 'Transformation.js', 'Component.js',
+'Prim_Rectangle.js', 'Prim_Triangle.js', 'Prim_Cylinder.js', 'Prim_Sphere.js', 'Prim_Thorus.js',
 	'primitives/MyRectangle.js',
 	'primitives/MyTriangle.js',
 	'primitives/MyCircle.js',
@@ -39,7 +40,7 @@ main=function()
 	// or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
 	
 	//var filename=getUrlVars()['file'] || "demo.xml";
-    var filename=getUrlVars()['file'] || "20Gato.xml";
+    var filename=getUrlVars()['file'] || "inferno.dsx";
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors

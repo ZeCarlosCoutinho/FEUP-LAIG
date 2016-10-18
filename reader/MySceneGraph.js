@@ -218,13 +218,13 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 		//console.log("Read views item id "+ perspective_id +" with near value " + this.viewsList[perspective_id].near );
 		console.log(this.viewsList[perspective_id].toString());
 	};
-
+/*
 	//Checks if all
 	for (var i in this.viewsList){
 		if (!i.loaded)
 			return "error";
 	}
-
+*/
 };
 
 MySceneGraph.prototype.parseIllumination= function(rootElement) {
@@ -551,7 +551,6 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 };
 
 MySceneGraph.prototype.parseTransformations= function(rootElement) {
-	console.log("Ola 2");
 	var elems =  rootElement.getElementsByTagName('transformations');
 	if (elems == null) {
 		return "transformations element is missing.";
@@ -560,7 +559,6 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 	if (elems.length != 1) {
 		return "either zero or more than one 'transformations' element found.";
 	}
-	console.log("Ola 3");
 	var transformations = elems[0].getElementsByTagName('transformation');
 	this.transformations = [];
 	console.log(transformations);
@@ -704,12 +702,12 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			var x1 = this.reader.getFloat(primitive_type, 'x1');
-			var y1 = this.reader.getFloat(primitive_type, 'y1');
-			var x2 = this.reader.getFloat(primitive_type, 'x2');
-			var y2 = this.reader.getFloat(primitive_type, 'y2');
-			var rectangle = new MyRectangle(this, currentPrimitive_id, x1, y1, x2, y2);
-			this.primitives[currentPrimitive_id] = rectangle;
+			this.primitives[currentPrimitive_id] = new Prim_Rectangle(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_type, 'x1');
+			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_type, 'y1');
+			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_type, 'x2');
+			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_type, 'y2');
+
 			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
@@ -719,17 +717,16 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			var x1 = this.reader.getFloat(primitive_type, 'x1');
-			var y1 = this.reader.getFloat(primitive_type, 'y1');
-			var z1 = this.reader.getFloat(primitive_type, 'z1');
-			var x2 = this.reader.getFloat(primitive_type, 'x2');
-			var y2 = this.reader.getFloat(primitive_type, 'y2');
-			var z2 = this.reader.getFloat(primitive_type, 'z2');
-			var x3 = this.reader.getFloat(primitive_type, 'x3');
-			var y3 = this.reader.getFloat(primitive_type, 'y3');
-			var z3 = this.reader.getFloat(primitive_type, 'z3');
-			var triangle = new MyTriangle(currentPrimitive_id, x1, y1, z1, x2, y2, z2, x3, y3, z3);
-			this.primitives[currentPrimitive_id] = triangle;
+			this.primitives[currentPrimitive_id] = new Prim_Triangle(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_type, 'x1');
+			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_type, 'y1');
+			this.primitives[currentPrimitive_id].z1 = this.reader.getFloat(primitive_type, 'z1');
+			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_type, 'x2');
+			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_type, 'y2');
+			this.primitives[currentPrimitive_id].z2 = this.reader.getFloat(primitive_type, 'z2');
+			this.primitives[currentPrimitive_id].x3 = this.reader.getFloat(primitive_type, 'x3');
+			this.primitives[currentPrimitive_id].y3 = this.reader.getFloat(primitive_type, 'y3');
+			this.primitives[currentPrimitive_id].z3 = this.reader.getFloat(primitive_type, 'z3');
 			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
@@ -739,13 +736,12 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			var base = this.reader.getFloat(primitive_type, 'base');
-			var top = this.reader.getFloat(primitive_type, 'top');
-			var height = this.reader.getFloat(primitive_type, 'height');
-			var slices = this.reader.getInteger(primitive_type, 'slices');
-			var stacks = this.reader.getInteger(primitive_type, 'stacks');
-			
-			this.primitives[currentPrimitive_id] = new MyCylinder(this, currentPrimitive_id, height, base, top, stacks, slices);
+			this.primitives[currentPrimitive_id] = new Prim_Cylinder(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].base = this.reader.getFloat(primitive_type, 'base');
+			this.primitives[currentPrimitive_id].top = this.reader.getFloat(primitive_type, 'top');
+			this.primitives[currentPrimitive_id].height = this.reader.getFloat(primitive_type, 'height');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
 			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
@@ -755,11 +751,11 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			var radius = this.reader.getFloat(primitive_type, 'radius');
-			var slices = this.reader.getInteger(primitive_type, 'slices');
-			var stacks = this.reader.getInteger(primitive_type, 'stacks');
+			this.primitives[currentPrimitive_id] = new Prim_Sphere(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].radius = this.reader.getFloat(primitive_type, 'radius');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
 			
-			this.primitives[currentPrimitive_id] = new MySphere(this, currentPrimitive_id, radius, slices, stacks);
 			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
@@ -770,11 +766,10 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		{
 			var primitive_type = currentPrimitive.children[0];
 			this.primitives[currentPrimitive_id] = new Prim_Thorus(currentPrimitive_id);
-			var inner = this.reader.getFloat(primitive_type, 'inner');
-			var outer = this.reader.getFloat(primitive_type, 'outer');
-			var slices = this.reader.getInteger(primitive_type, 'slices');
-			var stacks = this.reader.getInteger(primitive_type, 'stacks');
-			this.primitives[currentPrimitive_id] = new MyThorus(this, currentPrimitive_id, inner, outer, slices, loops);
+			this.primitives[currentPrimitive_id].inner = this.reader.getFloat(primitive_type, 'inner');
+			this.primitives[currentPrimitive_id].outer = this.reader.getFloat(primitive_type, 'outer');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
 			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
@@ -835,12 +830,23 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 	//Parse the transformations
 
 		var transformationref = this.reader.getString(currentComponentTransformation.children[0], 'id');
-		this.components[currentComponent_id].transformation_id = transformationref;
 		//If there's no reference to a transformation
 		if(transformationref == null)
 		{
-			this.components[currentComponent_id].transformation_matrix = readTransformations(currentComponentTransformation);
+			//If there is no transformation
+			if(currentComponentTransformation.children.length == 0)
+			{
+				this.pushMatrix();
+				this.loadIdentity();
+				this.components[currentComponent_id].transformation_matrix = getMatrix();
+				this.popMatrix();
+			}
+
+			//If there are transformations
+			this.components[currentComponent_id].transformation_matrix = this.readTransformations(currentComponentTransformation);
 		}
+		//If reference to transformation was found
+		this.components[currentComponent_id].transformation_id = transformationref;
 		
 
 	//Parse the material
@@ -928,7 +934,7 @@ MySceneGraph.prototype.idVerification = function(component)
 MySceneGraph.prototype.transformationIdVerification = function(component)
 {
 	var existingTranformation = this.transformations[component.transformation_id];
-	if(existingTranformation == null)
+	if(existingTranformation == null && component.transformation_matrix.length == 0)
 		return "Transformation ID " + component.transformation_id + " non existent ";
 }
 
@@ -1004,4 +1010,77 @@ MySceneGraph.prototype.display = function()
 	// Update all lights used
 	this.updateLights();
 	
+}
+
+MySceneGraph.prototype.readTransformations = function(componentTransformations)
+{
+	this.scene.pushMatrix(); //To preserve previous matrixes
+
+	var transformationLength = componentTransformations.length;
+	
+	for(var j = 0; j < transformationLength; j++)
+	{
+		var transformationType = componentTransformations.chidren[j].tagName;
+		var matrix = [];
+						
+		if(transformationType == "translate")
+			{
+				var x = this.reader.getFloat(componentTransformations.chidren[j], 'x');
+				var y = this.reader.getFloat(componentTransformations.chidren[j], 'y');
+				var z = this.reader.getFloat(componentTransformations.chidren[j], 'z');
+				this.scene.translate(x, y, z);
+			}
+			else if(transformationType == "scale")
+			{
+				var x = this.reader.getFloat(componentTransformations.chidren[j], 'x');
+				var y = this.reader.getFloat(componentTransformations.chidren[j], 'y');
+				var z = this.reader.getFloat(componentTransformations.chidren[j], 'z');
+				this.scene.scale(x, y, z);
+			}
+			else if(transformationType == "rotate")
+			{
+				var axis = this.reader.getString(componentTransformations.chidren[j], 'axis');
+				var angle = this.reader.getFloat(componentTransformations.chidren[j], 'angle');
+				if(axis == 'x')
+				{
+					this.scene.rotate(rtoa(angle), 1, 0, 0);
+				}
+				else if(axis == 'y')
+				{
+					this.scene.rotate(rtoa(angle), 0, 1, 0);
+				}
+				else if(axis == 'z')
+				{
+					this.scene.rotate(rtoa(angle), 0,0, 1);
+				}
+				else
+				{
+					return "Error: invalid axis";
+				}
+			}
+			else
+			{
+				return "Error: invalid transformation";
+			}
+			
+	}
+		
+		//Puts the transformation matrix in the list
+		return this.scene.getMatrix();
+		
+		console.log(this.transformations[currentTransformation_id].toString());
+		
+		this.scene.popMatrix();
+}
+
+MySceneGraph.prototype.findParentTexture = function(component)
+{
+	var texture;
+	var actualComponent = component;
+	do
+	{
+		texture = this.textures[actualComponent.texture_id];
+		actualComponent = actualComponent
+
+	}while(texture == "inherit");
 }
