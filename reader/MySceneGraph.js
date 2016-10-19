@@ -761,15 +761,15 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		}
 		
 		console.log("primitives[" + i + "]: no sphere tag found");
-		primitive_param = currentPrimitive.getElementsByTagName('thorus');
+		primitive_param = currentPrimitive.getElementsByTagName('torus');
 		if(primitive_param.length > 0)
 		{
 			var primitive_type = currentPrimitive.children[0];
-			this.primitives[currentPrimitive_id] = new Prim_Thorus(currentPrimitive_id);
+			this.primitives[currentPrimitive_id] = new Prim_Torus(currentPrimitive_id);
 			this.primitives[currentPrimitive_id].inner = this.reader.getFloat(primitive_type, 'inner');
 			this.primitives[currentPrimitive_id].outer = this.reader.getFloat(primitive_type, 'outer');
 			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
-			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
+			this.primitives[currentPrimitive_id].loops = this.reader.getInteger(primitive_type, 'loops');
 			console.log(this.primitives[currentPrimitive_id].toString());
 			continue;
 		}
@@ -828,26 +828,27 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		this.components[currentComponent_id] = new Component(currentComponent_id);
 		
 	//Parse the transformations
-
-		var transformationref = this.reader.getString(currentComponentTransformation.children[0], 'id');
+		var transformationref = currentComponentTransformation.getElementsByTagName("transformationref");
+		//var transformationref = this.reader.getString(currentComponentTransformation.children[0], 'id');
 		//If there's no reference to a transformation
-		if(transformationref == null)
+		if(transformationref.length == 0)
 		{
 			//If there is no transformation
 			if(currentComponentTransformation.children.length == 0)
 			{
-				this.pushMatrix();
-				this.loadIdentity();
-				this.components[currentComponent_id].transformation_matrix = getMatrix();
-				this.popMatrix();
+				this.scene.pushMatrix();
+				this.scene.loadIdentity();
+				this.components[currentComponent_id].transformation_matrix = this.scene.getMatrix();
+				this.scene.popMatrix();
 			}
 
 			//If there are transformations
 			this.components[currentComponent_id].transformation_matrix = this.readTransformations(currentComponentTransformation);
 		}
-		//If reference to transformation was found
-		this.components[currentComponent_id].transformation_id = transformationref;
-		
+		else{
+			//If reference to transformation was found
+			this.components[currentComponent_id].transformation_id =  this.reader.getString(transformationref, 'id');
+		}
 
 	//Parse the material
 		var currentComponentMaterialsElements = currentComponentMaterials.getElementsByTagName('material');
@@ -890,13 +891,17 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 				return "Invalid tag in child[" + j + "]"; 
 			}
 		 }
-
-	//Verify id's
-	var existingError = this.idVerification(this.components[currentComponent_id]);
-	if(existingError != null)
-		return existingError;
+	}
+	for (var i=0; i < nComponents; i++)
+	{
+		var currentComponent = components[i];
+		var currentComponent_id = this.reader.getString(currentComponent, 'id');
+		//Verify id's
+		var existingError = this.idVerification(this.components[currentComponent_id]);
+		if(existingError != null)
+			return existingError;
 		
-	console.log(this.components[currentComponent_id]);
+		console.log(this.components[currentComponent_id]);
 	}
 	
 	
@@ -940,22 +945,26 @@ MySceneGraph.prototype.transformationIdVerification = function(component)
 
 MySceneGraph.prototype.materialIdVerification = function(component)
 {
-	for(var i = 0; i < component.material_ids.length; i++)
-	{
-		var existingMaterial = this.materials[component.material_ids[i]];
-		if(existingMaterial == null)
+	if (component.texture_id != "inherit"){
+		for(var i = 0; i < component.material_ids.length; i++)
 		{
-			return "Material ID " + component.material_ids[i] + " non existent ";
+			var existingMaterial = this.materials[component.material_ids[i]];
+			if(existingMaterial == null)
+			{
+				return "Material ID " + component.material_ids[i] + " non existent ";
+			}
 		}
 	}
 }
 
 MySceneGraph.prototype.textureIdVerification = function(component)
 {
-	var existingTexture = this.textures[component.texture_id];
-	if(existingTexture == null)
-	{
-		return "Texture ID " + component.texture_id + " non existent ";
+	if (component.texture_id != "inherit" && component.texture_id != "none"){
+		var existingTexture = this.textures[component.texture_id];
+		if(existingTexture == null)
+		{
+			return "Texture ID " + component.texture_id + " non existent ";
+		}
 	}
 }
 
@@ -963,6 +972,7 @@ MySceneGraph.prototype.childrenIdVerification = function(component)
 {
 	for(var i = 0; i < component.component_refs.length; i++)
 	{
+		var ref = component.component_refs[i];
 		var existentComponent = this.components[component.component_refs[i]];
 		if(existentComponent == null)
 		{
@@ -1084,3 +1094,4 @@ MySceneGraph.prototype.findParentTexture = function(component)
 
 	}while(texture == "inherit");
 }
+

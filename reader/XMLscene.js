@@ -66,9 +66,12 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
+	this.axis = new CGFaxis(this, this.graph.axis_length);
+	this.createIllumination();
+	this.createLights();
 	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
-	this.lights[0].setVisible(true);
-    this.lights[0].enable();
+	/*this.lights[0].setVisible(true);
+    this.lights[0].enable();*/
 };
 
 XMLscene.prototype.display = function () {
@@ -97,12 +100,99 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
 	{
-		this.lights[0].update();
+		//this.createLights();
+		//this.lights[0].update();
 	};	
+	/*
 	this.pushMatrix();
 		this.testAppearance2.apply();
 		this.test.display();
 	this.popMatrix();
+	*/
 
 };
 
+XMLscene.prototype.createIllumination = function (){
+	this.setGlobalAmbientLight(
+		this.graph.illumination.ambient[0],
+		this.graph.illumination.ambient[1],
+		this.graph.illumination.ambient[2],
+		this.graph.illumination.ambient[3]);
+	this.gl.clearColor(
+		this.graph.illumination.background[0],
+		this.graph.illumination.background[1],
+		this.graph.illumination.background[2],
+		this.graph.illumination.background[3]);
+
+	
+}
+
+XMLscene.prototype.createLights = function (){
+	var i = 0;
+	for(key in this.graph.omniLights){
+		this.lights[i].setPosition(
+			this.graph.omniLights[key].location[0], 
+			this.graph.omniLights[key].location[1], 
+			this.graph.omniLights[key].location[2],
+			this.graph.omniLights[key].location[3]);
+    	this.lights[i].setDiffuse(
+    		this.graph.omniLights[key].diffuse[0],
+    		this.graph.omniLights[key].diffuse[1],
+    		this.graph.omniLights[key].diffuse[2],
+    		this.graph.omniLights[key].diffuse[3]);
+    	this.lights[i].setAmbient(
+    		this.graph.omniLights[key].ambient[0],
+    		this.graph.omniLights[key].ambient[1],
+    		this.graph.omniLights[key].ambient[2],
+    		this.graph.omniLights[key].ambient[3]);
+    	this.lights[i].setSpecular(
+    		this.graph.omniLights[key].specular[0],
+    		this.graph.omniLights[key].specular[1],
+    		this.graph.omniLights[key].specular[2],
+    		this.graph.omniLights[key].specular[3]);
+    	this.lights[i].setVisible(true);
+    	if(this.graph.omniLights[key].enabled)
+    		this.lights[i].enable();
+    	this.lights[i].update();
+    	i++;
+	}
+
+	for(key in this.graph.spotLights){
+		this.lights[i].setSpotDirection(
+			this.graph.spotLights[key].target[0] - this.graph.spotLights[key].location[0], 
+			this.graph.spotLights[key].target[1] - this.graph.spotLights[key].location[1], 
+			this.graph.spotLights[key].target[2] - this.graph.spotLights[key].location[2]);
+		this.lights[i].setPosition(
+			this.graph.spotLights[key].location[0], 
+			this.graph.spotLights[key].location[1], 
+			this.graph.spotLights[key].location[2]);
+    	this.lights[i].setDiffuse(
+    		this.graph.spotLights[key].diffuse[0],
+    		this.graph.spotLights[key].diffuse[1],
+    		this.graph.spotLights[key].diffuse[2],
+    		this.graph.spotLights[key].diffuse[3]);
+    	this.lights[i].setAmbient(
+    		this.graph.spotLights[key].ambient[0],
+    		this.graph.spotLights[key].ambient[1],
+    		this.graph.spotLights[key].ambient[2],
+    		this.graph.spotLights[key].ambient[3]);
+    	this.lights[i].setSpecular(
+    		this.graph.spotLights[key].specular[0],
+    		this.graph.spotLights[key].specular[1],
+    		this.graph.spotLights[key].specular[2],
+    		this.graph.spotLights[key].specular[3]);
+    	this.lights[i].setVisible(true);
+    	if(this.graph.spotLights[key].enabled)
+    		this.lights[i].enable();
+    	this.lights[i].update();
+    	i++;
+	}
+
+}
+
+XMLscene.prototype.loadTextures = function (){
+	for(key in this.graph.textures){
+		this.textures[key] = new CGFappearance(this);
+		this.textures[key].loadTexture(this.graph.textures[key].file);
+	}
+}
