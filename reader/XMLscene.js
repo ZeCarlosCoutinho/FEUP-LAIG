@@ -20,18 +20,22 @@ XMLscene.prototype.init = function (application) {
 	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
-	
+	this.textures = [];
+	this.materials = [];
+	this.primitives = [];
+
+	this.defaultAppearance = new CGFappearance(this);
 
 	this.enableTextures(true); //È necessário para texturas
 	this.testAppearance = new CGFappearance(this);
-	this.testAppearance.loadTexture("../reader/primitives/board.png");
+	this.testAppearance.loadTexture("../reader/resources/images/sauroneye.jpg");
 	this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/primitives/carrotsPattern.png");
 	
-	this.test = new MyTorus(this, 1, 2, 10, 10);//*/
+	/*this.test = new MyTorus(this, 1, 2, 10, 10);//*/
 	/*this.test = new MySphere(this, 3, 10, 10);//*/
 	/*this.test = new MyCylinder(this, 2, 2, 1, 3, 6);//*/
-	/*this.test = new MyCylinderWithTops(this, 2, 2, 1.5, 3, 12);//*/
+	this.test = new MyCylinderWithTops(this, 2, 2, 1.5, 3, 12);//*/
 /*	this.test = new MyCircle(this, 4);
 //*/
 /*	this.test = new MyRectangle(this, 	0,0,
@@ -66,9 +70,16 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
+	this.materialIndex = 0;
 	this.axis = new CGFaxis(this, this.graph.axis_length);
 	this.createIllumination();
 	this.createLights();
+	this.loadTextures();
+	this.createMaterials();
+	this.createPrimitives();
+	this.rootObject = this.graph.components[this.graph.root].create(this);
+	this.rootObject.updateMaterial(this.materialIndex, null);
+	this.rootObject.updateTexture( null);
 	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
 	/*this.lights[0].setVisible(true);
     this.lights[0].enable();*/
@@ -100,15 +111,14 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
 	{
-		//this.createLights();
-		//this.lights[0].update();
+		this.rootObject.display();
 	};	
-	/*
+	
 	this.pushMatrix();
-		this.testAppearance2.apply();
-		this.test.display();
+		this.testAppearance.apply();
+		//this.test.display();
 	this.popMatrix();
-	*/
+	
 
 };
 
@@ -194,5 +204,39 @@ XMLscene.prototype.loadTextures = function (){
 	for(key in this.graph.textures){
 		this.textures[key] = new CGFappearance(this);
 		this.textures[key].loadTexture(this.graph.textures[key].file);
+	}
+}
+
+XMLscene.prototype.createMaterials = function (){
+	for(key in this.graph.materials){
+		this.materials[key] = new CGFappearance(this);
+		this.materials[key].setAmbient(
+				this.graph.materials[key].ambient[0],
+			    this.graph.materials[key].ambient[1],
+			    this.graph.materials[key].ambient[2],
+			    this.graph.materials[key].ambient[3]);
+		this.materials[key].setEmission(
+				this.graph.materials[key].emission[0],
+			    this.graph.materials[key].emission[1],
+			    this.graph.materials[key].emission[2],
+			    this.graph.materials[key].emission[3]);
+		this.materials[key].setDiffuse(
+				this.graph.materials[key].diffuse[0],
+			    this.graph.materials[key].diffuse[1],
+			    this.graph.materials[key].diffuse[2],
+			    this.graph.materials[key].diffuse[3]);
+		this.materials[key].setSpecular(
+				this.graph.materials[key].specular[0],
+			    this.graph.materials[key].specular[1],
+			    this.graph.materials[key].specular[2],
+			    this.graph.materials[key].specular[3]);
+		this.materials[key].setShininess = this.graph.materials[key].shininess;
+		this.materials[key].setTextureWrap('REPEAT', 'REPEAT');
+	}
+}
+
+XMLscene.prototype.createPrimitives = function (){
+	for(key in this.graph.primitives){
+		this.primitives[key] =this.graph.primitives[key] .create(this);
 	}
 }

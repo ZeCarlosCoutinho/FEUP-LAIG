@@ -2,11 +2,9 @@
  * MyRectangle
  * @constructor
  */
- function MyRectangle(scene, primitive_id, x1, y1, x2, y2) {
+ function MyRectangle(scene, x1, y1, x2, y2) {
  	CGFobject.call(this,scene);
 
-	this.id = primitive_id;
-	this.loaded = false;
 	
  	this.x1 = x1;
  	this.y1 = y1;
@@ -16,10 +14,10 @@
  	this.initBuffers();
  };
 
- MyRectangle.prototype = Object.create(CGFobject.prototype);
- MyRectangle.prototype.constructor = MyRectangle;
+MyRectangle.prototype = Object.create(CGFobject.prototype);
+MyRectangle.prototype.constructor = MyRectangle;
 
- MyRectangle.prototype.initBuffers = function() {
+MyRectangle.prototype.initBuffers = function() {
  	this.vertices = [
  	  this.x1, this.y1, 0,
  	  this.x1, this.y2, 0,
@@ -48,12 +46,4 @@
 
     this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
- };
- 
- MyRectangle.prototype.isLoaded=function(){
-	return this.loaded;
-}
-
-MyRectangle.prototype.toString=function(){
-	return "Primitive Rectangle Item " + this.id + "    Loaded? " + this.loaded + "\n(X1, Y1): (" + this.x1 + "," + this.y1 + ")\n(X2, Y2): (" + this.x2 + "," + this.y2 + ") \n";
-}
+};

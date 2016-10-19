@@ -1,8 +1,8 @@
 /**
- * MyPrism
+ * MyCylinderWithTops
  * @constructor
  */
- function MyCylinderWithTops(scene, height, bRadius, tRadius, stacks, slices) {
+function MyCylinderWithTops(scene, height, bRadius, tRadius, stacks, slices) {
  	CGFobject.call(this,scene);
 	
 	this.height = height;
@@ -11,9 +11,6 @@
 
 	this.cylinder = new MyCylinder(this.scene, height, bRadius, tRadius, stacks, slices);
 	this.top = new MyCircle(this.scene, slices);
-
- 	this.top.initBuffers();
- 	this.cylinder.initBuffers();
  };
 
 MyCylinderWithTops.prototype = Object.create(CGFobject.prototype);

@@ -28,3 +28,6 @@ Prim_Triangle.prototype.toString=function(){
 	+ "\n";
 }
 
+Prim_Triangle.prototype.create = function(scene) {
+	return new MySphere(scene, this.x1, this.y1, this.z1, this.x2, this.y2, this.z2, this.x3, this.y3, this.z3);
+}

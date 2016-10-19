@@ -74,10 +74,11 @@ MySceneGraph.prototype.onXMLReady=function()
 		return;
 	}	
 
-	this.loadedOk=true;
+	//this.loadedOk=true;
 
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
 	this.scene.onGraphLoaded();
+	this.loadedOk=true;
 };
 
 

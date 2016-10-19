@@ -11,6 +11,8 @@ function Component(id) {
 	
 	this.component_refs = [];
 	this.primitive_refs = [];
+
+	this.componentObject = null;
 }
 
 Component.prototype.isLoaded=function(){
@@ -27,3 +29,14 @@ Component.prototype.toString=function(){
 	+ "PrimitiveRefs: " + this.primitive_refs;
 }
 
+Component.prototype.create = function(scene) {
+	this.componentObject = new MyComponent(scene, this.transformation_matrix, this.material_ids, this.texture_id, this.component_refs, this.primitive_refs);
+	return this.componentObject;
+};
+
+getComponent = function(scene, key) {
+	var component = scene.graph.components[key];
+	if (component.componentObject == null)
+ 		return component.create(scene);
+ 	return component.componentObject;
+};

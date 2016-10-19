@@ -2,11 +2,8 @@
  * MySphere
  * @constructor
  */
- function MySphere(scene, primitive_id, radius, slices, stacks) {
+function MySphere(scene, radius, slices, stacks) {
  	CGFobject.call(this,scene);
-	
-	this.id = primitive_id;
-	this.loaded = false;
 	
 	this.radius = radius;
 
@@ -17,10 +14,10 @@
 	this.beta = Math.PI/stacks;
 
  	this.initBuffers();
- };
+};
 
- MySphere.prototype = Object.create(CGFobject.prototype);
- MySphere.prototype.constructor = MySphere;
+MySphere.prototype = Object.create(CGFobject.prototype);
+MySphere.prototype.constructor = MySphere;
 
 MySphere.prototype.initBuffers = function() {
  	this.vertices = [];
@@ -38,8 +35,10 @@ MySphere.prototype.initBuffers = function() {
 				Math.cos(this.beta * i));
 
 			//pode ser preciso mudar
- 			this.texCoords.push(0.5 + Math.cos(this.alpha * i)*Math.cos(this.beta*j)/2, 0.5 + Math.sin(this.alpha * i)*Math.cos(this.beta*j)/2);
- 		}
+ 			this.texCoords.push(
+				1 - (j / this.slices),
+                i / this.stacks);
+         }
 	}
 
  	this.indices = [];
@@ -62,15 +61,5 @@ MySphere.prototype.initBuffers = function() {
 	console.log(this.normals.length);
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
- };
+};
 
- MySphere.prototype.isLoaded=function(){
-	return this.loaded;
-}
-
-MySphere.prototype.toString=function(){
-	return "Primitive Sphere Item " + this.id + "    Loaded? " + this.loaded 
-	+ "\n Radius :" + this.radius
-	+ "\n Slices: " + this.slices + " Stacks: " + this.stacks
-	+ "\n";
-}

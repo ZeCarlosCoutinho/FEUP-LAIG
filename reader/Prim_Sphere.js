@@ -19,3 +19,6 @@ Prim_Sphere.prototype.toString=function(){
 	+ "\n";
 }
 
+Prim_Sphere.prototype.create = function(scene) {
+	return new MySphere(scene, this.radius, this.slices, this.stacks);
+}

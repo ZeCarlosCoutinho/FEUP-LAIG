@@ -1,13 +1,10 @@
 /**
- * MyPrism
+ * MyTorus
  * @constructor
  */
-function MyTorus(scene, primitive_id, inner, outer, slices, loops) {
+function MyTorus(scene, inner, outer, slices, loops) {
  	CGFobject.call(this, scene);
-	
-	this.id = primitive_id;
-	this.loaded = false;
-	
+		
 	this.inner = inner;
 	this.outer = outer;
 	this.slices = slices;
@@ -20,10 +17,10 @@ function MyTorus(scene, primitive_id, inner, outer, slices, loops) {
 	this.beta = 2 * Math.PI / loops;
 	
  	this.initBuffers();
- };
+};
 
- MyTorus.prototype = Object.create(CGFobject.prototype);
- MyTorus.prototype.constructor = MyTorus;
+MyTorus.prototype = Object.create(CGFobject.prototype);
+MyTorus.prototype.constructor = MyTorus;
 
 MyTorus.prototype.initBuffers = function() {
 	this.vertices = [];
@@ -61,15 +58,5 @@ MyTorus.prototype.initBuffers = function() {
 
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
- };
+};
  
- MyTorus.prototype.isLoaded=function(){
-	return this.loaded;
-}
-
-MyTorus.prototype.toString=function(){
-	return "Primitive Thorus Item " + this.id + "    Loaded? " + this.loaded 
-	+ "\n Inner :" + this.inner + " Outer :" + this.outer
-	+ "\n Slices: " + this.slices + " Loops: " + this.loops
-	+ "\n";
-}

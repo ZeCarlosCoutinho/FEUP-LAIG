@@ -17,3 +17,6 @@ Prim_Rectangle.prototype.toString=function(){
 	return "Primitive Rectangle Item " + this.id + "    Loaded? " + this.loaded + "\n(X1, Y1): (" + this.x1 + "," + this.y1 + ")\n(X2, Y2): (" + this.x2 + "," + this.y2 + ") \n";
 }
 
+Prim_Rectangle.prototype.create = function(scene){
+	return new MyRectangle(scene, this.x1, this.y1, this.x2, this.y2);
+}

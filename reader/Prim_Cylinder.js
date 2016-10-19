@@ -21,3 +21,7 @@ Prim_Cylinder.prototype.toString=function(){
 	+ "\n";
 }
 
+Prim_Cylinder.prototype.create=function(scene){
+	return new MyCylinderWithTops(scene, this.height, this.base, this.top, this.stacks, this.slices);
+}
+

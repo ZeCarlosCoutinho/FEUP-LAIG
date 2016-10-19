@@ -20,3 +20,8 @@ Prim_Torus.prototype.toString=function(){
 	+ "\n";
 }
 
+Prim_Torus.prototype.create = function(scene) {
+	return new MyTorus(scene, this.inner, this.outer, this.slices, this.loops);
+}
+
+
