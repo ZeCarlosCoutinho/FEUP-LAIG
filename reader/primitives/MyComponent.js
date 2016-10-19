@@ -12,7 +12,7 @@ function MyComponent(scene, transformation_matrix, material_ids, texture_id, com
 		var key =  material_ids[i];
 		if (key == "inherit")
 			this.materials[i] = "inherit";
-		else if (key = "none")
+		else if (key == "none")
 			this.materials[i] = this.scene.defaultAppearance;
 		else
 			this.materials[i] = this.scene.materials[key];
@@ -20,9 +20,9 @@ function MyComponent(scene, transformation_matrix, material_ids, texture_id, com
 	this.currentMaterial = this.materials[0];
 
 	this.texture;
-	if (texture_id = "inherit")
+	if (texture_id == "inherit")
 		this.texture = "inherit";
-	else if (texture_id = "none")
+	else if (texture_id == "none")
 		this.texture = null;
 	else
 		this.texture = this.scene.textures[texture_id];
