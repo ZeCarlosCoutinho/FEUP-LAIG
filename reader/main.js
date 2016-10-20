@@ -22,19 +22,22 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyView.js', '
 	'primitives/MyCylinderWithTops.js',
 	'primitives/MyTorus.js',
 	'primitives/MyComponent.js',
+	'MyInterface.js',
 	
 main=function()
 {
 	// Standard application, scene and interface setup
     var app = new CGFapplication(document.body);
     var myScene = new XMLscene();
-    var myInterface = new CGFinterface();
+    //var myInterface = new CGFinterface();
+    var myInterface = new MyInterface();
 
     app.init();
 
     app.setScene(myScene);
     app.setInterface(myInterface);
-
+	myScene.setInterface(myInterface);
+	
     myInterface.setActiveCamera(myScene.camera);
 
 	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 

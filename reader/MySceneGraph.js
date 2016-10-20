@@ -561,8 +561,9 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 		return "either zero or more than one 'transformations' element found.";
 	}
 	var transformations = elems[0].getElementsByTagName('transformation');
+	
 	this.transformations = [];
-	console.log(transformations);
+
 	var nTransformations = transformations.length;
 	console.log("nTransformations = " + nTransformations);
 	if(nTransformations == 0)

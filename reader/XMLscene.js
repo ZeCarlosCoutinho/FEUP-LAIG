@@ -20,6 +20,8 @@ XMLscene.prototype.init = function (application) {
 	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+	this.interface = null;
+	this.lightsStatus = [];
 	this.textures = [];
 	this.materials = [];
 	this.primitives = [];
@@ -35,7 +37,7 @@ XMLscene.prototype.init = function (application) {
 	/*this.test = new MyTorus(this, 1, 2, 10, 10);//*/
 	/*this.test = new MySphere(this, 3, 10, 10);//*/
 	/*this.test = new MyCylinder(this, 2, 2, 1, 3, 6);//*/
-	this.test = new MyCylinderWithTops(this, 2, 2, 1.5, 3, 12);//*/
+	/*this.test = new MyCylinderWithTops(this, 2, 2, 1, 3, 12);//*/
 /*	this.test = new MyCircle(this, 4);
 //*/
 /*	this.test = new MyRectangle(this, 	0,0,
@@ -46,6 +48,20 @@ XMLscene.prototype.init = function (application) {
     									2,0,0);//*/
 
 	this.axis=new CGFaxis(this);
+};
+
+XMLscene.prototype.setInterface= function (interface) {
+	this.interface = interface;
+};
+
+XMLscene.prototype.updateLights = function () {
+	for(var i = 0; i < this.lights.length; i++){
+		if (this.lightsStatus[i])
+			this.lights[i].enable();
+		else
+			this.lights[i].disable();
+		this.lights[i].update();
+	}
 };
 
 XMLscene.prototype.initLights = function () {
@@ -111,6 +127,7 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
 	{
+		this.updateLights();
 		this.rootObject.display();
 	};	
 	
@@ -161,9 +178,9 @@ XMLscene.prototype.createLights = function (){
     		this.graph.omniLights[key].specular[2],
     		this.graph.omniLights[key].specular[3]);
     	this.lights[i].setVisible(true);
-    	if(this.graph.omniLights[key].enabled)
-    		this.lights[i].enable();
-    	this.lights[i].update();
+
+    	this.lightsStatus[i] = this.graph.omniLights[key].enabled;
+    	this.interface.addOmniLight(key, i);
     	i++;
 	}
 
@@ -192,9 +209,9 @@ XMLscene.prototype.createLights = function (){
     		this.graph.spotLights[key].specular[2],
     		this.graph.spotLights[key].specular[3]);
     	this.lights[i].setVisible(true);
-    	if(this.graph.spotLights[key].enabled)
-    		this.lights[i].enable();
-    	this.lights[i].update();
+
+    	this.lightsStatus[i] = this.graph.spotLights[key].enabled;
+    	this.interface.addSpotLight(key, i);
     	i++;
 	}
 
