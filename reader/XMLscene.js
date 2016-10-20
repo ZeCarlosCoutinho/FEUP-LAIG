@@ -21,10 +21,14 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.interface = null;
+	this.views = [];
+	this.viewIndex = 0;
 	this.lightsStatus = [];
 	this.textures = [];
 	this.materials = [];
 	this.primitives = [];
+	this.materialIndex = 0;
+	this.rootObject == null;
 
 	this.defaultAppearance = new CGFappearance(this);
 
@@ -86,9 +90,11 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
-	this.materialIndex = 0;
 	this.axis = new CGFaxis(this, this.graph.axis_length);
 	this.createIllumination();
+	this.createViews();
+	this.camera = this.views[this.viewIndex % this.views.length];
+	this.interface.setActiveCamera(this.views[this.viewIndex % this.views.length]);
 	this.createLights();
 	this.loadTextures();
 	this.createMaterials();
@@ -151,6 +157,17 @@ XMLscene.prototype.createIllumination = function (){
 		this.graph.illumination.background[2],
 		this.graph.illumination.background[3]);
 
+	
+}
+
+XMLscene.prototype.createViews = function (){
+	var i = 0;
+	for(key in this.graph.viewsList){
+		if (this.graph.defaultView == key)
+			this.viewIndex = i;
+		this.views[i] = this.graph.viewsList[key].create();
+		i++;
+	}
 	
 }
 

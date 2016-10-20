@@ -66,60 +66,18 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
-		case (65):	// A
-			this.scene.drone.angularSpeed = this.scene.speed;
-			break;
-		case (97):	// a
-			this.scene.drone.angularSpeed = this.scene.speed;
-			break;
-
-		case (68):	// D
-			this.scene.drone.angularSpeed = -this.scene.speed;
-			break;
-		case (100):	// d
-			this.scene.drone.angularSpeed = -this.scene.speed;
-			break;
-
-		case (87):	// W
-			this.scene.drone.frontalSpeed = this.scene.speed;
-			break;
-		case (119):	// w
-			this.scene.drone.frontalSpeed = this.scene.speed;
-			break;
-		
-		case (83):	// S
-			this.scene.drone.frontalSpeed = -this.scene.speed;
-			break;
-		case (115):	// s
-			this.scene.drone.frontalSpeed = -this.scene.speed;
-			break;
-		
-		case (73):	// I
-			this.scene.drone.verticalSpeed = this.scene.speed;
-			break;
-		case (105):	// I
-			this.scene.drone.verticalSpeed = this.scene.speed;
-			break;
-
-		case (74):	// I
-			this.scene.drone.verticalSpeed = -this.scene.speed;
-			break;
-		case (106):	// I
-			this.scene.drone.verticalSpeed = -this.scene.speed;
-			break;
-
-		case (80):	// P
-			this.scene.drone.retractHook();
-			break;
-		case (112):	// p
-			this.scene.drone.retractHook();
-			break;
-
-		case (76):	// L
-			this.scene.drone.extendHook();
-			break;
-		case (108):	// l
-			this.scene.drone.extendHook();
+		case (86):
+        case (118): // V/v
+        	this.scene.viewIndex++;
+     		this.scene.camera = this.scene.views[this.scene.viewIndex % this.scene.views.length];
+            this.setActiveCamera(this.scene.views[this.scene.viewIndex % this.scene.views.length]);
+            break;
+		case (77):
+        case (109):	// M/m
+			if (this.scene.rootObject != null){
+				this.scene.materialIndex++;
+				this.scene.rootObject.updateMaterial(this.scene.materialIndex, null);
+			}
 			break;
 	};
 };
