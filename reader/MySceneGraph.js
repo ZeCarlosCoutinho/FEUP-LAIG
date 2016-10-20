@@ -836,15 +836,10 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		{
 			//If there is no transformation
 			if(currentComponentTransformation.children.length == 0)
-			{
-				this.scene.pushMatrix();
-				this.scene.loadIdentity();
-				this.components[currentComponent_id].transformation_matrix = this.scene.getMatrix();
-				this.scene.popMatrix();
-			}
-
+				this.components[currentComponent_id].transformation_matrix = mat4.create();
 			//If there are transformations
-			this.components[currentComponent_id].transformation_matrix = this.readTransformations(currentComponentTransformation);
+			else
+				this.components[currentComponent_id].transformation_matrix = this.readTransformations(currentComponentTransformation);
 		}
 		else{
 			//If reference to transformation was found
@@ -1025,63 +1020,54 @@ MySceneGraph.prototype.display = function()
 
 MySceneGraph.prototype.readTransformations = function(componentTransformations)
 {
-	this.scene.pushMatrix(); //To preserve previous matrixes
+	var matrix = mat4.create();
 
-	var transformationLength = componentTransformations.length;
-	
-	for(var j = 0; j < transformationLength; j++)
+	var transformations = componentTransformations.getElementsByTagName("*");
+		
+	for(var j = 0; j < transformations.length; j++)
 	{
-		var transformationType = componentTransformations.chidren[j].tagName;
-		var matrix = [];
-						
-		if(transformationType == "translate")
-			{
-				var x = this.reader.getFloat(componentTransformations.chidren[j], 'x');
-				var y = this.reader.getFloat(componentTransformations.chidren[j], 'y');
-				var z = this.reader.getFloat(componentTransformations.chidren[j], 'z');
-				this.scene.translate(x, y, z);
-			}
-			else if(transformationType == "scale")
-			{
-				var x = this.reader.getFloat(componentTransformations.chidren[j], 'x');
-				var y = this.reader.getFloat(componentTransformations.chidren[j], 'y');
-				var z = this.reader.getFloat(componentTransformations.chidren[j], 'z');
-				this.scene.scale(x, y, z);
-			}
-			else if(transformationType == "rotate")
-			{
-				var axis = this.reader.getString(componentTransformations.chidren[j], 'axis');
-				var angle = this.reader.getFloat(componentTransformations.chidren[j], 'angle');
-				if(axis == 'x')
-				{
-					this.scene.rotate(rtoa(angle), 1, 0, 0);
+		var transformation = transformations[j];
+		var transformationType = transformation.tagName;
+		
+		switch (transformationType)	{		
+		case "translate":
+				var x = this.reader.getFloat(transformation, 'x');
+				var y = this.reader.getFloat(transformation, 'y');
+				var z = this.reader.getFloat(transformation, 'z');
+				mat4.translate(matrix, matrix, [x, y, z]);
+				break;
+
+		case "scale":
+				var x = this.reader.getFloat(transformation, 'x');
+				var y = this.reader.getFloat(transformation, 'y');
+				var z = this.reader.getFloat(transformation, 'z');
+				mat4.scale(matrix, matrix, [x, y, z]);
+				break;
+		case "rotate":
+				var axis = this.reader.getString(transformation, 'axis');
+				var angle = rtoa(this.reader.getFloat(transformation, 'angle'));
+				switch (axis){
+					case "x":
+						mat4.rotate(matrix,matrix,angle,[1,0,0]);
+						break;
+					case "y":
+						mat4.rotate(matrix,matrix,angle,[0,1,0]);
+						break;
+					case "z":
+						mat4.rotate(matrix,matrix,angle,[0,0,1]);
+						break;
+					default:
+						return "Error: invalid axis";
 				}
-				else if(axis == 'y')
-				{
-					this.scene.rotate(rtoa(angle), 0, 1, 0);
-				}
-				else if(axis == 'z')
-				{
-					this.scene.rotate(rtoa(angle), 0,0, 1);
-				}
-				else
-				{
-					return "Error: invalid axis";
-				}
-			}
-			else
-			{
+				break;
+			default:
 				return "Error: invalid transformation";
-			}
-			
+				break;
+		}
 	}
 		
-		//Puts the transformation matrix in the list
-		return this.scene.getMatrix();
-		
-		console.log(this.transformations[currentTransformation_id].toString());
-		
-		this.scene.popMatrix();
+	//Puts the transformation matrix in the list
+	return matrix;
 }
 
 MySceneGraph.prototype.findParentTexture = function(component)
