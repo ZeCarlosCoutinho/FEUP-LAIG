@@ -947,7 +947,7 @@ MySceneGraph.prototype.materialIdVerification = function(component)
 			var existingMaterial = this.materials[component.material_ids[i]];
 			if(existingMaterial == null)
 			{
-				//return "Material ID " + component.material_ids[i] + " non existent ";
+				return "Material ID " + component.material_ids[i] + " non existent ";
 			}
 		}
 	}

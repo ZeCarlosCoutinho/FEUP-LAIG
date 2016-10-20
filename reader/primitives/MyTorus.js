@@ -2,13 +2,16 @@
  * MyTorus
  * @constructor
  */
-function MyTorus(scene, inner, majorRadius, slices, loops) {
+function MyTorus(scene, inner, outer, slices, loops) {
  	CGFobject.call(this, scene);
 		
-	this.majorRadius = majorRadius;
-	this.minorRadius = inner;
+	this.inner = inner;
+	this.outer = outer;
 	this.slices = slices;
 	this.loops = loops;
+
+	this.baseRadius = (inner + outer) / 2;
+	this.deltaRadius = (outer - inner) / 2;
 	
 	this.alpha = 2 * Math.PI / slices;
 	this.beta = 2 * Math.PI / loops;
@@ -26,9 +29,9 @@ MyTorus.prototype.initBuffers = function() {
  	for (var i = 0; i <= this.loops; i++) {
  		for (var j = 0; j <= this.slices; j++) {
  			this.vertices.push(
- 				Math.cos(this.beta * i) * (this.majorRadius + Math.cos(this.alpha * j) * this.minorRadius),
- 				Math.sin(this.beta * i) * (this.majorRadius + Math.cos(this.alpha * j) * this.minorRadius),
- 				Math.sin(this.alpha * j) * this.minorRadius);
+ 				Math.cos(this.beta * i) * (this.baseRadius + Math.cos(this.alpha * j) * this.deltaRadius),
+ 				Math.sin(this.beta * i) * (this.baseRadius + Math.cos(this.alpha * j) * this.deltaRadius),
+ 				Math.sin(this.alpha * j) * this.deltaRadius);
 			this.normals.push(
 				Math.cos(this.beta * i) * Math.cos(this.alpha * j),
 				Math.sin(this.beta * i) * Math.cos(this.alpha * j),
