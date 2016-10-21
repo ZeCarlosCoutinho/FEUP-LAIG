@@ -100,8 +100,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.createMaterials();
 	this.createPrimitives();
 	this.rootObject = this.graph.components[this.graph.root].create(this);
-	this.rootObject.updateMaterial(this.materialIndex, null);
 	this.rootObject.updateTexture( null);
+	this.rootObject.updateMaterial(this.materialIndex, null);
+
 	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
 	/*this.lights[0].setVisible(true);
     this.lights[0].enable();*/
@@ -236,8 +237,8 @@ XMLscene.prototype.createLights = function (){
 
 XMLscene.prototype.loadTextures = function (){
 	for(key in this.graph.textures){
-		this.textures[key] = new CGFappearance(this);
-		this.textures[key].loadTexture(this.graph.textures[key].file);
+		this.textures[key] = new CGFtexture(this, this.graph.textures[key].file);
+		//this.textures[key].loadTexture(this.graph.textures[key].file);
 	}
 }
 

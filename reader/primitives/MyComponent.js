@@ -45,6 +45,7 @@ MyComponent.prototype.updateMaterial = function (currentMaterialIndex, fatherMat
 	this.currentMaterial = this.materials[currentMaterialIndex % this.materials.length];
 	if (this.currentMaterial == "inherit")
 		this.currentMaterial = fatherMaterial;
+	
 	for(var component of this.components)
 		if(component instanceof MyComponent)
 			component.updateMaterial(currentMaterialIndex, this.currentMaterial)
@@ -59,13 +60,14 @@ MyComponent.prototype.updateTexture = function (fatherTexture){
 }
 
 MyComponent.prototype.display = function () {
-	this.currentMaterial.apply();
 	if (this.texture != null)
-		this.texture.apply();
+		this.currentMaterial.setTexture(this.texture);
+	this.currentMaterial.apply();
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
 		for(var component of this.components){
 			component.display();
 		}
 	this.scene.popMatrix();
+	this.currentMaterial.setTexture(null);
  };
