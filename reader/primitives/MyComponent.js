@@ -61,11 +61,13 @@ MyComponent.prototype.updateTexture = function (fatherTexture){
 
 MyComponent.prototype.display = function () {
 	if (this.texture != null)
-		this.currentMaterial.setTexture(this.texture);
+		this.currentMaterial.setTexture(this.texture.text);
 	this.currentMaterial.apply();
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
 		for(var component of this.components){
+			if (this.texture != null && component.setTextureCoords != null)
+				component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
 			component.display();
 		}
 	this.scene.popMatrix();

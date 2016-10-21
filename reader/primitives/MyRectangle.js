@@ -20,14 +20,14 @@ MyRectangle.prototype.constructor = MyRectangle;
 MyRectangle.prototype.initBuffers = function() {
  	this.vertices = [
  	  this.x1, this.y1, 0,
- 	  this.x1, this.y2, 0,
-      this.x2, this.y1, 0,
- 	  this.x2, this.y2, 0
+ 	  this.x2, this.y1, 0,
+ 	  this.x2, this.y2, 0,
+ 	  this.x1, this.y2, 0
  	];
 
  	this.indices = [
- 	  0, 2, 1, 
- 	  1, 2, 3
+ 	  0, 1, 2, 
+ 	  2, 3, 0
  	];
 
     this.normals = [
@@ -36,14 +36,33 @@ MyRectangle.prototype.initBuffers = function() {
       0,0,1,
       0,0,1
     ];
-
-    this.texCoords = [
+/*
+    this.baseTexCoords = [
       0, 1,
       0, 0,
       1, 1,
       1, 0
+    ];*/
+
+	this.baseTexCoords = [
+		1 - (this.y2 - this.y1), 0,
+		1, 0,
+      	1, this.x2 - this.x1,
+      	1 - (this.y2 - this.y1), this.x2 - this.x1,
+      	
+ 
     ];
+    this.setTextureCoords(1,1);
 
     this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
 };
+
+MyRectangle.prototype.setTextureCoords = function(lengthS, lengthT) {
+  	this.texCoords = [
+   		this.baseTexCoords[0] / lengthS, this.baseTexCoords[1] / lengthT,
+    	this.baseTexCoords[2] / lengthS, this.baseTexCoords[3] / lengthT,
+    	this.baseTexCoords[4] / lengthS, this.baseTexCoords[5] / lengthT,
+    	this.baseTexCoords[6] / lengthS, this.baseTexCoords[7] / lengthT
+  	];  
+}

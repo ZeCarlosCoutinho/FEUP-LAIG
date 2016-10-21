@@ -46,7 +46,7 @@ XMLscene.prototype.init = function (application) {
 //*/
 /*	this.test = new MyRectangle(this, 	0,0,
     									1,1);//*/
-/*
+
     this.test = new MyTriangle(this, 	1,1,0,
     									0,0,0,
     									2,0,0);//*/
@@ -237,8 +237,12 @@ XMLscene.prototype.createLights = function (){
 
 XMLscene.prototype.loadTextures = function (){
 	for(key in this.graph.textures){
-		this.textures[key] = new CGFtexture(this, this.graph.textures[key].file);
-		//this.textures[key].loadTexture(this.graph.textures[key].file);
+		this.textures[key] = {
+			text: new CGFtexture(this, this.graph.textures[key].file),
+			lengthS: this.graph.textures[key].length_s,
+			lengthT: this.graph.textures[key].length_t
+		};
+		
 	}
 }
 

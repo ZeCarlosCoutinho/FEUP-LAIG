@@ -64,17 +64,30 @@ MyTriangle.prototype.initBuffers = function() {
       (this.z3 - this.z2)*(this.z3 - this.z2)
     );
 
-    this.cosA = (- (this.a * this.a) + (this.b * this.b) + (this.c * this.c)) / (2 * this.b * this.c)
-    this.cosB = ((this.a * this.a) - (this.b * this.b) + (this.c * this.c)) / (2 * this.a * this.c)
-    this.cosC = ((this.a * this.a) + (this.b * this.b) - (this.c * this.c)) / (2 * this.a * this.b)
+    this.cosAlpha = (- (this.a * this.a) + (this.b * this.b) + (this.c * this.c)) / (2 * this.b * this.c)
+    this.cosBeta = ((this.a * this.a) - (this.b * this.b) + (this.c * this.c)) / (2 * this.a * this.c)
+    this.cosEpsilon = ((this.a * this.a) + (this.b * this.b) - (this.c * this.c)) / (2 * this.a * this.b)
 
-    this.texCoords = [
-      this.cosA, 0,
+    this.sinBeta = Math.sin(Math.acos(this.cosBeta));
+
+    this.baseTexCoords = [
+      this.c - this.a * this.cosBeta, 1 - this.a * this.sinBeta,
       0, 1,
-      1, 1
+      this.c, 1
     ];
+
+    this.setTextureCoords(1,1);
 
     this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
 };
+
+MyTriangle.prototype.setTextureCoords = function(lengthS, lengthT) {
+   this.texCoords = [
+    this.baseTexCoords[0] / lengthS, this.baseTexCoords[1] / lengthT,
+    this.baseTexCoords[2] / lengthS, this.baseTexCoords[3] / lengthT,
+    this.baseTexCoords[4] / lengthS, this.baseTexCoords[5] / lengthT
+  ];
+    
+}
  
