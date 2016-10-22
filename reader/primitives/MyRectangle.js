@@ -25,10 +25,18 @@ MyRectangle.prototype.initBuffers = function() {
  	  this.x1, this.y2, 0
  	];
 
- 	this.indices = [
- 	  0, 1, 2, 
- 	  2, 3, 0
- 	];
+	if ((this.x2 > this.x1 && this.y2 > this.y1) || (this.x2 < this.x1 && this.y2 < this.y1))
+		this.indices = [
+ 	  		0, 1, 2, 
+ 	 		2, 3, 0
+ 		];
+ 	else	
+		this.indices = [
+ 	  		0, 2, 1, 
+ 	 		2, 0, 3
+ 		];
+
+
 
     this.normals = [
       0,0,1,
@@ -44,13 +52,11 @@ MyRectangle.prototype.initBuffers = function() {
       1, 0
     ];*/
 
-	this.baseTexCoords = [
-		1 - (this.y2 - this.y1), 0,
-		1, 0,
-      	1, this.x2 - this.x1,
-      	1 - (this.y2 - this.y1), this.x2 - this.x1,
-      	
- 
+  	this.baseTexCoords = [
+  		0, 1 - (this.y1 - this.y2),
+  		this.x2 - this.x1 , 1 - (this.y1 - this.y2),
+  		this.x2 - this.x1 , 1,
+  		0, 1
     ];
     this.setTextureCoords(1,1);
 
@@ -65,4 +71,5 @@ MyRectangle.prototype.setTextureCoords = function(lengthS, lengthT) {
     	this.baseTexCoords[4] / lengthS, this.baseTexCoords[5] / lengthT,
     	this.baseTexCoords[6] / lengthS, this.baseTexCoords[7] / lengthT
   	];  
+  	this.updateTexCoordsGLBuffers();
 }
