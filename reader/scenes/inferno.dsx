@@ -2,7 +2,7 @@
 	<scene root="root" axis_length="3" />
 	
 	 <views default="view_default" >
-        <perspective id="view_default" near="0.1" far="500" angle="10">
+        <perspective id="view_default" near="0.1" far="100" angle="1">
             <from x="20" y="10" z="30" />
             <to x="0.5" y="0" z="-1" />
         </perspective>
@@ -16,7 +16,7 @@
 	<illumination doublesided="true" local="true" >
     
         <ambient r="0.5" g="0.5" b="0.5" a="0.8" />
-        <background r="0.2" g="0.2" b="0.2" a="0.6" />
+        <background r="0" g="0" b="0" a="1" />
         
     </illumination>
 	
@@ -576,6 +576,8 @@
 		<component id="tridentPointCone">
 			<transformation>
 				<scale x="0.5" y="0.5" z="0.5" />
+				<translate x="0" y="0" z="1" />
+				<rotate axis="x" angle="180" />
 			</transformation>
 			
 			<materials>
