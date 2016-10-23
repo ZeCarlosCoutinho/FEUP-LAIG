@@ -12,26 +12,39 @@ function getUrlVars() {
 }	 
 
 serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyView.js', 'Illumination.js', 'OmniLight.js', 'SpotLight.js', 'Texture.js', 'Material.js',
-
+'Transformation.js', 'Component.js',
+'Prim_Rectangle.js', 'Prim_Triangle.js', 'Prim_Cylinder.js', 'Prim_Sphere.js', 'Prim_Torus.js',
+	'primitives/MyRectangle.js',
+	'primitives/MyTriangle.js',
+	'primitives/MyCircle.js',
+	'primitives/MySphere.js',
+	'primitives/MyCylinder.js',
+	'primitives/MyCylinderWithTops.js',
+	'primitives/MyTorus.js',
+	'primitives/MyComponent.js',
+	'MyInterface.js',
+	
 main=function()
 {
 	// Standard application, scene and interface setup
     var app = new CGFapplication(document.body);
     var myScene = new XMLscene();
-    var myInterface = new CGFinterface();
+    //var myInterface = new CGFinterface();
+    var myInterface = new MyInterface();
 
     app.init();
 
     app.setScene(myScene);
     app.setInterface(myInterface);
-
+	myScene.setInterface(myInterface);
+	
     myInterface.setActiveCamera(myScene.camera);
 
 	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
 	// or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
 	
 	//var filename=getUrlVars()['file'] || "demo.xml";
-    var filename=getUrlVars()['file'] || "20Gato.xml";
+    var filename=getUrlVars()['file'] || "inferno.dsx";
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors
