@@ -7,6 +7,7 @@ function MySceneGraph(filename, scene) {
 	scene.graph=this;
 
 	this.transformations = [];
+	this.textures = [];
 
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -416,44 +417,32 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 };
 
 MySceneGraph.prototype.parseTextures= function(rootElement) {
-
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('textures');
 	if (elems == null) {
 		return "textures element is missing.";
 	}
-
 	if (elems.length != 1) {
 		return "either zero or more than one 'textures' element found.";
 	}
 
-	// Create Textures Data Structure
-	var textures = elems[0].getElementsByTagName('texture');
-	this.textures = [];
-	
-	// iterate over every element
-	var nTextures = textures.length;
-
-	if (nTextures == 0)
+	//Gets all elements
+	var texturesElems = elems[0].getElementsByTagName('texture');
+	if (texturesElems.length == 0)
 		return "no textures were found.";
 
-	//Textures
-	for (var i=0; i < nTextures; i++)
-	{
-		/*
-		 * FALTA VERIFICAR IDS IGUAIS
-		 * IMPORTANTE
-		 * TO DO
-		 */
-		
+	// For each texture tag
+	for (var i = 0; i < texturesElems.length; i++)
+	{		
 		//Initiate Texture
-		var currentTexture = textures[i];
+		var currentTexture = texturesElems[i];
 		var currentTexture_id = this.reader.getString(currentTexture, 'id');
 		
 		//Verify the id of the Texture
 		var existentTexture = this.textures[currentTexture_id];
 		if(existentTexture != null)
 		{
-			return "ID ERROR: texture[" + i + "] already exists";
+			return "ID ERROR: texture[" + currentTexture_id + "] already exists";
 		}
 		
 		this.textures[currentTexture_id] = new Texture(currentTexture_id);
@@ -462,8 +451,6 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 		this.textures[currentTexture_id].file = this.reader.getString(currentTexture, 'file');
 		this.textures[currentTexture_id].length_s = this.reader.getFloat(currentTexture, 'length_s');
 		this.textures[currentTexture_id].length_t = this.reader.getFloat(currentTexture, 'length_t');
-
-		this.textures[currentTexture_id].loaded = true;
 		
 		console.log(this.textures[currentTexture_id].toString());
 	}
@@ -473,7 +460,7 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 };
 
 MySceneGraph.prototype.parseMaterials= function(rootElement) {
-
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('materials');
 	elems = this.mainTagFiltering(elems);
 	if (elems == null) {

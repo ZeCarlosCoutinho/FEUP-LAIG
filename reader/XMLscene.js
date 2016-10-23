@@ -237,11 +237,7 @@ XMLscene.prototype.createLights = function (){
 
 XMLscene.prototype.loadTextures = function (){
 	for(key in this.graph.textures){
-		this.textures[key] = {
-			text: new CGFtexture(this, this.graph.textures[key].file),
-			lengthS: this.graph.textures[key].length_s,
-			lengthT: this.graph.textures[key].length_t
-		};
+		this.textures[key] = this.graph.textures[key].create(this);
 		
 	}
 }
