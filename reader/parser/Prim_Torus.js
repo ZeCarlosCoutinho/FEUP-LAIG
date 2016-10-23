@@ -1,4 +1,7 @@
-
+/**
+ * Prim_Torus
+ * @constructor
+ */
 function Prim_Torus(primitive_id) {
 	this.id = primitive_id;
 	this.loaded = false;
@@ -16,6 +19,11 @@ Prim_Torus.prototype.toString=function(){
 	+ "\n";
 }
 
+/**
+ * Creates a new MyTorus using the current data.
+ * @param {CGFscene} scene
+ * @return {MyTorus} a torus
+ */
 Prim_Torus.prototype.create = function(scene) {
 	return new MyTorus(scene, this.inner, this.outer, this.slices, this.loops);
 }

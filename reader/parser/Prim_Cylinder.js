@@ -1,4 +1,7 @@
-
+/**
+ * Prim_Cylinder
+ * @constructor
+ */
 function Prim_Cylinder(primitive_id) {
 	this.id = primitive_id;
 	
@@ -16,6 +19,11 @@ Prim_Cylinder.prototype.toString=function(){
 	+ "\n";
 }
 
+/**
+ * Creates a new MyCylinderWithTops using the current data.
+ * @param {CGFscene} scene
+ * @return {MyCylinderWithTops} a cylinder
+ */
 Prim_Cylinder.prototype.create=function(scene){
 	return new MyCylinderWithTops(scene, this.height, this.base, this.top, this.stacks, this.slices);
 }

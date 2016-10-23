@@ -1,3 +1,7 @@
+/**
+ * OmniLight
+ * @constructor
+ */
 function OmniLight(id) {
 	this.id = id;
 	this.enabled = null;

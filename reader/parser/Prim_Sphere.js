@@ -1,4 +1,7 @@
-
+/**
+ * Prim_Sphere
+ * @constructor
+ */
 function Prim_Sphere(primitive_id) {
 	this.id = primitive_id;
 	
@@ -18,6 +21,11 @@ Prim_Sphere.prototype.toString=function(){
 	+ "\n";
 }
 
+/**
+ * Creates a new MySphere using the current data.
+ * @param {CGFscene} scene
+ * @return {MySphere} a sphere
+ */
 Prim_Sphere.prototype.create = function(scene) {
 	return new MySphere(scene, this.radius, this.slices, this.stacks);
 }

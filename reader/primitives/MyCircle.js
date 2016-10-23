@@ -7,7 +7,7 @@
 	
 	this.slices = slices;
 	this.alpha = 2*Math.PI/slices;
-	this.beta = this.alpha/2;
+	//this.beta = this.alpha/2;
 
  	this.initBuffers();
  };
@@ -16,16 +16,6 @@
  MyCircle.prototype.constructor = MyCircle;
 
 MyCircle.prototype.initBuffers = function() {
- 	/*
- 	* TODO:
- 	* Replace the following lines in order to build a prism with a **single mesh**.
- 	*
- 	* How can the vertices, indices and normals arrays be defined to
- 	* build a prism with varying number of slices and stacks?
- 	*/
-
-
-
  	this.indices = [];
  	this.vertices = [];
     this.normals = [];

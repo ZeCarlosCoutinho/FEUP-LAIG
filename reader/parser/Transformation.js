@@ -1,4 +1,7 @@
-
+/**
+ * Transformation
+ * @constructor
+ */
 function Transformation(id) {
 	this.id = id;
 	this.matrix = [];

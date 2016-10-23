@@ -1,4 +1,7 @@
-
+/**
+ * Illumination
+ * @constructor
+ */
 function Illumination(id) {
 	this.doublesided = false;
 	this.local = false;

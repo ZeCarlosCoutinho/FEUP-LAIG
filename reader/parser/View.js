@@ -1,4 +1,7 @@
-
+/**
+ * View
+ * @constructor
+ */
 function View(id) {
 	this.id = id;
 
@@ -10,14 +13,14 @@ function View(id) {
 	this.to = [];
 }
 
-View.prototype.isLoaded=function(){
-	return this.loaded;
-}
-
 View.prototype.toString=function(){
 	return "View Item " + this.id + "\nNear: " + this.near + " Far: " + this.far + " Angle: " + this.angle + "\nFrom: " + this.from + "\nTo  : " + this.to;
 }
 
+/**
+ * Creates a new CGFcamera using the current data.
+ * @return {CGFcamera} a new viewport
+ */
 View.prototype.create=function(){
 	return new CGFcamera(
 		this.angle, this.near, this.far, 

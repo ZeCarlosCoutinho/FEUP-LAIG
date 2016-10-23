@@ -1,4 +1,7 @@
-
+/**
+ * Material
+ * @constructor
+ */
 function Material(id) {
 	this.id = id;
 	
@@ -13,6 +16,11 @@ Material.prototype.toString=function(){
 	return "Material Item " + this.id + "\nEmission: " + this.emission + "\nAmbient: " + this.ambient + "\nDiffuse: " + this.diffuse + "\nSpecular: " + this.specular + "\nShininess: " + this.shininess;
 }
 
+/**
+ * Creates a new CGFappearance using the current data.
+ * @param {CGFscene} scene
+ * @return {CGFappearance} a new material
+ */
 Material.prototype.create=function(scene){
 	var material = new CGFappearance(scene);
 	material.setAmbient(

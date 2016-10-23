@@ -1,3 +1,7 @@
+/**
+ * SpotLight
+ * @constructor
+ */
 function SpotLight(id) {
 	this.id = id;
 	this.enabled = null;

@@ -1,4 +1,7 @@
-
+/**
+ * Prim_Triangle
+ * @constructor
+ */
 function Prim_Triangle(primitive_id) {
 	this.id = primitive_id;
 	
@@ -23,6 +26,11 @@ Prim_Triangle.prototype.toString=function(){
 	+ "\n";
 }
 
+/**
+ * Creates a new MyTriangle using the current data.
+ * @param {CGFscene} scene
+ * @return {MyTriangle} a triangle
+ */
 Prim_Triangle.prototype.create = function(scene) {
 	return new MyTriangle(scene, this.x1, this.y1, this.z1, this.x2, this.y2, this.z2, this.x3, this.y3, this.z3);
 }
