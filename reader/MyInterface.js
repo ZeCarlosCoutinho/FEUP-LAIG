@@ -76,7 +76,7 @@ MyInterface.prototype.processKeyboard = function(event) {
         case (109):	// M/m
 			if (this.scene.rootObject != null){
 				this.scene.materialIndex++;
-				this.scene.rootObject.updateMaterial(this.scene.materialIndex, null);
+				this.scene.rootObject.updateMaterial(this.scene.materialIndex);
 			}
 			break;
 	};

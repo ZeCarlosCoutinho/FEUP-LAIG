@@ -41,46 +41,46 @@ function MyComponent(scene, transformation_matrix, material_ids, texture_id, com
 MyComponent.prototype = Object.create(CGFobject.prototype);
 MyComponent.prototype.constructor = MyComponent;
 
-MyComponent.prototype.updateMaterial = function (currentMaterialIndex, fatherMaterial){
+MyComponent.prototype.updateMaterial = function (currentMaterialIndex){
 	this.currentMaterial = this.materials[currentMaterialIndex % this.materials.length];
+	for(var component of this.components)
+		if(component instanceof MyComponent)
+			component.updateMaterial(currentMaterialIndex)
+}
+
+MyComponent.prototype.display = function (material, texture) {
+	var drawingMaterial = this.currentMaterial;
 	if (this.currentMaterial == "inherit")
-		this.currentMaterial = fatherMaterial;
-	
-	for(var component of this.components)
-		if(component instanceof MyComponent)
-			component.updateMaterial(currentMaterialIndex, this.currentMaterial)
-}
-
-MyComponent.prototype.updateTexture = function (fatherTexture){
+		drawingMaterial = material;		
 	if (this.texture == "inherit")
-		this.texture = fatherTexture;
-	for(var component of this.components)
-		if(component instanceof MyComponent)
-			component.updateTexture(this.texture)
-}
+		this.texture = texture; 
+	
 
-MyComponent.prototype.display = function () {
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
 		for(var component of this.components){
-			//Sets texture
-			if (this.texture != null){
-				this.currentMaterial.setTexture(this.texture.text);
-				//Length ST
-				if (component.setTextureCoords != null)
-					component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
+			if(component instanceof MyComponent)
+				component.display(drawingMaterial, this.texture);
+			else{
+				//Sets texture
+				if (this.texture != null){
+					drawingMaterial.setTexture(this.texture.text);
+					//Length ST
+					if (component.setTextureCoords != null)
+						component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
+				}
+				else 
+					this.currentMaterial.setTexture(null);
+
+				//Apply Material
+				drawingMaterial.apply();
+
+				//Display
+				component.display();
+
+				//Resets texture
+				drawingMaterial.setTexture(null);
 			}
-			else 
-				this.currentMaterial.setTexture(null);
-
-			//Apply Material
-			this.currentMaterial.apply();
-
-			//Display
-			component.display();
-
-			//Resets texture
-			this.currentMaterial.setTexture(null);
 		}
 	this.scene.popMatrix();
 

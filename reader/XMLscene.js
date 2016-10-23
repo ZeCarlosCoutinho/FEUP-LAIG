@@ -100,8 +100,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.createMaterials();
 	this.createPrimitives();
 	this.rootObject = this.graph.components[this.graph.root].create(this);
-	this.rootObject.updateTexture( null);
-	this.rootObject.updateMaterial(this.materialIndex, null);
+	this.rootObject.updateMaterial(this.materialIndex);
 
 	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
 	/*this.lights[0].setVisible(true);
