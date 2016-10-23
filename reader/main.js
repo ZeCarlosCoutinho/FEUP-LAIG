@@ -11,7 +11,7 @@ function getUrlVars() {
     return vars;
 }	 
 
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyView.js', 'Illumination.js', 'OmniLight.js', 'SpotLight.js', 'Texture.js', 'Material.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'View.js', 'Illumination.js', 'OmniLight.js', 'SpotLight.js', 'Texture.js', 'Material.js',
 'Transformation.js', 'Component.js',
 'Prim_Rectangle.js', 'Prim_Triangle.js', 'Prim_Cylinder.js', 'Prim_Sphere.js', 'Prim_Torus.js',
 	'primitives/MyRectangle.js',

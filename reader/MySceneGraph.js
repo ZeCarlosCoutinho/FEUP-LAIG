@@ -12,6 +12,7 @@ function MySceneGraph(filename, scene) {
 	this.textures = [];
 	this.primitives = [];
 	this.materials = [];
+	this.viewsList=[];
 
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -92,7 +93,7 @@ MySceneGraph.prototype.onXMLReady=function()
 
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
- */
+
 MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 
 	var elems =  rootElement.getElementsByTagName('globals');
@@ -131,7 +132,7 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
 	};
 
-};
+}; */
 
 
 MySceneGraph.prototype.parseScene= function(rootElement) {
@@ -157,12 +158,11 @@ MySceneGraph.prototype.parseScene= function(rootElement) {
 };
 
 MySceneGraph.prototype.parseViews= function(rootElement) {
-
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('views');
 	if (elems == null) {
 		return "views element is missing.";
 	}
-
 	if (elems.length != 1) {
 		return "either zero or more than one 'views' element found.";
 	}
@@ -170,69 +170,36 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 	// Reads the default view
 	var views = elems[0];
 	this.defaultView = this.reader.getString(views, 'default');
-
-	// Creates Data Structure
-	this.viewsList=[];
-
-	// iterate over every element
-	var nnodes=views.children.length;
-
-	if (nnodes == 0)
+	
+	//Gets all elements
+	var perspectivesElements = views.getElementsByTagName('perspective');
+	if (perspectivesElements.length == 0)
 		return "no views were found.";
-	for (var i=0; i< nnodes; i++)
+
+
+	//for each perpective tag
+	for (var i = 0; i < perspectivesElements.length; i++)
 	{
-		var perspective = views.children[i];
-		var perspective_id = this.reader.getString(perspective, 'id');
+		//Gets Element
+		var currentPerspective = perspectivesElements[i];
+		var currentPerspective_id = this.reader.getString(currentPerspective, 'id');
 		
 		// Verify if the id already exists
-		var existentView = this.viewsList[perspective_id];
-		if (existentView != null)
-		{
-			
-			//Returns error and doesnt read the remaining lights
-			
-			return "ID ERROR: view[" + i + "] already exists";
-			
-			
-			// OR
-			
-			/*
-			* Shows the error, ignores it, and processes de remaining lights
-			
-			console.log("light[" + i + "] already exists");
-			continue;*/
+		if (this.viewsList[currentPerspective_id] != null)
+		{		
+			return "ID ERROR: view[" + currentPerspective_id + "] already exists";
 		}
 		
-		// process each perspective and store its information
-		this.viewsList[perspective_id] = new MyView(perspective_id);
-		this.viewsList[perspective_id].near = this.reader.getFloat(perspective, 'near');
-		this.viewsList[perspective_id].far = this.reader.getFloat(perspective, 'far');
-		this.viewsList[perspective_id].angle = this.reader.getFloat(perspective, 'angle');
+		this.viewsList[currentPerspective_id] = new View(currentPerspective_id);
+		//Get attributes
+		this.viewsList[currentPerspective_id].near = this.reader.getFloat(currentPerspective, 'near');
+		this.viewsList[currentPerspective_id].far = this.reader.getFloat(currentPerspective, 'far');
+		this.viewsList[currentPerspective_id].angle = this.reader.getFloat(currentPerspective, 'angle');
+		this.viewsList[currentPerspective_id].from = this.readPatternXYZ(currentPerspective.children[0]);
+		this.viewsList[currentPerspective_id].to = this.readPatternXYZ(currentPerspective.children[1]);
 
-		//Reads "from" data
-		var perspective_from = perspective.children[0];
-		this.viewsList[perspective_id].fromX = this.reader.getFloat(perspective_from, 'x');
-		this.viewsList[perspective_id].fromY = this.reader.getFloat(perspective_from, 'y');
-		this.viewsList[perspective_id].fromZ = this.reader.getFloat(perspective_from, 'z');
-
-		//Reads "to" data
-		var perspective_to = perspective.children[1];
-		this.viewsList[perspective_id].toX = this.reader.getFloat(perspective_to, 'x');
-		this.viewsList[perspective_id].toY = this.reader.getFloat(perspective_to, 'y');
-		this.viewsList[perspective_id].toZ = this.reader.getFloat(perspective_to, 'z');
-
-		//this.viewsList[perspective_id].loaded = true;
-
-		//console.log("Read views item id "+ perspective_id +" with near value " + this.viewsList[perspective_id].near );
-		console.log(this.viewsList[perspective_id].toString());
-	};
-/*
-	//Checks if all
-	for (var i in this.viewsList){
-		if (!i.loaded)
-			return "error";
+		console.log(this.viewsList[currentPerspective_id].toString());
 	}
-*/
 };
 
 MySceneGraph.prototype.parseIllumination= function(rootElement) {
