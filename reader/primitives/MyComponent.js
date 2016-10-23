@@ -70,7 +70,7 @@ MyComponent.prototype.display = function (material, texture) {
 						component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
 				}
 				else 
-					this.currentMaterial.setTexture(null);
+					drawingMaterial.setTexture(null);
 
 				//Apply Material
 				drawingMaterial.apply();
