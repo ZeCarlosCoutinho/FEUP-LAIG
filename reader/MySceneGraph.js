@@ -610,14 +610,12 @@ MySceneGraph.prototype.transformationIdVerification = function(component)
 
 MySceneGraph.prototype.materialIdVerification = function(component)
 {
-	if (component.texture_id != "inherit"){
-		for(var i = 0; i < component.material_ids.length; i++)
+	for(var i = 0; i < component.material_ids.length; i++)
+	{
+		var existingMaterial = this.materials[component.material_ids[i]];
+	if(existingMaterial == null && component.material_ids[i] != "inherit" && component.material_ids[i] != "none")
 		{
-			var existingMaterial = this.materials[component.material_ids[i]];
-			if(existingMaterial == null)
-			{
-				//return "Material ID " + component.material_ids[i] + " non existent ";
-			}
+				return "Material ID " + component.material_ids[i] + " non existent ";
 		}
 	}
 }
