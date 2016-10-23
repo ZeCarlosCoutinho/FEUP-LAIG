@@ -6,6 +6,9 @@ function MySceneGraph(filename, scene) {
 	this.scene = scene;
 	scene.graph=this;
 
+	this.root;
+	this.axis_length;
+	this.illumination = new Illumination();
 	this.omniLights = [];
 	this.spotLights = [];
 	this.transformations = [];
@@ -82,61 +85,13 @@ MySceneGraph.prototype.onXMLReady=function()
 		return;
 	}	
 
-	//this.loadedOk=true;
-
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
 	this.scene.onGraphLoaded();
 	this.loadedOk=true;
 };
 
-
-
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
-
-MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
-
-	var elems =  rootElement.getElementsByTagName('globals');
-	if (elems == null) {
-		return "globals element is missing.";
-	}
-
-	if (elems.length != 1) {
-		return "either zero or more than one 'globals' element found.";
-	}
-
-	// various examples of different types of access
-	var globals = elems[0];
-	this.background = this.reader.getRGBA(globals, 'background');
-	this.drawmode = this.reader.getItem(globals, 'drawmode', ["fill","line","point"]);
-	this.cullface = this.reader.getItem(globals, 'cullface', ["back","front","none", "frontandback"]);
-	this.cullorder = this.reader.getItem(globals, 'cullorder', ["ccw","cw"]);
-
-	console.log("Globals read from file: {background=" + this.background + ", drawmode=" + this.drawmode + ", cullface=" + this.cullface + ", cullorder=" + this.cullorder + "}");
-
-	var tempList=rootElement.getElementsByTagName('list');
-
-	if (tempList == null  || tempList.length==0) {
-		return "list element is missing.";
-	}
-
-	this.list=[];
-	// iterate over every element
-	var nnodes=tempList[0].children.length;
-	for (var i=0; i< nnodes; i++)
-	{
-		var e=tempList[0].children[i];
-
-		// process each element and store its information
-		this.list[e.id]=e.attributes.getNamedItem("coords").value;
-		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
-	};
-
-}; */
-
-
 MySceneGraph.prototype.parseScene= function(rootElement) {
-
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('scene');
 	if (elems == null) {
 		return "scene element is missing.";
@@ -203,36 +158,24 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 };
 
 MySceneGraph.prototype.parseIllumination= function(rootElement) {
-
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('illumination');
 	if (elems == null) {
 		return "illumination element is missing.";
 	}
-
 	if (elems.length != 1) {
 		return "either zero or more than one 'illumination' element found.";
 	}
 
-	// Create Illumination Data Structure
+	//Gets Element
 	var illumination = elems[0];
-	this.illumination = new Illumination();
 
+	//Get attributes
 	this.illumination.doublesided = this.reader.getBoolean(illumination, 'doublesided');
 	this.illumination.local = this.reader.getBoolean(illumination, 'local');
-
-	var ambient =  illumination.children[0];
-	this.illumination.ambient[0] = this.reader.getFloat(ambient, 'r');
-	this.illumination.ambient[1] = this.reader.getFloat(ambient, 'g');
-	this.illumination.ambient[2] = this.reader.getFloat(ambient, 'b');
-	this.illumination.ambient[3] = this.reader.getFloat(ambient, 'a');
-
-	var background =  illumination.children[1];
-	this.illumination.background[0] = this.reader.getFloat(background, 'r');
-	this.illumination.background[1] = this.reader.getFloat(background, 'g');
-	this.illumination.background[2] = this.reader.getFloat(background, 'b');
-	this.illumination.background[3] = this.reader.getFloat(background, 'a');
-
-
+	this.illumination.ambient = this.readPatternRGBA(illumination.children[0]);
+	this.illumination.background = this.readPatternRGBA(illumination.children[1]);
+	
 	console.log(this.illumination.toString());
 
 };
