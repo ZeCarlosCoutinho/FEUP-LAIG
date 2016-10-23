@@ -1,6 +1,5 @@
 function Component(id) {
 	this.id = id;
-	this.loaded = false;
 	
 	this.transformation_id;
 	this.transformation_matrix = [];
@@ -15,12 +14,8 @@ function Component(id) {
 	this.componentObject = null;
 }
 
-Component.prototype.isLoaded=function(){
-	return this.loaded;
-}
-
 Component.prototype.toString=function(){
-	return "Component Item " + this.id + "    Loaded? " + this.loaded + "\n"
+	return "Component Item " + this.id + "\n"
 	+ "Transformation id: " + this.transformation_id + "\n"
 	+ "Matrix: " + this.transformation_matrix + "\n"
 	+ "Materials: " + this.material_ids + "\n"

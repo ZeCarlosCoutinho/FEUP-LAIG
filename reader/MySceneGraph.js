@@ -16,6 +16,7 @@ function MySceneGraph(filename, scene) {
 	this.primitives = [];
 	this.materials = [];
 	this.viewsList=[];
+	this.components = [];
 
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -323,7 +324,7 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 		this.materials[currentMaterial_id] = new Material(currentMaterial_id);
 
 		//Get attributes
-			this.materials[currentMaterial_id].emission = this.readPatternRGBA(currentMaterial.children[0]);
+		this.materials[currentMaterial_id].emission = this.readPatternRGBA(currentMaterial.children[0]);
 		this.materials[currentMaterial_id].ambient = this.readPatternRGBA(currentMaterial.children[1]);
 		this.materials[currentMaterial_id].diffuse = this.readPatternRGBA(currentMaterial.children[2]);
 		this.materials[currentMaterial_id].specular = this.readPatternRGBA(currentMaterial.children[3]);
@@ -457,114 +458,107 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 }
 
 MySceneGraph.prototype.parseComponents= function(rootElement) {
-
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('components');
 	if (elems == null) {
 		return "components element is missing.";
 	}
-
 	if (elems.length != 1) {
 		return "either zero or more than one 'components' element found.";
 	}
 
-	// Create Materials Data Structure
-	var components = elems[0].getElementsByTagName('component');
-	this.components = [];
-	
-	// iterate over every element
-	var nComponents = components.length;
-
-	if (nComponents == 0)
+	//Gets all elements
+	var componentsElems = elems[0].getElementsByTagName('component');
+	if (componentsElems.length == 0)
 		return "no components were found.";
 
-	//Components
-	for (var i=0; i < nComponents; i++)
-	{
-		/*
-		 * FALTA VERIFICAR IDS IGUAIS
-		 * IMPORTANTE
-		 * TO DO
-		 */
-		
-		//Initiate Components
-		var currentComponent = components[i];
+	//for each component tag
+	for (var i = 0; i < componentsElems.length; i++)
+	{		
+		//Gets Element
+		var currentComponent = componentsElems[i];
 		var currentComponent_id = this.reader.getString(currentComponent, 'id');
 		var currentComponentTransformation = currentComponent.children[0];
 		var currentComponentMaterials = currentComponent.children[1];
 		var currentComponentTexture = currentComponent.children[2];
 		var currentComponentChildren = currentComponent.children[3];
 
-		var existentComponent = this.components[currentComponent_id];
-		if(existentComponent != null)
+		//Verify if id is valid
+		if(this.components[currentComponent_id] != null)
 		{
 			return "ID ERROR: components[" + i + "] already exists";
 		}
 		
 		this.components[currentComponent_id] = new Component(currentComponent_id);
 		
-	//Parse the transformations
+
+		//  ----   Parse the TRANSFORMATIONS  -----
 		var transformationref = currentComponentTransformation.getElementsByTagName("transformationref");
-		//var transformationref = this.reader.getString(currentComponentTransformation.children[0], 'id');
+	
 		//If there's no reference to a transformation
 		if(transformationref.length == 0)
 		{
 			//If there is no transformation
 			if(currentComponentTransformation.children.length == 0)
 				this.components[currentComponent_id].transformation_matrix = mat4.create();
+			
 			//If there are transformations
 			else
 				this.components[currentComponent_id].transformation_matrix = this.readTransformations(currentComponentTransformation);
 		}
+		//If reference to transformation was found
 		else{
-			//If reference to transformation was found
-			this.components[currentComponent_id].transformation_id =  this.reader.getString(transformationref, 'id');
+			transformationref =  this.reader.getString(transformationref, 'id');
+			this.components[currentComponent_id].transformation_matrix = this.transformations[transformationref].matrix;
 		}
 
-	//Parse the material
+		//  ----   Parse the MATERIALS  -----
 		var currentComponentMaterialsElements = currentComponentMaterials.getElementsByTagName('material');
-		var materialsElementsLength = currentComponentMaterialsElements.length;
+		if(currentComponentMaterialsElements.length == 0)
+			return "No material in component[" + currentComponent_id + "] missing";
 
-		if(materialsElementsLength == 0)
-			return "Component material in component[" + currentComponent_id + "] missing";
-
-		for(var j = 0; j < materialsElementsLength; j++)
+		//for each material tag
+		for(var j = 0; j < currentComponentMaterialsElements.length; j++)
 		{
 			var currentMaterial = currentComponentMaterialsElements[j];
 			this.components[currentComponent_id].material_ids[j] = this.reader.getString(currentMaterial, 'id');
 		}
 
 		
-	//Parse the texture
+		//  ----   Parse the TEXTURE  -----
 		 var currentTexture = this.reader.getString(currentComponentTexture, 'id');
 		 if(currentTexture == null)
-		 	return "Component texture in component[" + currentComponent_id + "] missing";
+		 	return "No texture in component[" + currentComponent_id + "] missing";
 
 		 this.components[currentComponent_id].texture_id = currentTexture;
 
 	
-	//Parse the children
+		//  ----   Parse the CHILDREN  -----
 		 var currentComponentChildrenElements = currentComponentChildren.getElementsByTagName('*');
-		 var childrenLength = currentComponentChildrenElements.length;
-		 for(var j = 0; j < childrenLength; j++)
+		 if (currentComponentChildrenElements.length == 0)
+		 		return "No children in component[" + currentComponent_id + "] missing";
+
+		 for(var j = 0; j < currentComponentChildrenElements.length; j++)
 		 {
 		 	var currentChild = currentComponentChildrenElements[j];
-			if(currentChild.tagName == "componentref")
-			{
+		 	switch(currentChild.tagName){
+		 	case "componentref":
 				this.components[currentComponent_id].component_refs.push(this.reader.getString(currentChild, 'id'));
-			}
-			else if(currentChild.tagName == "primitiveref")
-			{
+				break;
+			case "primitiveref":
 				this.components[currentComponent_id].primitive_refs.push(this.reader.getString(currentChild, 'id'));
-			}
-			else
-			{
+				break;
+			default:
 				return "Invalid tag in child[" + j + "]"; 
+				break;
 			}
 		 }
 	}
-	for (var i=0; i < nComponents; i++)
+
+	//Check ids
+	for (var i = 0; i < componentsElems.length; i++)
 	{
-		var currentComponent = components[i];
+		var currentComponent = componentsElems[i];
 		var currentComponent_id = this.reader.getString(currentComponent, 'id');
 		//Verify id's
 		var existingError = this.idVerification(this.components[currentComponent_id]);
@@ -621,7 +615,7 @@ MySceneGraph.prototype.materialIdVerification = function(component)
 			var existingMaterial = this.materials[component.material_ids[i]];
 			if(existingMaterial == null)
 			{
-				return "Material ID " + component.material_ids[i] + " non existent ";
+				//return "Material ID " + component.material_ids[i] + " non existent ";
 			}
 		}
 	}
