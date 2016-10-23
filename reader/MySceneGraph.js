@@ -508,7 +508,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		}
 		//If reference to transformation was found
 		else{
-			transformationref =  this.reader.getString(transformationref, 'id');
+			transformationref =  this.reader.getString(transformationref[0], 'id');
 			this.components[currentComponent_id].transformation_matrix = this.transformations[transformationref].matrix;
 		}
 
