@@ -203,6 +203,8 @@ XMLscene.prototype.createLights = function (){
 	}
 
 	for(key in this.graph.spotLights){
+		this.lights[i].setSpotCutOff(this.graph.spotLights[key].angle);
+		this.lights[i].setSpotExponent(this.graph.spotLights[key].exponent);
 		this.lights[i].setSpotDirection(
 			this.graph.spotLights[key].target[0] - this.graph.spotLights[key].location[0], 
 			this.graph.spotLights[key].target[1] - this.graph.spotLights[key].location[1], 

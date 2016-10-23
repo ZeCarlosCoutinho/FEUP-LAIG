@@ -241,6 +241,7 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 		//Get attributes
 		this.spotLights[currentLight_id].enabled = this.reader.getBoolean(currentLight, 'enabled');
 		this.spotLights[currentLight_id].angle = this.reader.getFloat(currentLight, 'angle');
+		this.spotLights[currentLight_id].angle = rtoa(this.spotLights[currentLight_id].angle);
 		this.spotLights[currentLight_id].exponent = this.reader.getFloat(currentLight, 'exponent');
 
 		this.spotLights[currentLight_id].target = this.readPatternXYZ(currentLight.children[0]);
