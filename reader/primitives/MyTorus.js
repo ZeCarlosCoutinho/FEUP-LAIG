@@ -25,20 +25,26 @@ MyTorus.prototype.initBuffers = function() {
     this.texCoords = [];
  	for (var i = 0; i <= this.loops; i++) {
  		for (var j = 0; j <= this.slices; j++) {
+ 			//Creates the vertices
  			this.vertices.push(
  				Math.cos(this.beta * i) * (this.majorRadius + Math.cos(this.alpha * j) * this.minorRadius),
  				Math.sin(this.beta * i) * (this.majorRadius + Math.cos(this.alpha * j) * this.minorRadius),
  				Math.sin(this.alpha * j) * this.minorRadius);
+
+ 			//Calculates Normals	
 			this.normals.push(
 				Math.cos(this.beta * i) * Math.cos(this.alpha * j),
 				Math.sin(this.beta * i) * Math.cos(this.alpha * j),
 				Math.sin(this.alpha * j));
+
+			//Texture Coordinates	
 			this.texCoords.push(
 				1 - (j / this.slices),
                 i / this.loops);
 		}
 	}
 
+	//Pushes the indices
 	this.indices = [];
     for (var i = 0; i < this.loops; i++) {
  		for (var j = 0; j < this.slices; j++) {
@@ -51,7 +57,6 @@ MyTorus.prototype.initBuffers = function() {
 
  		}
  	}
-
 
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
