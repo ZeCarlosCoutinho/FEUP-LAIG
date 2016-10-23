@@ -15,7 +15,7 @@
         
     </illumination>
      <lights>
-        <omni id="omni_light1" enabled="true" >
+            <omni id="omni_light1" enabled="true" >
             <location x="0" y="0" z="0" w="10" />
             <ambient r="1" g="2" b="3" a="20" />
             <diffuse r="5" g="6" b="7" a="10" />
@@ -38,7 +38,7 @@
     
     <materials>
     
-        <material id="material1" >
+         <material id="material1" >
             <emission r="10" g="9" b="8" a="40" />
             <ambient r="7" g="6" b="5" a="30" />
             <diffuse r="4" g="3" b="2" a="20" />
@@ -46,54 +46,6 @@
             <shininess value="40" />
         </material>
         
-		<material id="material2" >
-            <emission r="1" g="2" b="2" a="40" />
-            <ambient r="1" g="3" b="3" a="30" />
-            <diffuse r="1" g="3" b="3" a="20" />
-            <specular r="4" g="4" b="4" a="10" />
-            <shininess value="2" />
-        </material>
     </materials>
-	
-	<transformations>
-		<transformation id="transformation1">
-			<translate x="2" y="2" z="1"/>
-			<scale x="1" y="1" z="3" />
-		</transformation>
-		
-		<transformation id="transformation2">
-			<translate x="3" y="1" z="2" />
-		</transformation>
-	</transformations>
-	
-	<primitives>
-		<primitive id="primitive1">
-			<cylinder base="10.1" top="1.5" height="4.6" slices="2" stacks="3" />
-		</primitive>
-		
-		<primitive id="primitive2">
-			<sphere radius="4.5" slices="4" stacks="2" />
-		</primitive>
-	</primitives>
-	
-	
-	<components>
-		<component id="component1">
-			<transformation>
-				<transformationref id="transformation2"/>
-			</transformation>
-			
-			<materials>
-				<material id="material1" />
-				<material id="material2" />
-			</materials>
-			
-			<texture id="texture1" />
-			
-			<children>
-				<primitiveref id="primitive1" />
-			</children>
-		</component>
-	</components>
     
 </dsx>
