@@ -212,7 +212,8 @@ XMLscene.prototype.createLights = function (){
 		this.lights[i].setPosition(
 			this.graph.spotLights[key].location[0], 
 			this.graph.spotLights[key].location[1], 
-			this.graph.spotLights[key].location[2]);
+			this.graph.spotLights[key].location[2], 
+			1);
     	this.lights[i].setDiffuse(
     		this.graph.spotLights[key].diffuse[0],
     		this.graph.spotLights[key].diffuse[1],
