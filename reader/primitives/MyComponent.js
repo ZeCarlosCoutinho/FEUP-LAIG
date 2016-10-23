@@ -60,16 +60,28 @@ MyComponent.prototype.updateTexture = function (fatherTexture){
 }
 
 MyComponent.prototype.display = function () {
-	if (this.texture != null)
-		this.currentMaterial.setTexture(this.texture.text);
-	this.currentMaterial.apply();
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
 		for(var component of this.components){
-			if (this.texture != null && component.setTextureCoords != null)
-				component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
+			//Sets texture
+			if (this.texture != null){
+				this.currentMaterial.setTexture(this.texture.text);
+				//Length ST
+				if (component.setTextureCoords != null)
+					component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
+			}
+			else 
+				this.currentMaterial.setTexture(null);
+
+			//Apply Material
+			this.currentMaterial.apply();
+
+			//Display
 			component.display();
+
+			//Resets texture
+			this.currentMaterial.setTexture(null);
 		}
 	this.scene.popMatrix();
-	this.currentMaterial.setTexture(null);
+
  };
