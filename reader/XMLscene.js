@@ -244,34 +244,12 @@ XMLscene.prototype.loadTextures = function (){
 
 XMLscene.prototype.createMaterials = function (){
 	for(key in this.graph.materials){
-		this.materials[key] = new CGFappearance(this);
-		this.materials[key].setAmbient(
-				this.graph.materials[key].ambient[0],
-			    this.graph.materials[key].ambient[1],
-			    this.graph.materials[key].ambient[2],
-			    this.graph.materials[key].ambient[3]);
-		this.materials[key].setEmission(
-				this.graph.materials[key].emission[0],
-			    this.graph.materials[key].emission[1],
-			    this.graph.materials[key].emission[2],
-			    this.graph.materials[key].emission[3]);
-		this.materials[key].setDiffuse(
-				this.graph.materials[key].diffuse[0],
-			    this.graph.materials[key].diffuse[1],
-			    this.graph.materials[key].diffuse[2],
-			    this.graph.materials[key].diffuse[3]);
-		this.materials[key].setSpecular(
-				this.graph.materials[key].specular[0],
-			    this.graph.materials[key].specular[1],
-			    this.graph.materials[key].specular[2],
-			    this.graph.materials[key].specular[3]);
-		this.materials[key].setShininess = this.graph.materials[key].shininess;
-		this.materials[key].setTextureWrap('REPEAT', 'REPEAT');
+		this.materials[key] = this.graph.materials[key].create(this);
 	}
 }
 
 XMLscene.prototype.createPrimitives = function (){
 	for(key in this.graph.primitives){
-		this.primitives[key] =this.graph.primitives[key] .create(this);
+		this.primitives[key] = this.graph.primitives[key].create(this);
 	}
 }

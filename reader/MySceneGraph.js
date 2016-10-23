@@ -11,6 +11,7 @@ function MySceneGraph(filename, scene) {
 	this.transformations = [];
 	this.textures = [];
 	this.primitives = [];
+	this.materials = [];
 
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -387,35 +388,23 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 	if (elems == null) {
 		return "materials element is missing.";
 	}
-	
-
 	if (elems.length != 1) {
 		return "either zero or more than one 'materials' element found.";
 	}
 
-	// Create Materials Data Structure
-	var materials = elems[0].getElementsByTagName('material');
-	this.materials = [];
-	
-	// iterate over every element
-	var nMaterials = materials.length;
-
-	if (nMaterials == 0)
+	//Gets all elements
+	var materialsElems = elems[0].getElementsByTagName('material');
+	if (materialsElems.length == 0)
 		return "no materials were found.";
 
-	//Materials
-	for (var i=0; i < nMaterials; i++)
-	{
-		/*
-		 * FALTA VERIFICAR IDS IGUAIS
-		 * IMPORTANTE
-		 * TO DO
-		 */
-		
-		//Initiate Materials
-		var currentMaterial = materials[i];
+	// For each material tag
+	for (var i = 0; i < materialsElems.length; i++)
+	{		
+		//Gets Element
+		var currentMaterial = materialsElems[i];
 		var currentMaterial_id = this.reader.getString(currentMaterial, 'id');
 		
+		//Verify the id of the material
 		if(this.materials[currentMaterial_id] != null)
 		{
 			return "ID ERROR: materials[" + i + "] already exists";
@@ -424,40 +413,14 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 		this.materials[currentMaterial_id] = new Material(currentMaterial_id);
 
 		//Get attributes
-		var emission = currentMaterial.children[0];
-		this.materials[currentMaterial_id].emission[0] = this.reader.getFloat(emission, 'r');
-		this.materials[currentMaterial_id].emission[1] = this.reader.getFloat(emission, 'g');
-		this.materials[currentMaterial_id].emission[2] = this.reader.getFloat(emission, 'b');
-		this.materials[currentMaterial_id].emission[3] = this.reader.getFloat(emission, 'a');
-
-		var ambient = currentMaterial.children[1];
-		this.materials[currentMaterial_id].ambient[0] = this.reader.getFloat(ambient, 'r');
-		this.materials[currentMaterial_id].ambient[1] = this.reader.getFloat(ambient, 'g');
-		this.materials[currentMaterial_id].ambient[2] = this.reader.getFloat(ambient, 'b');
-		this.materials[currentMaterial_id].ambient[3] = this.reader.getFloat(ambient, 'a');
-
-		var diffuse = currentMaterial.children[2];
-		this.materials[currentMaterial_id].diffuse[0] = this.reader.getFloat(diffuse, 'r');
-		this.materials[currentMaterial_id].diffuse[1] = this.reader.getFloat(diffuse, 'g');
-		this.materials[currentMaterial_id].diffuse[2] = this.reader.getFloat(diffuse, 'b');
-		this.materials[currentMaterial_id].diffuse[3] = this.reader.getFloat(diffuse, 'a');
-
-		var specular = currentMaterial.children[3];
-		this.materials[currentMaterial_id].specular[0] = this.reader.getFloat(specular, 'r');
-		this.materials[currentMaterial_id].specular[1] = this.reader.getFloat(specular, 'g');
-		this.materials[currentMaterial_id].specular[2] = this.reader.getFloat(specular, 'b');
-		this.materials[currentMaterial_id].specular[3] = this.reader.getFloat(specular, 'a');
-		
-		var shininess = currentMaterial.children[4];
-		this.materials[currentMaterial_id].shininess = this.reader.getFloat(shininess, 'value');
-
-		this.materials[currentMaterial_id].loaded = true;
+			this.materials[currentMaterial_id].emission = this.readPatternRGBA(currentMaterial.children[0]);
+		this.materials[currentMaterial_id].ambient = this.readPatternRGBA(currentMaterial.children[1]);
+		this.materials[currentMaterial_id].diffuse = this.readPatternRGBA(currentMaterial.children[2]);
+		this.materials[currentMaterial_id].specular = this.readPatternRGBA(currentMaterial.children[3]);
+		this.materials[currentMaterial_id].shininess = this.reader.getFloat(currentMaterial.children[4], 'value');
 		
 		console.log(this.materials[currentMaterial_id].toString());
 	}
-
-
-
 };
 
 MySceneGraph.prototype.parseTransformations= function(rootElement) {
