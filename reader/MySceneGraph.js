@@ -6,6 +6,8 @@ function MySceneGraph(filename, scene) {
 	this.scene = scene;
 	scene.graph=this;
 
+	this.omniLights = [];
+	this.spotLights = [];
 	this.transformations = [];
 	this.textures = [];
 
@@ -267,111 +269,58 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
 };
 
 MySceneGraph.prototype.parseLights= function(rootElement) {
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('lights');
 	if (elems == null) {
 		return "lights element is missing.";
 	}
-
 	if (elems.length != 1) {
 		return "either zero or more than one 'lights' element found.";
 	}
 
-	// Create LightsData Structure
-	var lights = elems[0];
-
-	var omniLights = lights.getElementsByTagName('omni');
-	this.omniLights = [];
-	var spotLights = lights.getElementsByTagName('spot');
-	this.spotLights = [];
-
-	// iterate over every element
-	var nOmniLights = omniLights.length;
-	//var nSpotLights = spotLights.children.length;
-	var nSpotLights = spotLights.length;
-	
-	if (nOmniLights + nSpotLights == 0)
+	//Gets all elements
+	var omniLightsElems = elems[0].getElementsByTagName('omni');
+	var spotLightsElems = elems[0].getElementsByTagName('spot');
+	if (omniLightsElems.length + spotLightsElems.length == 0)
 		return "no lights were found.";
 
 
-	//Omni Lights
-	for (var i=0; i< nOmniLights; i++)
+	//for each Omni Light tag
+	for (var i = 0; i < omniLightsElems.length; i++)
 	{
-		
-		/*
-		 * FALTA VERIFICAR IDS IGUAIS
-		 * IMPORTANTE
-		 * TO DO
-		 
-		 * EDIT1: FEITO MAIS ABAIXO
-		 * ATENCAO QUE REPETE NO SPOTLIGHT
-		 * QUALQUER ALTERACAO TEM DE SER FEITA LA TAMBEM
-		 */
-		
 		//Initiate Light
-		var currentLight = omniLights[i];
+		var currentLight = omniLightsElems[i];
 		var currentLight_id = this.reader.getString(currentLight, 'id');
 		
-		var existentLight = this.omniLights[currentLight_id];
-		if (existentLight != null)
-		{ 
-			// Returns error and doesnt read the remaining lights
-			
-			return "ID ERROR: light[" + i + "] already exists";
-			
-			// OR
-			
-			/*
-			* Shows the error, ignores it, and processes de remaining lights
-			
-			console.log("light[" + i + "] already exists");
-			continue;*/
+		//Verify the id
+		if (this.omniLights[currentLight_id] != null)
+		{ 	
+			return "ID ERROR: light[" + currentLight_id + "] already exists";
 		}
 		
 		this.omniLights[currentLight_id] = new OmniLight(currentLight_id);
 
 		//Get attributes
 		this.omniLights[currentLight_id].enabled = this.reader.getBoolean(currentLight, 'enabled');
+		this.omniLights[currentLight_id].location = this.readPatternXYZW(currentLight.children[0]);
+		this.omniLights[currentLight_id].ambient = this.readPatternRGBA(currentLight.children[1]);
+		this.omniLights[currentLight_id].diffuse = this.readPatternRGBA(currentLight.children[2]);
+		this.omniLights[currentLight_id].specular = this.readPatternRGBA(currentLight.children[3]);
 
-		var location = currentLight.children[0];
-		this.omniLights[currentLight_id].location[0] = this.reader.getFloat(location, 'x');
-		this.omniLights[currentLight_id].location[1] = this.reader.getFloat(location, 'y');
-		this.omniLights[currentLight_id].location[2] = this.reader.getFloat(location, 'z');
-		this.omniLights[currentLight_id].location[3] = this.reader.getFloat(location, 'w');
-
-		var ambient = currentLight.children[1];
-		this.omniLights[currentLight_id].ambient[0] = this.reader.getFloat(ambient, 'r');
-		this.omniLights[currentLight_id].ambient[1] = this.reader.getFloat(ambient, 'g');
-		this.omniLights[currentLight_id].ambient[2] = this.reader.getFloat(ambient, 'b');
-		this.omniLights[currentLight_id].ambient[3] = this.reader.getFloat(ambient, 'a');
-
-		var diffuse = currentLight.children[2];
-		this.omniLights[currentLight_id].diffuse[0] = this.reader.getFloat(diffuse, 'r');
-		this.omniLights[currentLight_id].diffuse[1] = this.reader.getFloat(diffuse, 'g');
-		this.omniLights[currentLight_id].diffuse[2] = this.reader.getFloat(diffuse, 'b');
-		this.omniLights[currentLight_id].diffuse[3] = this.reader.getFloat(diffuse, 'a');
-
-		var specular = currentLight.children[3];
-		this.omniLights[currentLight_id].specular[0] = this.reader.getFloat(specular, 'r');
-		this.omniLights[currentLight_id].specular[1] = this.reader.getFloat(specular, 'g');
-		this.omniLights[currentLight_id].specular[2] = this.reader.getFloat(specular, 'b');
-		this.omniLights[currentLight_id].specular[3] = this.reader.getFloat(specular, 'a');
-
-		this.omniLights[currentLight_id].loaded = true;
-		
 		console.log(this.omniLights[currentLight_id].toString());
 	}
 
-	//Spot Lights
-	for (var i=0; i< nSpotLights; i++)
+	//for each Spot Light tag
+	for (var i = 0; i < spotLightsElems.length; i++)
 	{
 		//Initiate Light
-		var currentLight = spotLights[i];
+		var currentLight = spotLightsElems[i];
 		var currentLight_id = this.reader.getString(currentLight, 'id');
 		
-		var existentLight = this.omniLights[currentLight_id];
-		if(existentLight != null)
+		//Verify the id
+		if (this.omniLights[currentLight_id] != null || this.spotLights[currentLight_id] != null)
 		{
-			return "ID ERROR: light[" + i + "] already exists";
+			return "ID ERROR: light[" + currentLight_id + "] already exists";
 		}
 
 		this.spotLights[currentLight_id] = new SpotLight(currentLight_id);
@@ -381,39 +330,14 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 		this.spotLights[currentLight_id].angle = this.reader.getFloat(currentLight, 'angle');
 		this.spotLights[currentLight_id].exponent = this.reader.getFloat(currentLight, 'exponent');
 
-		var target = currentLight.children[0];
-		this.spotLights[currentLight_id].target[0] = this.reader.getFloat(target, 'x');
-		this.spotLights[currentLight_id].target[1] = this.reader.getFloat(target, 'y');
-		this.spotLights[currentLight_id].target[2] = this.reader.getFloat(target, 'z');
-
-		var location = currentLight.children[1];
-		this.spotLights[currentLight_id].location[0] = this.reader.getFloat(location, 'x');
-		this.spotLights[currentLight_id].location[1] = this.reader.getFloat(location, 'y');
-		this.spotLights[currentLight_id].location[2] = this.reader.getFloat(location, 'z');
-
-		var ambient = currentLight.children[2];
-		this.spotLights[currentLight_id].ambient[0] = this.reader.getFloat(ambient, 'r');
-		this.spotLights[currentLight_id].ambient[1] = this.reader.getFloat(ambient, 'g');
-		this.spotLights[currentLight_id].ambient[2] = this.reader.getFloat(ambient, 'b');
-		this.spotLights[currentLight_id].ambient[3] = this.reader.getFloat(ambient, 'a');
-
-		var diffuse = currentLight.children[3];
-		this.spotLights[currentLight_id].diffuse[0] = this.reader.getFloat(diffuse, 'r');
-		this.spotLights[currentLight_id].diffuse[1] = this.reader.getFloat(diffuse, 'g');
-		this.spotLights[currentLight_id].diffuse[2] = this.reader.getFloat(diffuse, 'b');
-		this.spotLights[currentLight_id].diffuse[3] = this.reader.getFloat(diffuse, 'a');
-
-		var specular = currentLight.children[4];
-		this.spotLights[currentLight_id].specular[0] = this.reader.getFloat(specular, 'r');
-		this.spotLights[currentLight_id].specular[1] = this.reader.getFloat(specular, 'g');
-		this.spotLights[currentLight_id].specular[2] = this.reader.getFloat(specular, 'b');
-		this.spotLights[currentLight_id].specular[3] = this.reader.getFloat(specular, 'a');
-
-		this.spotLights[currentLight_id].loaded = true;
+		this.spotLights[currentLight_id].target = this.readPatternXYZ(currentLight.children[0]);
+		this.spotLights[currentLight_id].location = this.readPatternXYZ(currentLight.children[1]);
+		this.spotLights[currentLight_id].ambient = this.readPatternRGBA(currentLight.children[2]);
+		this.spotLights[currentLight_id].diffuse = this.readPatternRGBA(currentLight.children[3]);
+		this.spotLights[currentLight_id].specular = this.readPatternRGBA(currentLight.children[4]);
 		
 		console.log(this.spotLights[currentLight_id].toString());
 	}
-
 };
 
 MySceneGraph.prototype.parseTextures= function(rootElement) {
@@ -439,8 +363,7 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 		var currentTexture_id = this.reader.getString(currentTexture, 'id');
 		
 		//Verify the id of the Texture
-		var existentTexture = this.textures[currentTexture_id];
-		if(existentTexture != null)
+		if(this.textures[currentTexture_id] != null)
 		{
 			return "ID ERROR: texture[" + currentTexture_id + "] already exists";
 		}
@@ -454,9 +377,6 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 		
 		console.log(this.textures[currentTexture_id].toString());
 	}
-
-
-
 };
 
 MySceneGraph.prototype.parseMaterials= function(rootElement) {
@@ -495,8 +415,7 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 		var currentMaterial = materials[i];
 		var currentMaterial_id = this.reader.getString(currentMaterial, 'id');
 		
-		var existentMaterial = this.materials[currentMaterial_id];
-		if(existentMaterial != null)
+		if(this.materials[currentMaterial_id] != null)
 		{
 			return "ID ERROR: materials[" + i + "] already exists";
 		}
@@ -1010,3 +929,29 @@ MySceneGraph.prototype.findParentTexture = function(component)
 	}while(texture == "inherit");
 }
 
+MySceneGraph.prototype.readPatternXYZ = function(source){
+	var dest = [];
+	dest[0] = this.reader.getFloat(source, 'x');
+	dest[1] = this.reader.getFloat(source, 'y');
+	dest[2] = this.reader.getFloat(source, 'z');
+	return dest;
+}
+
+
+MySceneGraph.prototype.readPatternXYZW = function(source){
+	var dest = [];
+	dest[0] = this.reader.getFloat(source, 'x');
+	dest[1] = this.reader.getFloat(source, 'y');
+	dest[2] = this.reader.getFloat(source, 'z');
+	dest[3] = this.reader.getFloat(source, 'w');
+	return dest;
+}
+
+MySceneGraph.prototype.readPatternRGBA = function(source){
+	var dest = [];
+	dest[0] = this.reader.getFloat(source, 'r');
+	dest[1] = this.reader.getFloat(source, 'g');
+	dest[2] = this.reader.getFloat(source, 'b');
+	dest[3] = this.reader.getFloat(source, 'a');
+	return dest;
+}
