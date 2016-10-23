@@ -6,6 +6,8 @@ function MySceneGraph(filename, scene) {
 	this.scene = scene;
 	scene.graph=this;
 
+	this.transformations = [];
+
 	// File reading 
 	this.reader = new CGFXMLreader();
 
@@ -552,100 +554,38 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 };
 
 MySceneGraph.prototype.parseTransformations= function(rootElement) {
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('transformations');
 	if (elems == null) {
 		return "transformations element is missing.";
 	}
-
 	if (elems.length != 1) {
 		return "either zero or more than one 'transformations' element found.";
 	}
-	var transformations = elems[0].getElementsByTagName('transformation');
 	
-	this.transformations = [];
-
-	var nTransformations = transformations.length;
-	console.log("nTransformations = " + nTransformations);
-	if(nTransformations == 0)
+	//Gets all elements
+	var transformationsElems = elems[0].getElementsByTagName('transformation');
+	if(transformationsElems.length == 0)
 		return "no transformations were found.";
-	
-	for(var i = 0; i < nTransformations; i++)
+
+	//For each transformation tag
+	for(var i = 0; i < transformationsElems.length; i++)
 	{
-		var currentTransformation = transformations[i];
+		//Gets Element
+		var currentTransformation = transformationsElems[i];
 		var currentTransformation_id = this.reader.getString(currentTransformation, 'id');
 		
 		//Verify if id is valid
-		var existentTransformation = this.transformations[currentTransformation_id];
-		console.log("Existent Transformation [" + i + "] :" + existentTransformation);
-		if(existentTransformation != null)
+		if(this.transformations[currentTransformation_id] != null)
 		{
-			console.log("DETECTED COPY");
-			return "ID ERROR: transformations[" + i + "] already exists";
+			return "ID ERROR: transformations[" + currentTransformation_id + "] already exists";
 		}
-		
-		var currentTransformationElements = currentTransformation.getElementsByTagName('*');
-		this.scene.loadIdentity();
-		
-		var transformationLength = currentTransformationElements.length;
-		for(var j = 0; j < transformationLength; j++)
-		{
-			var transformationType = currentTransformationElements[j].tagName;
-			var matrix = [];
-						
-			if(transformationType == "translate")
-			{
-				var x = this.reader.getFloat(currentTransformationElements[j], 'x');
-				var y = this.reader.getFloat(currentTransformationElements[j], 'y');
-				var z = this.reader.getFloat(currentTransformationElements[j], 'z');
-				/*matrix = this.buildMatrixTranslation(x, y, z);*/
-				this.scene.translate(x, y, z);
-			}
-			else if(transformationType == "scale")
-			{
-				var x = this.reader.getFloat(currentTransformationElements[j], 'x');
-				var y = this.reader.getFloat(currentTransformationElements[j], 'y');
-				var z = this.reader.getFloat(currentTransformationElements[j], 'z');
-				/*matrix = this.buildMatrixScaling(x, y, z);*/
-				this.scene.scale(x, y, z);
-			}
-			else if(transformationType == "rotate")
-			{
-				var axis = this.reader.getString(currentTransformationElements[j], 'axis');
-				var angle = this.reader.getFloat(currentTransformationElements[j], 'angle');
-				/*matrix = this.buildMatrixRotation(axis, angle);*/
-				if(axis == 'x')
-				{
-					this.scene.rotate(rtoa(angle), 1, 0, 0);
-				}
-				else if(axis == 'y')
-				{
-					this.scene.rotate(rtoa(angle), 0, 1, 0);
-				}
-				else if(axis == 'z')
-				{
-					this.scene.rotate(rtoa(angle), 0,0, 1);
-				}
-				else
-				{
-					return "Error: invalid axis";
-				}
-			}
-			else
-			{
-				return "Error: invalid transformation";
-			}
-			
-			//multMatrix(matrix);
-		}
-		
-		//Puts the transformation matrix in the list
+
+		//Creates data structure
 		this.transformations[currentTransformation_id] = new Transformation(currentTransformation_id);
-		this.transformations[currentTransformation_id].matrix = this.scene.getMatrix();
+		this.transformations[currentTransformation_id].matrix = this.readTransformations(currentTransformation);
 		
 		console.log(this.transformations[currentTransformation_id].toString());
-	/*
-		//Cleans the transformation matrix
-		this.scene.popMatrix();*/
 	}
 }
 
