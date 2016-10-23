@@ -9,12 +9,8 @@ function Prim_Torus(primitive_id) {
 	this.loops = 0;
 }
 
-Prim_Torus.prototype.isLoaded=function(){
-	return this.loaded;
-}
-
 Prim_Torus.prototype.toString=function(){
-	return "Primitive Torus Item " + this.id + "    Loaded? " + this.loaded 
+	return "Primitive Torus Item " + this.id
 	+ "\n Inner :" + this.inner + " Outer :" + this.outer
 	+ "\n Slices: " + this.slices + " Loops: " + this.loops
 	+ "\n";

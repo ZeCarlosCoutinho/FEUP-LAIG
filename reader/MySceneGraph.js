@@ -10,6 +10,7 @@ function MySceneGraph(filename, scene) {
 	this.spotLights = [];
 	this.transformations = [];
 	this.textures = [];
+	this.primitives = [];
 
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -288,7 +289,7 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	//for each Omni Light tag
 	for (var i = 0; i < omniLightsElems.length; i++)
 	{
-		//Initiate Light
+		//Gets Element
 		var currentLight = omniLightsElems[i];
 		var currentLight_id = this.reader.getString(currentLight, 'id');
 		
@@ -313,7 +314,7 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	//for each Spot Light tag
 	for (var i = 0; i < spotLightsElems.length; i++)
 	{
-		//Initiate Light
+		//Gets Element
 		var currentLight = spotLightsElems[i];
 		var currentLight_id = this.reader.getString(currentLight, 'id');
 		
@@ -358,7 +359,7 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 	// For each texture tag
 	for (var i = 0; i < texturesElems.length; i++)
 	{		
-		//Initiate Texture
+		//Gets Element
 		var currentTexture = texturesElems[i];
 		var currentTexture_id = this.reader.getString(currentTexture, 'id');
 		
@@ -496,135 +497,88 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 }
 
 MySceneGraph.prototype.parsePrimitives= function(rootElement) {
-	
+	//Check for errors
 	var elems =  rootElement.getElementsByTagName('primitives');
 	if (elems == null) {
 		return "primitives element is missing.";
 	}
-
 	if (elems.length != 1) {
 		return "either zero or more than one 'primitives' element found.";
 	}
 
-	// Create Primitive Data Structure
-	var primitives = elems[0].getElementsByTagName('primitive');
-	this.primitives = [];
-	// iterate over every element
-	var nPrimitives = primitives.length;
-
-	if (nPrimitives == 0)
+	//Gets all elements
+	var primitivesElems = elems[0].getElementsByTagName('primitive');
+	if (primitivesElems.length == 0)
 		return "no primitives were found.";
 
-	//Primitives
-	for (var i=0; i < nPrimitives; i++)
+	// for each primitive tag
+	for (var i = 0; i < primitivesElems.length; i++)
 	{
-		
-		//Initiate Primitive
-		var currentPrimitive = primitives[i];
+		//Gets Element
+		var currentPrimitive = primitivesElems[i];
 		var currentPrimitive_id = this.reader.getString(currentPrimitive, 'id');
-		
-		var existingPrimitive = this.primitives[currentPrimitive_id];
-		if(existingPrimitive != null)
+
+		//Verify if id is valid
+		if(this.primitives[currentPrimitive_id] != null)
 		{
-			return "ID ERROR: primitives[" + i + "] already exists";
+			return "ID ERROR: primitives[" + currentPrimitive_id + "] already exists";
 		}
 		
-		/*
-		* ------------------------------------------------------
-		* TODO
-		* Da para ter objetos de diferentes tipos na mesma lista?
-		* Seria necessario, porque temos 5 tipos de primitivas diferentes
-		* ------------------------------------------------------
-		*/	
-		
-
-		//Get attributes
-		//There should only be 1 primitive type
-		/*
-		*----------------------------------------------------------
-		* Nao sei se sera a maneira mais eficiente de fazer isto
-		* Leio so a primeira tag, e ignoro as restantes
-		*----------------------------------------------------------
-		*/
-		var primitive_param = currentPrimitive.getElementsByTagName('rectangle');
-		if(primitive_param.length > 0)
+		//Check number of primitives types
+		var primitive_data = currentPrimitive.getElementsByTagName('*');
+		if (primitive_data.length != 1)
 		{
-			var primitive_type = currentPrimitive.children[0];
+			return "ID ERROR: primitives[" + currentPrimitive_id + "] has none or more than one primitive types";
+		}
+		primitive_data = primitive_data[0];
+
+		//Gets data
+		switch (primitive_data.tagName){
+		case "rectangle":
 			this.primitives[currentPrimitive_id] = new Prim_Rectangle(currentPrimitive_id);
-			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_type, 'x1');
-			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_type, 'y1');
-			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_type, 'x2');
-			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_type, 'y2');
-
-			console.log(this.primitives[currentPrimitive_id].toString());
-			continue;
-		}
-		
-		console.log("primitives[" + i + "]: no rectangle tag found");
-		primitive_param = currentPrimitive.getElementsByTagName('triangle');
-		if(primitive_param.length > 0)
-		{
-			var primitive_type = currentPrimitive.children[0];
+			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_data, 'x1');
+			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_data, 'y1');
+			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_data, 'x2');
+			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_data, 'y2');
+			break;
+		case "triangle":
 			this.primitives[currentPrimitive_id] = new Prim_Triangle(currentPrimitive_id);
-			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_type, 'x1');
-			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_type, 'y1');
-			this.primitives[currentPrimitive_id].z1 = this.reader.getFloat(primitive_type, 'z1');
-			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_type, 'x2');
-			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_type, 'y2');
-			this.primitives[currentPrimitive_id].z2 = this.reader.getFloat(primitive_type, 'z2');
-			this.primitives[currentPrimitive_id].x3 = this.reader.getFloat(primitive_type, 'x3');
-			this.primitives[currentPrimitive_id].y3 = this.reader.getFloat(primitive_type, 'y3');
-			this.primitives[currentPrimitive_id].z3 = this.reader.getFloat(primitive_type, 'z3');
-			console.log(this.primitives[currentPrimitive_id].toString());
-			continue;
-		}
-		
-		console.log("primitives[" + i + "]: no triangle tag found");
-		primitive_param = currentPrimitive.getElementsByTagName('cylinder');
-		if(primitive_param.length > 0)
-		{
-			var primitive_type = currentPrimitive.children[0];
+			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_data, 'x1');
+			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_data, 'y1');
+			this.primitives[currentPrimitive_id].z1 = this.reader.getFloat(primitive_data, 'z1');
+			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_data, 'x2');
+			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_data, 'y2');
+			this.primitives[currentPrimitive_id].z2 = this.reader.getFloat(primitive_data, 'z2');
+			this.primitives[currentPrimitive_id].x3 = this.reader.getFloat(primitive_data, 'x3');
+			this.primitives[currentPrimitive_id].y3 = this.reader.getFloat(primitive_data, 'y3');
+			this.primitives[currentPrimitive_id].z3 = this.reader.getFloat(primitive_data, 'z3');
+			break;		
+		case "cylinder":
 			this.primitives[currentPrimitive_id] = new Prim_Cylinder(currentPrimitive_id);
-			this.primitives[currentPrimitive_id].base = this.reader.getFloat(primitive_type, 'base');
-			this.primitives[currentPrimitive_id].top = this.reader.getFloat(primitive_type, 'top');
-			this.primitives[currentPrimitive_id].height = this.reader.getFloat(primitive_type, 'height');
-			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
-			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
-			console.log(this.primitives[currentPrimitive_id].toString());
-			continue;
-		}
-		
-		console.log("primitives[" + i + "]: no cylinder tag found");
-		primitive_param = currentPrimitive.getElementsByTagName('sphere');
-		if(primitive_param.length > 0)
-		{
-			var primitive_type = currentPrimitive.children[0];
+			this.primitives[currentPrimitive_id].base = this.reader.getFloat(primitive_data, 'base');
+			this.primitives[currentPrimitive_id].top = this.reader.getFloat(primitive_data, 'top');
+			this.primitives[currentPrimitive_id].height = this.reader.getFloat(primitive_data, 'height');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_data, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_data, 'stacks');
+			break;	
+		case "sphere":
 			this.primitives[currentPrimitive_id] = new Prim_Sphere(currentPrimitive_id);
-			this.primitives[currentPrimitive_id].radius = this.reader.getFloat(primitive_type, 'radius');
-			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
-			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_type, 'stacks');
-			
-			console.log(this.primitives[currentPrimitive_id].toString());
-			continue;
-		}
-		
-		console.log("primitives[" + i + "]: no sphere tag found");
-		primitive_param = currentPrimitive.getElementsByTagName('torus');
-		if(primitive_param.length > 0)
-		{
-			var primitive_type = currentPrimitive.children[0];
+			this.primitives[currentPrimitive_id].radius = this.reader.getFloat(primitive_data, 'radius');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_data, 'slices');
+			this.primitives[currentPrimitive_id].stacks = this.reader.getInteger(primitive_data, 'stacks');
+			break;	
+		case "torus":
 			this.primitives[currentPrimitive_id] = new Prim_Torus(currentPrimitive_id);
-			this.primitives[currentPrimitive_id].inner = this.reader.getFloat(primitive_type, 'inner');
-			this.primitives[currentPrimitive_id].outer = this.reader.getFloat(primitive_type, 'outer');
-			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_type, 'slices');
-			this.primitives[currentPrimitive_id].loops = this.reader.getInteger(primitive_type, 'loops');
-			console.log(this.primitives[currentPrimitive_id].toString());
-			continue;
+			this.primitives[currentPrimitive_id].inner = this.reader.getFloat(primitive_data, 'inner');
+			this.primitives[currentPrimitive_id].outer = this.reader.getFloat(primitive_data, 'outer');
+			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_data, 'slices');
+			this.primitives[currentPrimitive_id].loops = this.reader.getInteger(primitive_data, 'loops');
+			break;
+		default:
+			return "invalid primitive type"
 		}
 		
-		console.log("primitives[" + i + "]: no thorus tag found");
-		
-		console.log("primitives[" + i + "]: no primitive type found");
+		console.log(this.primitives[currentPrimitive_id].toString());		
 	}
 	
 }
