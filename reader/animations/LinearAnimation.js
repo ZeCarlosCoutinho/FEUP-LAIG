@@ -14,10 +14,11 @@ function LinearAnimation(id, controlPoints, time) {
 	this.orientation = 0;
 	this.segments = [];
 	this.totalDistance = 0;
-	calculateTotalDistance();
+	this.calculateTotalDistance();
 	
 	this.speed = this.totalDistance / this.time;
 	
+	this.matrix = mat4.create();
 }
 
 LinearAnimation.prototype.calculateTotalDistance = function()
@@ -33,7 +34,7 @@ LinearAnimation.prototype.calculateTotalDistance = function()
 		//Unitary Vector
 		var direction = [delta[0]/distance, delta[1]/distance, delta[2]/distance];
 		//Orientation related to Z axis
-		var orientation = Math.atan2(x,z);
+		var orientation = Math.atan2(direction[0], direction[2]);
 		this.segments.push({
 				initialDistance: 	this.totalDistance,
 				finalDistance: 		this.totalDistance + distance,
@@ -47,8 +48,13 @@ LinearAnimation.prototype.calculateTotalDistance = function()
 
 
 
-LinearAnimation.prototype.getCurrentMatrix = function(time)
+LinearAnimation.prototype.updateMatrix = function(currTime)
 {
+	this.initialTime = this.initialTime || currTime;
+	this.lastTime = this.lastTime || currTime;
+	var time = (currTime - this.initialTime) /1000;
+	this.lastTime = currTime;
+	
 	var currentDistance;
 	if(time > this.time)
 		currentDistance = this.totalDistance;
@@ -75,5 +81,5 @@ LinearAnimation.prototype.getCurrentMatrix = function(time)
 
 	mat4.rotate(matrix, matrix, currentSegment.orientation, [0,1,0]);
 	
-	return matrix;
+	this.matrix = matrix;
 }

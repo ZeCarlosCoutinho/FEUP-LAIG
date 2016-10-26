@@ -33,13 +33,20 @@ XMLscene.prototype.init = function (application) {
 	this.defaultAppearance = new CGFappearance(this);
 
 	this.enableTextures(true); //È necessário para texturas
+	this.setUpdatePeriod(10);
+	this.axis = new CGFaxis(this);
+
+	//TESTING
 	this.testAppearance = new CGFappearance(this);
 	this.testAppearance.loadTexture("../reader/resources/images/sauroneye.jpg");
 	this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/primitives/carrotsPattern.png");
 	
+	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
+	this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
+	
 	/*this.test = new MyTorus(this, 1, 2, 10, 10);//*/
-	/*this.test = new MySphere(this, 3, 10, 10);//*/
+	this.test = new MySphere(this, 1, 10, 10);//*/
 	/*this.test = new MyCylinder(this, 2, 2, 1, 3, 6);//*/
 	/*this.test = new MyCylinderWithTops(this, 2, 2, 1, 3, 12);//*/
 /*	this.test = new MyCircle(this, 4);
@@ -51,7 +58,6 @@ XMLscene.prototype.init = function (application) {
     									0,0,0,
     									2,0,0);//*/
 
-	this.axis = new CGFaxis(this);
 };
 
 //Initializes the interface
@@ -126,15 +132,23 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.updateLights();
-		this.rootObject.display();
+		//this.rootObject.display();
 	};	
 	
 	this.pushMatrix();
 		this.testAppearance.apply();
-		//this.test.display();
+		this.multMatrix(this.testAnimation.matrix);
+		this.rotate(Math.PI/2,0,0,1);
+		this.rotate(Math.PI/2,0,1,0);
+		this.test.display();
 	this.popMatrix();
 	
 
+};
+
+
+XMLscene.prototype.update = function (currTime) {
+	this.testAnimation.updateMatrix(currTime);
 };
 
 //Updates all ligths

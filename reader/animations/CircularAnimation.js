@@ -14,13 +14,19 @@ function CircularAnimation(id, center, radius, initialAngle, rotAngle, time) {
 	this.finalAngle = initialAngle + rotAngle;
 	this.time = time;
 	
-	this.speed = rotAngle/ this.time;
-	
+	this.speed = rotAngle / this.time;
+
+	this.matrix = mat4.create();
 }
 
 
-CircularAnimation.prototype.getCurrentMatrix = function(time)
+CircularAnimation.prototype.updateMatrix = function(currTime)
 {
+	this.initialTime = this.initialTime || currTime;
+	this.lastTime = this.lastTime || currTime;
+	var time = (currTime - this.initialTime) /1000;
+	this.lastTime = currTime;
+
 	var angle;
 	if(time > this.time)
 		angle = this.finalAngle;
@@ -32,9 +38,9 @@ CircularAnimation.prototype.getCurrentMatrix = function(time)
 	
 	var matrix = mat4.create();
 	
-	mat4.translate(matrix, matrix, center);
+	mat4.translate(matrix, matrix, this.center);
 	mat4.rotate(matrix, matrix, angle, [0,1,0]);
 	mat4.translate(matrix, matrix, [this.radius,0,0]);
-	
-	return matrix;
+
+	this.matrix = matrix;
 }
