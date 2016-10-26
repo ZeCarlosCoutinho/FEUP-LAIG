@@ -11,7 +11,7 @@ XMLscene.prototype.init = function (application) {
 
     this.initCameras();
 
-    this.initLights();
+    //this.initLights();
 
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -47,26 +47,18 @@ XMLscene.prototype.init = function (application) {
 /*	this.test = new MyRectangle(this, 	0,0,
     									1,1);//*/
 
-    this.test = new MyTriangle(this, 	1,1,0,
+    /*this.test = new MyTriangle(this, 	1,1,0,
     									0,0,0,
     									2,0,0);//*/
 
-	this.axis=new CGFaxis(this);
+	this.axis = new CGFaxis(this);
 };
 
+//Initializes the interface
 XMLscene.prototype.setInterface= function (interface) {
 	this.interface = interface;
 };
 
-XMLscene.prototype.updateLights = function () {
-	for(var i = 0; i < this.lights.length; i++){
-		if (this.lightsStatus[i])
-			this.lights[i].enable();
-		else
-			this.lights[i].disable();
-		this.lights[i].update();
-	}
-};
 
 XMLscene.prototype.initLights = function () {
 
@@ -100,8 +92,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.createMaterials();
 	this.createPrimitives();
 	this.rootObject = this.graph.components[this.graph.root].create(this);
-	this.rootObject.updateTexture( null);
-	this.rootObject.updateMaterial(this.materialIndex, null);
+	this.rootObject.updateMaterial(this.materialIndex);
 
 	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
 	/*this.lights[0].setVisible(true);
@@ -146,6 +137,18 @@ XMLscene.prototype.display = function () {
 
 };
 
+//Updates all ligths
+XMLscene.prototype.updateLights = function () {
+	for(var i = 0; i < this.lights.length; i++){
+		if (this.lightsStatus[i])
+			this.lights[i].enable();
+		else
+			this.lights[i].disable();
+		this.lights[i].update();
+	}
+};
+
+//Sets the ambient light and background color using the information from the graph
 XMLscene.prototype.createIllumination = function (){
 	this.setGlobalAmbientLight(
 		this.graph.illumination.ambient[0],
@@ -161,6 +164,7 @@ XMLscene.prototype.createIllumination = function (){
 	
 }
 
+//Creates the viewports from the graph
 XMLscene.prototype.createViews = function (){
 	var i = 0;
 	for(key in this.graph.viewsList){
@@ -172,8 +176,10 @@ XMLscene.prototype.createViews = function (){
 	
 }
 
+//Creates the lights from the graph
 XMLscene.prototype.createLights = function (){
 	var i = 0;
+	//Omni Lights
 	for(key in this.graph.omniLights){
 		this.lights[i].setPosition(
 			this.graph.omniLights[key].location[0], 
@@ -201,8 +207,10 @@ XMLscene.prototype.createLights = function (){
     	this.interface.addOmniLight(key, i);
     	i++;
 	}
-
+	//Spot Lights
 	for(key in this.graph.spotLights){
+		this.lights[i].setSpotCutOff(this.graph.spotLights[key].angle);
+		this.lights[i].setSpotExponent(this.graph.spotLights[key].exponent);
 		this.lights[i].setSpotDirection(
 			this.graph.spotLights[key].target[0] - this.graph.spotLights[key].location[0], 
 			this.graph.spotLights[key].target[1] - this.graph.spotLights[key].location[1], 
@@ -210,7 +218,8 @@ XMLscene.prototype.createLights = function (){
 		this.lights[i].setPosition(
 			this.graph.spotLights[key].location[0], 
 			this.graph.spotLights[key].location[1], 
-			this.graph.spotLights[key].location[2]);
+			this.graph.spotLights[key].location[2], 
+			1);
     	this.lights[i].setDiffuse(
     		this.graph.spotLights[key].diffuse[0],
     		this.graph.spotLights[key].diffuse[1],
@@ -235,47 +244,24 @@ XMLscene.prototype.createLights = function (){
 
 }
 
+//Loads all textures
 XMLscene.prototype.loadTextures = function (){
 	for(key in this.graph.textures){
-		this.textures[key] = {
-			text: new CGFtexture(this, this.graph.textures[key].file),
-			lengthS: this.graph.textures[key].length_s,
-			lengthT: this.graph.textures[key].length_t
-		};
+		this.textures[key] = this.graph.textures[key].create(this);
 		
 	}
 }
 
+//Creates all materials
 XMLscene.prototype.createMaterials = function (){
 	for(key in this.graph.materials){
-		this.materials[key] = new CGFappearance(this);
-		this.materials[key].setAmbient(
-				this.graph.materials[key].ambient[0],
-			    this.graph.materials[key].ambient[1],
-			    this.graph.materials[key].ambient[2],
-			    this.graph.materials[key].ambient[3]);
-		this.materials[key].setEmission(
-				this.graph.materials[key].emission[0],
-			    this.graph.materials[key].emission[1],
-			    this.graph.materials[key].emission[2],
-			    this.graph.materials[key].emission[3]);
-		this.materials[key].setDiffuse(
-				this.graph.materials[key].diffuse[0],
-			    this.graph.materials[key].diffuse[1],
-			    this.graph.materials[key].diffuse[2],
-			    this.graph.materials[key].diffuse[3]);
-		this.materials[key].setSpecular(
-				this.graph.materials[key].specular[0],
-			    this.graph.materials[key].specular[1],
-			    this.graph.materials[key].specular[2],
-			    this.graph.materials[key].specular[3]);
-		this.materials[key].setShininess = this.graph.materials[key].shininess;
-		this.materials[key].setTextureWrap('REPEAT', 'REPEAT');
+		this.materials[key] = this.graph.materials[key].create(this);
 	}
 }
 
+//Creates all primitives
 XMLscene.prototype.createPrimitives = function (){
 	for(key in this.graph.primitives){
-		this.primitives[key] =this.graph.primitives[key] .create(this);
+		this.primitives[key] = this.graph.primitives[key].create(this);
 	}
 }

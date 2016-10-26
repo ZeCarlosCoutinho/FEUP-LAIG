@@ -25,22 +25,26 @@ MySphere.prototype.initBuffers = function() {
  	this.normals = [];
  	for (var i = 0; i <= this.stacks; i++) {
  		for (var j = 0; j <= this.slices; j++) {
+			//Creates the vertices
 			this.vertices.push(
 				this.radius * Math.sin(this.beta * i)*Math.cos(this.alpha*j),
 				this.radius * Math.sin(this.beta * i)*Math.sin(this.alpha*j),
 				this.radius * Math.cos(this.beta * i));
+			
+			//Calculates Normals
 			this.normals.push(
 				Math.sin(this.beta * i)*Math.cos(this.alpha*j),
 				Math.sin(this.beta * i)*Math.sin(this.alpha*j),
 				Math.cos(this.beta * i));
 
-			//pode ser preciso mudar
+			//Texture Coordinates
  			this.texCoords.push(
 				1 - (j / this.slices),
                 i / this.stacks);
          }
 	}
-
+	
+	//Pushes the indices
  	this.indices = [];
     for (var i = 0; i < this.stacks; i++) {
  		for (var j = 0; j < this.slices; j++) {
@@ -53,12 +57,6 @@ MySphere.prototype.initBuffers = function() {
  		}
  	}
 
-
-
-
- 	console.log(this.vertices.length);
- 	console.log(this.indices.length);
-	console.log(this.normals.length);
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
 };

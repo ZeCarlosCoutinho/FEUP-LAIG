@@ -7,9 +7,14 @@
             <to x="0.5" y="0" z="-1" />
         </perspective>
 		
-		<perspective id="view_1" near="0.1" far="500" angle="10">
-            <from x="-10" y="10" z="30" />
+		<perspective id="view_1" near="0.1" far="100" angle="1">
+            <from x="5" y="5" z="5" />
             <to x="0.5" y="0" z="-1" />
+        </perspective>
+		
+		<perspective id="view_2" near="0.1" far="100" angle="1">
+            <from x="-3" y="2" z="5" />
+            <to x="1" y="0" z="1" />
         </perspective>
 	 </views>
 	 

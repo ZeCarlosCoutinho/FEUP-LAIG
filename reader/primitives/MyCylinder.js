@@ -12,8 +12,10 @@ function MyCylinder(scene, height, bRadius, tRadius, stacks, slices) {
 	this.bRadius = bRadius;
 	this.tRadius = tRadius;
 
+	//Size of each stack
 	this.deltaRadius = (tRadius - bRadius) / stacks;
 	
+	//Division of slices
 	this.alpha = 2 * Math.PI / slices;
 
  	this.initBuffers();
@@ -23,9 +25,13 @@ MyCylinder.prototype = Object.create(CGFobject.prototype);
 MyCylinder.prototype.constructor = MyCylinder;
 
 MyCylinder.prototype.initBuffers = function() {
+	
+	//Initializes the arrays
 	this.vertices = [];
     this.normals = [];
     this.texCoords = [];
+	
+	//Fills the arrays with the vertices, normals, and textures coordinates
  	for (var i = 0; i <= this.stacks; i++) {
  		for (var j = 0; j <= this.slices; j++) {
  			this.vertices.push(
