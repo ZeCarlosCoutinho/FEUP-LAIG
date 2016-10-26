@@ -1,5 +1,5 @@
 /**
- * Animation
+ * LinearAnimation
  * @constructor
  */
 
