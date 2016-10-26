@@ -150,9 +150,9 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 		//Get attributes
 		this.viewsList[currentPerspective_id].near = this.reader.getFloat(currentPerspective, 'near');
 		this.viewsList[currentPerspective_id].far = this.reader.getFloat(currentPerspective, 'far');
-		this.viewsList[currentPerspective_id].angle = this.reader.getFloat(currentPerspective, 'angle');
-		this.viewsList[currentPerspective_id].from = this.readPatternXYZ(currentPerspective.children[0]);
-		this.viewsList[currentPerspective_id].to = this.readPatternXYZ(currentPerspective.children[1]);
+		this.viewsList[currentPerspective_id].angle = rtoa(this.reader.getFloat(currentPerspective, 'angle'));
+		this.viewsList[currentPerspective_id].from = this.readPatternXYZ(currentPerspective.getElementsByTagName('from')[0]);
+		this.viewsList[currentPerspective_id].to = this.readPatternXYZ(currentPerspective.getElementsByTagName('to')[0]);
 
 		console.log(this.viewsList[currentPerspective_id].toString());
 	}
