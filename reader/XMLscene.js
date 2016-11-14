@@ -42,11 +42,37 @@ XMLscene.prototype.init = function (application) {
 	this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/primitives/carrotsPattern.png");
 	
-	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
-	this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
+	this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
+	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
+	this.test = new MyBoat(this);
+	/*this.test = new MyPatch(this, 2,3,30,30,
+		[	// U = 0
+						[ // V = 0..3;
+							 [ -1.5, -1.5, 0.0, 1 ],
+							 [ -2.0, -2.0, 2.0, 1 ],
+							 [ -2.0,  2.0, 2.0, 1 ],
+							 [ -1.5,  1.5, 0.0, 1 ]
+							
+						],
+						// U = 1
+						[ // V = 0..3
+							 [ 0, 0, 3.0, 1 ],
+							 [ 0, -2.0, 3.0, 1],
+							 [ 0,  2.0, 3.0, 1 ],
+							 [ 0,  0, 3.0, 1 ]							 
+						],
+						// U = 2
+						[ // V = 0..3							 
+							 [ 1.5, -1.5, 0.0, 1 ],
+							 [ 2.0, -2.0, 2.0, 1 ],
+							 [ 2.0,  2.0, 2.0, 1 ],
+							 [ 1.5,  1.5, 0.0, 1 ]
+						]
+					]);//*/
+	//this.test = new MyPlane(this, 2,2,30,30);
 	/*this.test = new MyTorus(this, 1, 2, 10, 10);//*/
-	this.test = new MySphere(this, 1, 10, 10);//*/
+	//this.test = new MySphere(this, 1, 10, 10);//*/
 	/*this.test = new MyCylinder(this, 2, 2, 1, 3, 6);//*/
 	/*this.test = new MyCylinderWithTops(this, 2, 2, 1, 3, 12);//*/
 /*	this.test = new MyCircle(this, 4);
@@ -137,9 +163,9 @@ XMLscene.prototype.display = function () {
 	
 	this.pushMatrix();
 		this.testAppearance.apply();
-		this.multMatrix(this.testAnimation.matrix);
-		this.rotate(Math.PI/2,0,0,1);
-		this.rotate(Math.PI/2,0,1,0);
+		//this.multMatrix(this.testAnimation.matrix);
+		//this.rotate(Math.PI/2,0,0,1);
+		//this.rotate(Math.PI/2,0,1,0);
 		this.test.display();
 	this.popMatrix();
 	
