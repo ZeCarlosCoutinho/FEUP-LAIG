@@ -40,12 +40,12 @@ XMLscene.prototype.init = function (application) {
 	this.testAppearance = new CGFappearance(this);
 	this.testAppearance.loadTexture("../reader/resources/images/sauroneye.jpg");
 	this.testAppearance2 = new CGFappearance(this);
-	this.testAppearance2.loadTexture("../reader/primitives/carrotsPattern.png");
+	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");
 	
 	this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
-	this.test = new MyBoat(this);
+	this.test = new MyBoat(this, this.testAppearance2);
 	/*this.test = new MyPatch(this, 2,3,30,30,
 		[	// U = 0
 						[ // V = 0..3;
