@@ -42,7 +42,12 @@ XMLscene.prototype.init = function (application) {
 	this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");
 	
-	this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
+	this.testAnimation = new CompoundAnimation("id",
+		[	new LinearAnimation("id", [[0,0,0], [0,0,2]], 5),
+			new CircularAnimation("id", [1,0,0], 1, 0, Math.PI/2, 5),
+			new LinearAnimation("id", [[0,0,0], [0,0,2]], 5) 
+			]); //*/
+	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
 	this.test = new MyBoat(this, this.testAppearance2);
@@ -163,10 +168,11 @@ XMLscene.prototype.display = function () {
 	
 	this.pushMatrix();
 		this.testAppearance.apply();
-		//this.multMatrix(this.testAnimation.matrix);
+		this.multMatrix(this.testAnimation.matrix);
 		//this.rotate(Math.PI/2,0,0,1);
 		//this.rotate(Math.PI/2,0,1,0);
 		this.test.display();
+		console.log(this.testAnimation.isFinished());
 	this.popMatrix();
 	
 

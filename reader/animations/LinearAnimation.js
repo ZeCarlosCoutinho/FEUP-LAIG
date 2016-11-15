@@ -17,8 +17,6 @@ function LinearAnimation(id, controlPoints, time) {
 	this.calculateTotalDistance();
 	
 	this.speed = this.totalDistance / this.time;
-	
-	this.matrix = mat4.create();
 }
 
 LinearAnimation.prototype.calculateTotalDistance = function()
@@ -56,8 +54,10 @@ LinearAnimation.prototype.updateMatrix = function(currTime)
 	this.lastTime = currTime;
 	
 	var currentDistance;
-	if(time > this.time)
+	if(time > this.time){
 		currentDistance = this.totalDistance;
+		this.finished = true;
+	}
 	else if (time <= 0)
 		currentDistance = 0;
 	else
@@ -82,4 +82,8 @@ LinearAnimation.prototype.updateMatrix = function(currTime)
 	mat4.rotate(matrix, matrix, currentSegment.orientation, [0,1,0]);
 	
 	this.matrix = matrix;
+}
+
+LinearAnimation.prototype.isFinished = function(){
+	return this.finished;
 }
