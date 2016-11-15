@@ -49,6 +49,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errorPrimitives = this.parsePrimitives(rootElement);
 	var errorComponents = this.parseComponents(rootElement);
 	
+	// Check errors in the parsing of each block
 	if (errorScene != null) {
 		this.onXMLError(errorScene);
 		return;
@@ -586,8 +587,9 @@ MySceneGraph.prototype.onXMLError=function (message) {
 	this.loadedOk=false;
 };
 
-//TODO Verificar se as tags que sao obrigatorias existem
-
+/*
+ * Verifies if the ids in a component are valid
+ */
 MySceneGraph.prototype.idVerification = function(component)
 {
 	var transformationError = this.transformationIdVerification(component);
@@ -601,6 +603,9 @@ MySceneGraph.prototype.idVerification = function(component)
 	}
 }
 
+/*
+ * Verifies if the component transformation exists
+ */
 MySceneGraph.prototype.transformationIdVerification = function(component)
 {
 	var existingTranformation = this.transformations[component.transformation_id];
@@ -608,6 +613,9 @@ MySceneGraph.prototype.transformationIdVerification = function(component)
 		return "Transformation ID " + component.transformation_id + " non existent ";
 }
 
+/*
+ * Verifies if the component materials exist
+ */
 MySceneGraph.prototype.materialIdVerification = function(component)
 {
 	for(var i = 0; i < component.material_ids.length; i++)
@@ -620,6 +628,9 @@ MySceneGraph.prototype.materialIdVerification = function(component)
 	}
 }
 
+/*
+ * Verifies if the component texture exists
+ */
 MySceneGraph.prototype.textureIdVerification = function(component)
 {
 	if (component.texture_id != "inherit" && component.texture_id != "none"){
@@ -631,6 +642,9 @@ MySceneGraph.prototype.textureIdVerification = function(component)
 	}
 }
 
+/*
+ * Verifies if the children components/primitives exist
+ */
 MySceneGraph.prototype.childrenIdVerification = function(component)
 {
 	for(var i = 0; i < component.component_refs.length; i++)
@@ -653,6 +667,9 @@ MySceneGraph.prototype.childrenIdVerification = function(component)
 	}
 }
 
+/*
+ * Filters the elements got by getElementsByTagName in order to keep only the tags relative to the main blocks of the dsx
+ */
 MySceneGraph.prototype.mainTagFiltering = function(tagList)
 {
 	var newList = [];
@@ -685,6 +702,10 @@ MySceneGraph.prototype.display = function()
 	
 }
 
+/*
+ * Reads a set of transformations and successively multiply the transformation matrixes
+ * Returns the final transformation matrix
+ */
 MySceneGraph.prototype.readTransformations = function(componentTransformations)
 {
 	var matrix = mat4.create();
@@ -733,22 +754,13 @@ MySceneGraph.prototype.readTransformations = function(componentTransformations)
 		}
 	}
 		
-	//Puts the transformation matrix in the list
+	//Returns the matrix
 	return matrix;
 }
 
-MySceneGraph.prototype.findParentTexture = function(component)
-{
-	var texture;
-	var actualComponent = component;
-	do
-	{
-		texture = this.textures[actualComponent.texture_id];
-		actualComponent = actualComponent
-
-	}while(texture == "inherit");
-}
-
+/*
+ * Reads a pattern with x, y and z
+*/
 MySceneGraph.prototype.readPatternXYZ = function(source){
 	var dest = [];
 	dest[0] = this.reader.getFloat(source, 'x');
@@ -757,7 +769,9 @@ MySceneGraph.prototype.readPatternXYZ = function(source){
 	return dest;
 }
 
-
+/*
+ * Reads a pattern with x, y, z and w
+*/
 MySceneGraph.prototype.readPatternXYZW = function(source){
 	var dest = [];
 	dest[0] = this.reader.getFloat(source, 'x');
@@ -767,6 +781,9 @@ MySceneGraph.prototype.readPatternXYZW = function(source){
 	return dest;
 }
 
+/*
+ * Reads a pattern with r, g, b and a, for lighting and reflecting properties
+*/
 MySceneGraph.prototype.readPatternRGBA = function(source){
 	var dest = [];
 	dest[0] = this.reader.getFloat(source, 'r');
