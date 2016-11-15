@@ -17,6 +17,7 @@ function MySceneGraph(filename, scene) {
 	this.materials = [];
 	this.viewsList=[];
 	this.components = [];
+	this.animations = [];
 
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -573,6 +574,55 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
 
 };
+
+MySceneGraph.prototype.parseAnimations= function(rootElement)
+{
+	//Check for errors
+	var elems = rootElement.getElementsByTagName('animations');
+	if (elems == null) {
+		return "animations element is missing.";
+	}
+	if (elems.length != 1) {
+		return "either zero or more than one 'animations' element found.";
+	}
+	
+	//Gets all elements
+	var animationElems = elems[0].getElementsByTagName('animation');
+
+	//For each animation tag
+	for(var i = 0; i < animationElems.length; i++)
+	{
+		//Gets Element
+		var currentAnimation = animationElems[i];
+		var currentAnimation_id = this.reader.getString(currentAnimation, 'id');
+		
+		//Verify if id is valid
+		if(this.animations[currentAnimation_id] != null)
+		{
+			return "ID ERROR: animations[" + currentAnimation_id + "] already exists";
+		}
+		
+		//Get type of animation
+		var currentAnimation_type = this.reader.getString(currentAnimation_type, 'type');
+		if(currentAnimation_type == "linear")
+		{
+
+		}
+		else if(currentAnimation_type == "circular")
+		{
+
+		}
+		else //Type not existent
+		{
+			
+		}
+		//Creates data structure
+		this.animations[currentAnimation_id] = new (currentAnimation_id);
+		this.animations[currentAnimation_id].matrix = this.readTransformations(currentAnimation);
+		
+		console.log(this.animations[currentAnimation_id].toString());
+	}
+}
 
 rtoa = function(degree){
 	return (degree*Math.PI)/180;
