@@ -455,6 +455,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_data, 'slices');
 			this.primitives[currentPrimitive_id].loops = this.reader.getInteger(primitive_data, 'loops');
 			break;
+			//TODO PLANE AND PATCH
 		default:
 			return "invalid primitive type"
 		}
@@ -484,11 +485,17 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 	{		
 		//Gets Element
 		var currentComponent = componentsElems[i];
+		var j = 1;
 		var currentComponent_id = this.reader.getString(currentComponent, 'id');
 		var currentComponentTransformation = currentComponent.children[0];
-		var currentComponentMaterials = currentComponent.children[1];
-		var currentComponentTexture = currentComponent.children[2];
-		var currentComponentChildren = currentComponent.children[3];
+		var currentComponentAnimations = currentComponent.children[j];
+		if(currentComponentAnimations.localName != "animation") //Because animation block is optional
+			currentComponentAnimations = null;
+		else
+			j++;
+		var currentComponentMaterials = currentComponent.children[j];
+		var currentComponentTexture = currentComponent.children[j+1];
+		var currentComponentChildren = currentComponent.children[j+2];
 
 		//Verify if id is valid
 		if(this.components[currentComponent_id] != null)
@@ -519,6 +526,12 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 			this.components[currentComponent_id].transformation_matrix = this.transformations[transformationref].matrix;
 		}
 
+		//  ----   Parse the ANIMATIONS  -----
+		/*if(currentComponentAnimations != null)
+		{
+			currentComponentAnimations
+		}*/
+		
 		//  ----   Parse the MATERIALS  -----
 		var currentComponentMaterialsElements = currentComponentMaterials.getElementsByTagName('material');
 		if(currentComponentMaterialsElements.length == 0)
