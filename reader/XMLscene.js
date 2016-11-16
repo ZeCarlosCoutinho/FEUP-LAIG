@@ -180,6 +180,7 @@ XMLscene.prototype.display = function () {
 
 
 XMLscene.prototype.update = function (currTime) {
+	//TODO PERCORRER A ARVORE TODA, E DAR UPDATE AS ANIMACOES
 	this.testAnimation.updateMatrix(currTime);
 };
 

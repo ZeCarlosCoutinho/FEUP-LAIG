@@ -2,11 +2,12 @@
  * MyComponent
  * @constructor
  */
-function MyComponent(scene, transformation_matrix, material_ids, texture_id, component_refs, primitive_refs) {
+function MyComponent(scene, transformation_matrix, animation, material_ids, texture_id, component_refs, primitive_refs) {
  	CGFobject.call(this,scene);
 	
 // Matrix of transformations applied to the component
 	this.transformation_matrix = transformation_matrix;
+	this.animation = animation;
 
 // Saves a list of Materials of the component
 // All Materials are applied later, when the object is drawn on screen
@@ -66,6 +67,7 @@ MyComponent.prototype.display = function (material, texture) {
 
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
+		//this.scene.multMatrix(this.animation.matrix); TODO uncomment and implement the rest
 		for(var component of this.components){
 			if(component instanceof MyComponent)
 				component.display(drawingMaterial, this.texture); //Recursively, calls the display for each of the child components

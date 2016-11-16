@@ -1,5 +1,5 @@
 /**
- * MyPrism
+ * Component
  * @constructor
  */
 function Component(id) {
@@ -7,6 +7,7 @@ function Component(id) {
 	
 	this.transformation_id;
 	this.transformation_matrix = [];
+	this.animation;
 	
 	this.material_ids = [];
 	
@@ -22,6 +23,7 @@ Component.prototype.toString=function(){
 	return "Component Item " + this.id + "\n"
 	+ "Transformation id: " + this.transformation_id + "\n"
 	+ "Matrix: " + this.transformation_matrix + "\n"
+	+ "Animation : " + this.animation + "\n"
 	+ "Materials: " + this.material_ids + "\n"
 	+ "Texture: " + this.texture_id + "\n"
 	+ "ComponentRefs: " + this.component_refs + "\n"
@@ -33,7 +35,7 @@ Component.prototype.toString=function(){
  * @return {MyComponent}
  */
 Component.prototype.create = function(scene) {
-	this.componentObject = new MyComponent(scene, this.transformation_matrix, this.material_ids, this.texture_id, this.component_refs, this.primitive_refs);
+	this.componentObject = new MyComponent(scene, this.transformation_matrix, this.animation, this.material_ids, this.texture_id, this.component_refs, this.primitive_refs);
 	return this.componentObject;
 };
 

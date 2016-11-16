@@ -16,8 +16,8 @@ function MySceneGraph(filename, scene) {
 	this.primitives = [];
 	this.materials = [];
 	this.viewsList=[];
-	this.components = [];
 	this.animations = [];
+	this.components = [];
 
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -48,8 +48,8 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errorMaterials = this.parseMaterials(rootElement);
 	var errorTransformations = this.parseTransformations(rootElement);
 	var errorPrimitives = this.parsePrimitives(rootElement);
-	var errorComponents = this.parseComponents(rootElement);
 	var errorAnimations = this.parseAnimations(rootElement);
+	var errorComponents = this.parseComponents(rootElement);
 	
 	if (errorScene != null) {
 		this.onXMLError(errorScene);
@@ -83,12 +83,12 @@ MySceneGraph.prototype.onXMLReady=function()
 		this.onXMLError(errorPrimitives);
 		return;
 	}	
-	if (errorComponents != null) {
-		this.onXMLError(errorComponents);
-		return;
-	}	
 	if(errorAnimations != null) {
 		this.onXMLError(errorAnimations);
+		return;
+	}
+	if (errorComponents != null) {
+		this.onXMLError(errorComponents);
 		return;
 	}
 
@@ -485,17 +485,17 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 	{		
 		//Gets Element
 		var currentComponent = componentsElems[i];
-		var j = 1;
+		var index = 1;
 		var currentComponent_id = this.reader.getString(currentComponent, 'id');
 		var currentComponentTransformation = currentComponent.children[0];
-		var currentComponentAnimations = currentComponent.children[j];
+		var currentComponentAnimations = currentComponent.children[index];
 		if(currentComponentAnimations.localName != "animation") //Because animation block is optional
 			currentComponentAnimations = null;
 		else
-			j++;
-		var currentComponentMaterials = currentComponent.children[j];
-		var currentComponentTexture = currentComponent.children[j+1];
-		var currentComponentChildren = currentComponent.children[j+2];
+			index++;
+		var currentComponentMaterials = currentComponent.children[index];
+		var currentComponentTexture = currentComponent.children[index+1];
+		var currentComponentChildren = currentComponent.children[index+2];
 
 		//Verify if id is valid
 		if(this.components[currentComponent_id] != null)
@@ -527,10 +527,22 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		}
 
 		//  ----   Parse the ANIMATIONS  -----
-		/*if(currentComponentAnimations != null)
+		if(currentComponentAnimations != null)
 		{
-			currentComponentAnimations
-		}*/
+			var animationList = [];
+			var currentComponentAnimationRefs = currentComponentAnimations.getElementsByTagName('animationref');
+			for(var j = 0; j < currentComponentAnimationRefs.length; j++)
+			{
+				var currentAnimation_id = this.reader.getString(currentComponentAnimationRefs[j], 'id');
+				var actualAnimation = this.animations[currentAnimation_id];
+				if(actualAnimation == null)
+					return "In component " + currentComponent_id + ", animation id " + j + " is invalid";
+
+				animationList.push(actualAnimation);
+			}
+			
+			this.components[currentComponent_id].animation = new CompoundAnimation(currentAnimation_id, animationList);
+		}
 		
 		//  ----   Parse the MATERIALS  -----
 		var currentComponentMaterialsElements = currentComponentMaterials.getElementsByTagName('material');
