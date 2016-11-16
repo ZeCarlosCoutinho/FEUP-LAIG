@@ -50,7 +50,8 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
-	this.test = new MyBoat(this, this.testAppearance2);
+	this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , [1,1,1,1], [0,0,0,1], [1,0,0,1]);
+	//this.test = new MyBoat(this, this.testAppearance2);
 	/*this.test = new MyPatch(this, 2,3,30,30,
 		[	// U = 0
 						[ // V = 0..3;
