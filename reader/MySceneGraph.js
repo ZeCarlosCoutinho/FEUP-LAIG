@@ -49,6 +49,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errorTransformations = this.parseTransformations(rootElement);
 	var errorPrimitives = this.parsePrimitives(rootElement);
 	var errorComponents = this.parseComponents(rootElement);
+	var errorAnimations = this.parseAnimations(rootElement);
 	
 	if (errorScene != null) {
 		this.onXMLError(errorScene);
@@ -86,6 +87,10 @@ MySceneGraph.prototype.onXMLReady=function()
 		this.onXMLError(errorComponents);
 		return;
 	}	
+	if(errorAnimations != null) {
+		this.onXMLError(errorAnimations);
+		return;
+	}
 
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
 	this.scene.onGraphLoaded();
@@ -595,30 +600,70 @@ MySceneGraph.prototype.parseAnimations= function(rootElement)
 		//Gets Element
 		var currentAnimation = animationElems[i];
 		var currentAnimation_id = this.reader.getString(currentAnimation, 'id');
+		var currentAnimation_span = this.reader.getFloat(currentAnimation, 'span');
 		
-		//Verify if id is valid
+
+		//Verify if id and span time are valid
 		if(this.animations[currentAnimation_id] != null)
 		{
 			return "ID ERROR: animations[" + currentAnimation_id + "] already exists";
 		}
 		
+		if(currentAnimation_span <= 0)
+		{
+			return "In animation " + currentAnimation_id + ", span time invalid.";
+		}
+
+
 		//Get type of animation
-		var currentAnimation_type = this.reader.getString(currentAnimation_type, 'type');
+		var currentAnimation_type = this.reader.getString(currentAnimation, 'type');
 		if(currentAnimation_type == "linear")
 		{
+			this.animations[currentAnimation_id] = new LinearAnimationParsed(currentAnimation_id);
+			var controlPointsElems = currentAnimation.getElementsByTagName('controlpoint');
+
+			if(controlPointsElems.length < 2) //In case there are less than 2 control points
+			{
+				return "not enough control points";
+			}
+
+			var controlPointBuffer = [0, 0, 0];
+			for(var i = 0; i < controlPointsElems.length; i++)
+			{
+				if(controlPointsElems[i].attributes.length != 3)
+				{
+					return "In Animation " + currentAnimation_id + ", controlpoint " + i + " is invalid";
+				}
+				controlPointBuffer[0] = this.reader.getFloat(controlPointsElems[i], 'xx');
+				controlPointBuffer[1] = this.reader.getFloat(controlPointsElems[i], 'yy');
+				controlPointBuffer[2] = this.reader.getFloat(controlPointsElems[i], 'zz');
+				this.animations[currentAnimation_id].controlPoints.push(controlPointBuffer);
+			}
 
 		}
 		else if(currentAnimation_type == "circular")
 		{
+			//Create animation with it's id
+			this.animations[currentAnimation_id] = new CircularAnimationParsed(currentAnimation_id);
 
+			//Gets animation attributes
+			var center = [];
+			center[0] = this.reader.getFloat(currentAnimation, 'centerx');
+			center[1] = this.reader.getFloat(currentAnimation, 'centery');
+			center[2] = this.reader.getFloat(currentAnimation, 'centerz');
+			this.animations[currentAnimation_id].center = center;
+
+			this.animations[currentAnimation_id].radius = this.reader.getFloat(currentAnimation, 'radius');
+			this.animations[currentAnimation_id].initialAngle = this.reader.getFloat(currentAnimation, 'startang');
+			this.animations[currentAnimation_id].rotAngle = this.reader.getFloat(currentAnimation, 'rotang');
 		}
 		else //Type not existent
 		{
-			
+			return "Animation type not existent";
 		}
-		//Creates data structure
-		this.animations[currentAnimation_id] = new (currentAnimation_id);
-		this.animations[currentAnimation_id].matrix = this.readTransformations(currentAnimation);
+
+		//Set animation time
+		this.animations[currentAnimation_id].time = currentAnimation_span;
 		
 		console.log(this.animations[currentAnimation_id].toString());
 	}
