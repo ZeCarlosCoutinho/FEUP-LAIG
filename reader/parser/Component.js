@@ -45,12 +45,12 @@ Component.prototype.create = function(scene) {
  * @return {MyComponent}
  */
 Component.prototype.createAnimation = function() {
-	switch(this.animationList.lenght ){
+	switch(this.animationList.length ){
 	case 0:
 		return null;
 		break;
 	case 1:
-		return animationList[0].create();
+		return this.animationList[0].create();
 		break;
 	default:
 		var animationList = [];
