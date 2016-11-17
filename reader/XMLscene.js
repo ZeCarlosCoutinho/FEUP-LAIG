@@ -33,7 +33,7 @@ XMLscene.prototype.init = function (application) {
 	this.defaultAppearance = new CGFappearance(this);
 
 	this.enableTextures(true); //È necessário para texturas
-	this.setUpdatePeriod(10);
+	//this.setUpdatePeriod(10);
 	this.axis = new CGFaxis(this);
 
 	//TESTING
@@ -131,7 +131,8 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.createPrimitives();
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
-
+	this.setUpdatePeriod(10);
+	
 	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
 	/*this.lights[0].setVisible(true);
     this.lights[0].enable();*/
@@ -164,16 +165,16 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.updateLights();
-		//this.rootObject.display();
+		this.rootObject.display();
 	};	
 	
 	this.pushMatrix();
-		this.testAppearance.apply();
-		this.multMatrix(this.testAnimation.matrix);
+		//this.testAppearance.apply();
+		//this.multMatrix(this.testAnimation.matrix);
 		//this.rotate(Math.PI/2,0,0,1);
 		//this.rotate(Math.PI/2,0,1,0);
-		this.test.display();
-		console.log(this.testAnimation.isFinished());
+		//this.test.display();
+		//console.log(this.testAnimation.isFinished());
 	this.popMatrix();
 	
 
@@ -182,7 +183,8 @@ XMLscene.prototype.display = function () {
 
 XMLscene.prototype.update = function (currTime) {
 	//TODO PERCORRER A ARVORE TODA, E DAR UPDATE AS ANIMACOES
-	this.testAnimation.updateMatrix(currTime);
+	//if(this.r)
+	this.rootObject.updateAnimation(currTime);
 };
 
 //Updates all ligths

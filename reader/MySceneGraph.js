@@ -538,10 +538,8 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 				if(actualAnimation == null)
 					return "In component " + currentComponent_id + ", animation id " + j + " is invalid";
 
-				animationList.push(actualAnimation);
+				this.components[currentComponent_id].animationList.push(actualAnimation);
 			}
-			
-			this.components[currentComponent_id].animation = new CompoundAnimation(currentAnimation_id, animationList);
 		}
 		
 		//  ----   Parse the MATERIALS  -----
@@ -652,13 +650,13 @@ MySceneGraph.prototype.parseAnimations= function(rootElement)
 				return "not enough control points";
 			}
 
-			var controlPointBuffer = [0, 0, 0];
 			for(var i = 0; i < controlPointsElems.length; i++)
 			{
 				if(controlPointsElems[i].attributes.length != 3)
 				{
 					return "In Animation " + currentAnimation_id + ", controlpoint " + i + " is invalid";
 				}
+				var controlPointBuffer = [];
 				controlPointBuffer[0] = this.reader.getFloat(controlPointsElems[i], 'xx');
 				controlPointBuffer[1] = this.reader.getFloat(controlPointsElems[i], 'yy');
 				controlPointBuffer[2] = this.reader.getFloat(controlPointsElems[i], 'zz');
@@ -679,8 +677,8 @@ MySceneGraph.prototype.parseAnimations= function(rootElement)
 			this.animations[currentAnimation_id].center = center;
 
 			this.animations[currentAnimation_id].radius = this.reader.getFloat(currentAnimation, 'radius');
-			this.animations[currentAnimation_id].initialAngle = this.reader.getFloat(currentAnimation, 'startang');
-			this.animations[currentAnimation_id].rotAngle = this.reader.getFloat(currentAnimation, 'rotang');
+			this.animations[currentAnimation_id].initialAngle = rtoa(this.reader.getFloat(currentAnimation, 'startang'));
+			this.animations[currentAnimation_id].rotAngle = rtoa(this.reader.getFloat(currentAnimation, 'rotang'));
 		}
 		else //Type not existent
 		{

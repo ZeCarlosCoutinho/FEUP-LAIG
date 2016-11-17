@@ -54,7 +54,15 @@ MyComponent.prototype.updateMaterial = function (currentMaterialIndex){
 	this.currentMaterial = this.materials[currentMaterialIndex % this.materials.length];
 	for(var component of this.components)
 		if(component instanceof MyComponent)
-			component.updateMaterial(currentMaterialIndex)
+			component.updateMaterial(currentMaterialIndex);
+}
+
+MyComponent.prototype.updateAnimation = function (currTime){
+	if (this.animation != null)
+		this.animation.updateMatrix(currTime);
+	for(var component of this.components)
+		if(component instanceof MyComponent)
+			component.updateAnimation(currTime);
 }
 
 MyComponent.prototype.display = function (material, texture) {
@@ -67,7 +75,8 @@ MyComponent.prototype.display = function (material, texture) {
 
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
-		//this.scene.multMatrix(this.animation.matrix); TODO uncomment and implement the rest
+		if (this.animation != null)
+			this.scene.multMatrix(this.animation.matrix);// TODO uncomment and implement the rest
 		for(var component of this.components){
 			if(component instanceof MyComponent)
 				component.display(drawingMaterial, this.texture); //Recursively, calls the display for each of the child components

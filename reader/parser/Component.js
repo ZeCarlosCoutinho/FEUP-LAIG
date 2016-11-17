@@ -7,7 +7,7 @@ function Component(id) {
 	
 	this.transformation_id;
 	this.transformation_matrix = [];
-	this.animation;
+	this.animationList = [];
 	
 	this.material_ids = [];
 	
@@ -35,8 +35,30 @@ Component.prototype.toString=function(){
  * @return {MyComponent}
  */
 Component.prototype.create = function(scene) {
-	this.componentObject = new MyComponent(scene, this.transformation_matrix, this.animation, this.material_ids, this.texture_id, this.component_refs, this.primitive_refs);
+	var animation = this.createAnimation();
+	this.componentObject = new MyComponent(scene, this.transformation_matrix, animation, this.material_ids, this.texture_id, this.component_refs, this.primitive_refs);
 	return this.componentObject;
+};
+
+/**
+ * Creates a new MyComponent object
+ * @return {MyComponent}
+ */
+Component.prototype.createAnimation = function() {
+	switch(this.animationList.lenght ){
+	case 0:
+		return null;
+		break;
+	case 1:
+		return animationList[0].create();
+		break;
+	default:
+		var animationList = [];
+		for (var a in this.animationList)
+		animationList.push(this.animationList[a].create());
+		return new CompoundAnimation("compound", animationList);
+		
+	}
 };
 
 /**
