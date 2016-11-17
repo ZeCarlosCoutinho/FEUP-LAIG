@@ -118,12 +118,15 @@
 	</transformations>
 	
 	<animations>
-		<animation id="circleanimationtest" span="10" type="circular"
+		<animation id="circleanimationtest" span="5" type="circular"
 		centerx="4" centery="4" centerz="4" radius="5" startang="30" rotang="60" />
 		
-		<animation id="linearanimationtest" span="5" type="linear">
-			<controlpoint xx="0" yy="1" zz="0"/>
-			<controlpoint xx="1" yy="0" zz="1" />
+		<animation id="linearanimationtest" span="10" type="linear">
+			<controlpoint xx="0" yy="0" zz="0"/>
+			<controlpoint xx="2" yy="0" zz="0" />
+			<controlpoint xx="2" yy="1" zz="0" />
+			<controlpoint xx="0" yy="1" zz="0" />
+			<controlpoint xx="0" yy="0" zz="0"/>
 		</animation>
 		
 		<animation id="onespin" span="3" type="circular"
@@ -280,9 +283,14 @@
 		
 		<component id="mysticObject">
 			<transformation>
-				
+				<translate x="2" y="0" z="2" />
 			</transformation>
 			
+			<animation>
+            	<animationref id="linearanimationtest" />
+            	<animationref id="circleanimationtest" />
+        	</animation>
+
 			<materials>
 				<material id="darkMaterial" />
 				<material id="reflectingMaterial" />
@@ -299,7 +307,7 @@
 		
 		<component id="mysticSupport">
 			<transformation>
-				<translate x="2" y="0" z="2" />
+				<translate x="0" y="0" z="0" />
 				<rotate axis="x" angle="-90" />
 			</transformation>
 			
@@ -316,7 +324,7 @@
 		
 		<component id="mysticEye">
 			<transformation>
-				<translate x="2" y="2" z="2" />
+				<translate x="0" y="2" z="0" />
 				<scale x="0.5" y="0.5" z="0.5" />
 				<rotate axis="y" angle="90" />
 				<rotate axis="x" angle="-90" />
@@ -339,7 +347,7 @@
 		
 		<component id="mysticRod">
 			<transformation>
-				<translate x="2" y="2" z="2" />
+				<translate x="0" y="2" z="0" />
 			</transformation>
 			
 			<materials>

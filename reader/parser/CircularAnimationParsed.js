@@ -2,11 +2,8 @@
  * CircularAnimationParsed
  * @constructor
  */
-
- CircularAnimationParsed.prototype = new AnimationParsed();
-
 function CircularAnimationParsed(id) {
-	this.init(id);
+	this.id = id;
 	this.center = [];
 	this.radius = 0;
  	this.initialAngle = 0;

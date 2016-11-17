@@ -15,6 +15,7 @@ function LinearAnimation(id, controlPoints, time) {
 	this.segments = [];
 	this.totalDistance = 0;
 	this.calculateTotalDistance();
+	this.orientation = 0
 	
 	this.speed = this.totalDistance / this.time;
 }
@@ -32,12 +33,13 @@ LinearAnimation.prototype.calculateTotalDistance = function()
 		//Unitary Vector
 		var direction = [delta[0]/distance, delta[1]/distance, delta[2]/distance];
 		//Orientation related to Z axis
-		var orientation = Math.atan2(direction[0], direction[2]);
+		if (delta[0] != 0 || delta[2] != 0) 
+			this.orientation = Math.atan2(direction[0], direction[2]);
 		this.segments.push({
 				initialDistance: 	this.totalDistance,
 				finalDistance: 		this.totalDistance + distance,
 				direction: 			direction,
-				orientation: 		orientation,
+				orientation: 		this.orientation,
 				initialPoint: 		this.controlPoints[i-1]
 							});
 		this.totalDistance += distance;
