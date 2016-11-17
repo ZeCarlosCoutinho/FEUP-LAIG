@@ -7,8 +7,6 @@ function MyChessBoard(scene, dimensions, selected, texture, c1, c2, cs) {
 	
 	this.dimensions = dimensions;
 	this.selected = selected;
-	//this.material = new CGFappearance(this.scene);
-	//this.materialtexture;
 	this.texture = texture;
 	this.c1 = c1;
 	this.c2 = c2;

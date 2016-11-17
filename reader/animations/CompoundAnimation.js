@@ -17,7 +17,6 @@ CompoundAnimation.prototype.updateMatrix = function(currTime)
 {
 	this.initialTime = this.initialTime || currTime;
 	var time = (currTime - this.initialTime) /1000;
-	console.log(time);
 	var matrix = mat4.create();
 
 	if(this.currentAnimation < this.animations.length) {

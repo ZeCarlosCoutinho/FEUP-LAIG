@@ -2,11 +2,8 @@
  * LinearAnimationParsed
  * @constructor
  */
-
-LinearAnimationParsed.prototype = new AnimationParsed();
-
 function LinearAnimationParsed(id) {
-	this.init(id);
+	this.id = id;
 
 	this.controlPoints = [];
 	this.time = 0;
