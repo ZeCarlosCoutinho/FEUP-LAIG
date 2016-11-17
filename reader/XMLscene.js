@@ -50,7 +50,7 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
-	this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , [1,1,1,1], [0,0,0,1], [1,0,0,1]);
+	//this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , [1,1,1,1], [0,0,0,1], [1,0,0,1]);
 	//this.test = new MyBoat(this, this.testAppearance2);
 	/*this.test = new MyPatch(this, 2,3,30,30,
 		[	// U = 0
@@ -164,9 +164,11 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.updateLights();
-		//this.rootObject.display();
+		this.rootObject.display();
 	};	
 	
+	//TESTING
+	/*
 	this.pushMatrix();
 		this.testAppearance.apply();
 		this.multMatrix(this.testAnimation.matrix);
@@ -174,7 +176,7 @@ XMLscene.prototype.display = function () {
 		//this.rotate(Math.PI/2,0,1,0);
 		this.test.display();
 		console.log(this.testAnimation.isFinished());
-	this.popMatrix();
+	this.popMatrix();*/
 	
 
 };
@@ -182,7 +184,12 @@ XMLscene.prototype.display = function () {
 
 XMLscene.prototype.update = function (currTime) {
 	//TODO PERCORRER A ARVORE TODA, E DAR UPDATE AS ANIMACOES
-	this.testAnimation.updateMatrix(currTime);
+	//this.testAnimation.updateMatrix(currTime);
+	for(component_id in this.graph.components)
+	{
+		if(this.graph.components[component_id].animation != null)
+			this.graph.components[component_id].animation.updateMatrix(currTime);
+	}
 };
 
 //Updates all ligths

@@ -17,6 +17,11 @@ CompoundAnimationParsed.prototype.toString=function(){
 }
 
 CompoundAnimationParsed.prototype.create=function(){
-	var animation = new CompoundAnimation(this.id, this.animations);
+	var createdAnimations = [];
+	for(var i = 0; i < this.animations.length; i++)
+	{
+		createdAnimations.push(this.animations[i].create());
+	}
+	var animation = new CompoundAnimation(this.id, createdAnimations);
 	return animation;
 }

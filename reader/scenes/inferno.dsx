@@ -125,6 +125,9 @@
 			<controlpoint xx="0" yy="1" zz="0"/>
 			<controlpoint xx="1" yy="0" zz="1" />
 		</animation>
+		
+		<animation id="onespin" span="3" type="circular"
+		centerx="0" centery="0" centerz="0" radius="1" startang="0" rotang="180" />
 	</animations>
 	
 	<primitives>
@@ -318,6 +321,10 @@
 				<rotate axis="y" angle="90" />
 				<rotate axis="x" angle="-90" />
 			</transformation>
+			
+			<animation>
+				<animationref id="onespin" />
+			</animation>
 			
 			<materials>
 				<material id="emittingBall" />

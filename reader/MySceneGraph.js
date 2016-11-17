@@ -540,8 +540,9 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
 				animationList.push(actualAnimation);
 			}
-			
-			this.components[currentComponent_id].animation = new CompoundAnimation(currentAnimation_id, animationList);
+			var compoundAnimationParsed = new CompoundAnimationParsed(currentAnimation_id);
+			compoundAnimationParsed.animations = animationList;
+			this.components[currentComponent_id].animation =  compoundAnimationParsed.create();
 		}
 		
 		//  ----   Parse the MATERIALS  -----
@@ -653,15 +654,15 @@ MySceneGraph.prototype.parseAnimations= function(rootElement)
 			}
 
 			var controlPointBuffer = [0, 0, 0];
-			for(var i = 0; i < controlPointsElems.length; i++)
+			for(var j = 0; j < controlPointsElems.length; j++)
 			{
-				if(controlPointsElems[i].attributes.length != 3)
+				if(controlPointsElems[j].attributes.length != 3)
 				{
-					return "In Animation " + currentAnimation_id + ", controlpoint " + i + " is invalid";
+					return "In Animation " + currentAnimation_id + ", controlpoint " + j + " is invalid";
 				}
-				controlPointBuffer[0] = this.reader.getFloat(controlPointsElems[i], 'xx');
-				controlPointBuffer[1] = this.reader.getFloat(controlPointsElems[i], 'yy');
-				controlPointBuffer[2] = this.reader.getFloat(controlPointsElems[i], 'zz');
+				controlPointBuffer[0] = this.reader.getFloat(controlPointsElems[j], 'xx');
+				controlPointBuffer[1] = this.reader.getFloat(controlPointsElems[j], 'yy');
+				controlPointBuffer[2] = this.reader.getFloat(controlPointsElems[j], 'zz');
 				this.animations[currentAnimation_id].controlPoints.push(controlPointBuffer);
 			}
 

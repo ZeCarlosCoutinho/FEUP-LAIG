@@ -67,7 +67,9 @@ MyComponent.prototype.display = function (material, texture) {
 
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
-		//this.scene.multMatrix(this.animation.matrix); TODO uncomment and implement the rest
+		//Apply animation
+		if(this.animation != null)
+			this.scene.multMatrix(this.animation.matrix);
 		for(var component of this.components){
 			if(component instanceof MyComponent)
 				component.display(drawingMaterial, this.texture); //Recursively, calls the display for each of the child components
