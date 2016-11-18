@@ -26,11 +26,16 @@ Prim_Patch.prototype.toString=function(){
  */
 Prim_Patch.prototype.create=function(scene){
 	var controlPoints = [];
-	for(var i = 0; i < this.controlPoints.length; i++){
-		var u = i / (this.order_v+1);
-		var v = i % (this.order_v+1);
-		controlPoints[v * (this.order_v+1) + u] = this.controlPoints[i];
+	for(var i = 0; i < this.order_u +1; i++)
+		controlPoints[i] = [];
+	for(var j = 0; j < this.controlPoints.length; j++){
+		var v = Math.floor(j / (this.order_u+1));
+		var u = j % (this.order_u+1);
+		var t = (u * (this.order_u+1) + v);
+		controlPoints[u][v] = this.controlPoints[j];
 	}
+	console.log(this.controlPoints);
+	console.log(controlPoints);
 	return new MyPatch(scene, this.order_u, this.order_v, this.u_parts, this.v_parts, controlPoints);
 }
 

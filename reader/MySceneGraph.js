@@ -465,8 +465,8 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			break;
 		case "patch":
 			this.primitives[currentPrimitive_id] = new Prim_Patch(currentPrimitive_id);
-			this.primitives[currentPrimitive_id].u_length = this.reader.getInteger(primitive_data, 'orderU');
-			this.primitives[currentPrimitive_id].v_length = this.reader.getInteger(primitive_data, 'orderV');
+			this.primitives[currentPrimitive_id].order_u = this.reader.getInteger(primitive_data, 'orderU');
+			this.primitives[currentPrimitive_id].order_v = this.reader.getInteger(primitive_data, 'orderV');
 			this.primitives[currentPrimitive_id].u_parts = this.reader.getInteger(primitive_data, 'partsU');
 			this.primitives[currentPrimitive_id].v_parts = this.reader.getInteger(primitive_data,'partsV');
 			var controlPointsElems = primitive_data.getElementsByTagName('controlpoint');
