@@ -3,10 +3,8 @@
  * @constructor
  */
 
-CompoundAnimationParsed.prototype = new AnimationParsed();
-
 function CompoundAnimationParsed(id) {
-	this.init(id);
+	this.id = id;
 
 	this.animations = [];
 }

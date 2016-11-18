@@ -653,9 +653,10 @@ MySceneGraph.prototype.parseAnimations= function(rootElement)
 				return "not enough control points";
 			}
 
-			var controlPointBuffer = [0, 0, 0];
+			
 			for(var j = 0; j < controlPointsElems.length; j++)
 			{
+				var controlPointBuffer = [0, 0, 0];
 				if(controlPointsElems[j].attributes.length != 3)
 				{
 					return "In Animation " + currentAnimation_id + ", controlpoint " + j + " is invalid";
@@ -680,8 +681,8 @@ MySceneGraph.prototype.parseAnimations= function(rootElement)
 			this.animations[currentAnimation_id].center = center;
 
 			this.animations[currentAnimation_id].radius = this.reader.getFloat(currentAnimation, 'radius');
-			this.animations[currentAnimation_id].initialAngle = this.reader.getFloat(currentAnimation, 'startang');
-			this.animations[currentAnimation_id].rotAngle = this.reader.getFloat(currentAnimation, 'rotang');
+			this.animations[currentAnimation_id].initialAngle = rtoa(this.reader.getFloat(currentAnimation, 'startang'));
+			this.animations[currentAnimation_id].rotAngle = rtoa(this.reader.getFloat(currentAnimation, 'rotang'));
 		}
 		else //Type not existent
 		{
