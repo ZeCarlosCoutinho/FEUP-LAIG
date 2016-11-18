@@ -456,6 +456,29 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			this.primitives[currentPrimitive_id].loops = this.reader.getInteger(primitive_data, 'loops');
 			break;
 			//TODO PLANE AND PATCH
+		case "plane":
+			this.primitives[currentPrimitive_id] = new Prim_Plane(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].u_length = this.reader.getFloat(primitive_data, 'dimX');
+			this.primitives[currentPrimitive_id].v_length = this.reader.getFloat(primitive_data, 'dimY');
+			this.primitives[currentPrimitive_id].u_parts = this.reader.getInteger(primitive_data, 'partsX');
+			this.primitives[currentPrimitive_id].v_parts = this.reader.getInteger(primitive_data,'partsY');
+			break;
+		case "patch":
+			this.primitives[currentPrimitive_id] = new Prim_Patch(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].u_length = this.reader.getInteger(primitive_data, 'orderU');
+			this.primitives[currentPrimitive_id].v_length = this.reader.getInteger(primitive_data, 'orderV');
+			this.primitives[currentPrimitive_id].u_parts = this.reader.getInteger(primitive_data, 'partsU');
+			this.primitives[currentPrimitive_id].v_parts = this.reader.getInteger(primitive_data,'partsV');
+			var controlPointsElems = primitive_data.getElementsByTagName('controlpoint');
+			for(var currentElem = 0; currentElem < controlPointsElems.length; currentElem++)
+			{
+				var controlPoint = [];
+				controlPoint[0] = this.reader.getFloat(controlPointsElems, 'x');
+				controlPoint[1] = this.reader.getFloat(controlPointsElems, 'y');
+				controlPoint[2] = this.reader.getFloat(controlPointsElems, 'z');
+				this.primitives[currentPrimitive_id].controlPoints.push(controlpoint);
+			}
+			break;
 		default:
 			return "invalid primitive type"
 		}

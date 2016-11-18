@@ -9,10 +9,11 @@ function Prim_Patch(primitive_id) {
 	this.order_v = 0;
 	this.u_parts = 0;
 	this.v_parts = 0;
+	this.controlPoints = [];
 }
 
 Prim_Patch.prototype.toString=function(){
-	return "Primitive Plane Item " + this.id
+	return "Primitive Patch Item " + this.id
 	+ "\nOrder U: " + this.u_length + " Order V: " + this.u_length
 	+ "\nU_Parts: " + this.u_parts + " V_Parts: " + this.v_parts
 	+ "\n";
@@ -25,7 +26,7 @@ Prim_Patch.prototype.toString=function(){
  */
 Prim_Patch.prototype.create=function(scene){
 	var controlPoints = [];
-	for(var i = 0; i < this.controlPoints.lenght; i++){
+	for(var i = 0; i < this.controlPoints.length; i++){
 		var u = i / (this.order_v+1);
 		var v = i % (this.order_v+1);
 		controlPoints[v * (this.order_v+1) + u] = this.controlPoints[i];
