@@ -172,18 +172,18 @@
 		
 		<primitive id="test_patch">
 			<patch orderU="2" orderV="3" partsU="3" partsV="3">
-				<controlpoint x="0" y="0" z="0" />
-				<controlpoint x="2" y="0" z="0" />
-				<controlpoint x="4" y="0" z="0" />
-				<controlpoint x="0" y="2" z="0" />
-				<controlpoint x="2" y="2" z="0" />
-				<controlpoint x="4" y="2" z="0" />
-				<controlpoint x="0" y="4" z="0" />
-				<controlpoint x="2" y="4" z="0" />
-				<controlpoint x="4" y="4" z="0" />
-				<controlpoint x="0" y="6" z="0" />
-				<controlpoint x="2" y="6" z="0" />
-				<controlpoint x="4" y="6" z="0" />
+				<controlpoint x="-1.5" y="-1.5" z="0" />
+				<controlpoint x="-2" y="-2" z="2" />
+				<controlpoint x="-2" y="2" z="2" />
+				<controlpoint x="-1.5" y="1.5" z="0" />
+				<controlpoint x="0" y="0" z="3" />
+				<controlpoint x="0" y="-2" z="3" />
+				<controlpoint x="0" y="2" z="3" />
+				<controlpoint x="0" y="0" z="3" />
+				<controlpoint x="1.5" y="-1.5" z="0" />
+				<controlpoint x="2" y="-2" z="2" />
+				<controlpoint x="2" y="2" z="2" />
+				<controlpoint x="1.5" y="1.5" z="0" />
 			</patch>
 		</primitive>
 	</primitives>
@@ -207,6 +207,7 @@
 				<componentref id="mysticObject" />
 				<componentref id="landscape" />
 				<componentref id="trident" />
+				<primitiveref id="test_patch" />
 			</children>
 		</component>
 				

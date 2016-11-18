@@ -407,7 +407,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		
 		//Check number of primitives types
 		var primitive_data = currentPrimitive.getElementsByTagName('*');
-		if (primitive_data.length != 1)
+		if (primitive_data.length != 1 && primitive_data[0].tagName != "patch")
 		{
 			return "ID ERROR: primitives[" + currentPrimitive_id + "] has none or more than one primitive types";
 		}
@@ -473,10 +473,11 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			for(var currentElem = 0; currentElem < controlPointsElems.length; currentElem++)
 			{
 				var controlPoint = [];
-				controlPoint[0] = this.reader.getFloat(controlPointsElems, 'x');
-				controlPoint[1] = this.reader.getFloat(controlPointsElems, 'y');
-				controlPoint[2] = this.reader.getFloat(controlPointsElems, 'z');
-				this.primitives[currentPrimitive_id].controlPoints.push(controlpoint);
+				controlPoint[0] = this.reader.getFloat(controlPointsElems[currentElem], 'x');
+				controlPoint[1] = this.reader.getFloat(controlPointsElems[currentElem], 'y');
+				controlPoint[2] = this.reader.getFloat(controlPointsElems[currentElem], 'z');
+				controlPoint[3] = 1;
+				this.primitives[currentPrimitive_id].controlPoints.push(controlPoint);
 			}
 			break;
 		default:
