@@ -184,6 +184,14 @@
 			</chessboard>
 		</primitive>
 		
+		<primitive id="test_board2">
+			<chessboard du="20" dv="20" textureref="carrots" su="10" sv="5">
+				<c1 r="1" g="1" b="1" a="1" />
+				<c2 r="0" g="0" b="0" a="1" />
+				<c3 r="0" g="0" b="1" a="1" />
+			</chessboard>
+		</primitive>
+		
 		<primitive id="test_patch">
 			<patch orderU="2" orderV="3" partsU="3" partsV="3">
 				<controlpoint x="-1.5" y="-1.5" z="0" />
@@ -222,7 +230,45 @@
 				<componentref id="landscape" />
 				<componentref id="trident" />
 				<componentref id="boatAnimated" />
-				<primitiveref id="test_board" />
+				<componentref id="chessBoard" />
+				<componentref id="chessBoard2" />
+			</children>
+		</component>
+		
+		<component id="chessBoard">
+			<transformation>
+				<translate x="-3" y="1" z="3"/>
+				<rotate axis="x" angle="-45" />
+				<rotate axis="y" angle="30" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+			</materials>
+			
+			<texture id="none" />
+			
+			<children>
+				<primitiveref id="test_board"/>
+			</children>
+		</component>
+		
+		<component id="chessBoard2">
+			<transformation>
+				<translate x="3" y="1" z="3"/>
+				<rotate axis="x" angle="-45" />
+				<rotate axis="y" angle="-30" />
+				<scale x="2" y="1" z="2" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+			</materials>
+			
+			<texture id="none" />
+			
+			<children>
+				<primitiveref id="test_board2"/>
 			</children>
 		</component>
 		
