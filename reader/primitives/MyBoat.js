@@ -2,13 +2,14 @@
  * MyBoat
  * @constructor
  */
-function MyBoat(scene, woodMaterial) {
+function MyBoat(scene, woodMaterial, sailMaterial) {
  	CGFobject.call(this,scene);
 
 	this.initPatches();
 	this.initCannonsParts();
 		
 	this.woodMaterial = woodMaterial || new CGFappearance(this.scene);
+	this.sailMaterial = sailMaterial || new CGFappearance(this.scene);
 
 	this.mast = new MyCylinderWithTops(this.scene, 4, 0.07, 0.03, 6, 10);
 	this.yard = new MyCylinderWithTops(this.scene, 2, 0.03, 0.03, 6, 10);
@@ -21,38 +22,7 @@ MyBoat.prototype.constructor = MyBoat;
 
 MyBoat.prototype.display = function () {
 	// Sails
-	//FM Upper Sail
-	this.scene.pushMatrix();
-		this.scene.translate(0,-0.1, 3.5); // FM Position
-		this.scene.translate(0,2,0); // Upper
-		this.displaySail();
-	this.scene.popMatrix();
-
-	//FM Lower Sail
-	this.scene.pushMatrix();
-		this.scene.translate(0,-0.1, 3.5); // FM Position
-		this.scene.scale(1.3,1,1); // Lower
-		this.scene.translate(0,0.5,0); // Lower
-		this.displaySail();
-	this.scene.popMatrix();
-
-	//MM Upper Sail
-	this.scene.pushMatrix();
-		this.scene.translate(0,-0.1, 2); // MM Position
-		this.scene.scale(1.3,1.3,1.3); //MM scale
-		this.scene.translate(0,2,0); // Upper
-		this.displaySail();
-	this.scene.popMatrix();
-
-	//MM Lower Sail
-	this.scene.pushMatrix();
-		this.scene.translate(0,-0.1, 2); // MM Position
-		this.scene.scale(1.3,1.3,1.3); //MM scale
-		this.scene.scale(1.3,1,1); // Lower
-		this.scene.translate(0,0.5,0); // Lower
-		this.displaySail();
-	this.scene.popMatrix();
-
+	this.displayAllSails();
 	//Cannons
 	this.displayAllCannons();
 	
@@ -263,6 +233,44 @@ MyBoat.prototype.displayCannon = function (){
 	this.scene.popMatrix();
 
 };
+
+
+MyBoat.prototype.displayAllSails = function()
+{
+	this.sailMaterial.apply();
+	//FM Upper Sail
+	this.scene.pushMatrix();
+		this.scene.translate(0,-0.1, 3.5); // FM Position
+		this.scene.translate(0,2,0); // Upper
+		this.displaySail();
+	this.scene.popMatrix();
+
+	//FM Lower Sail
+	this.scene.pushMatrix();
+		this.scene.translate(0,-0.1, 3.5); // FM Position
+		this.scene.scale(1.3,1,1); // Lower
+		this.scene.translate(0,0.5,0); // Lower
+		this.displaySail();
+	this.scene.popMatrix();
+
+	//MM Upper Sail
+	this.scene.pushMatrix();
+		this.scene.translate(0,-0.1, 2); // MM Position
+		this.scene.scale(1.3,1.3,1.3); //MM scale
+		this.scene.translate(0,2,0); // Upper
+		this.displaySail();
+	this.scene.popMatrix();
+
+	//MM Lower Sail
+	this.scene.pushMatrix();
+		this.scene.translate(0,-0.1, 2); // MM Position
+		this.scene.scale(1.3,1.3,1.3); //MM scale
+		this.scene.scale(1.3,1,1); // Lower
+		this.scene.translate(0,0.5,0); // Lower
+		this.displaySail();
+	this.scene.popMatrix();
+
+}
 
 MyBoat.prototype.initCannonsParts = function (){
 	this.cannonMaterial = new CGFappearance(this.scene);

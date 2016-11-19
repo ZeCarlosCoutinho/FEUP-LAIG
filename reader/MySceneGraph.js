@@ -482,11 +482,14 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			break;
 		case 'vehicle':
 			var woodMaterial_id = this.reader.getString(primitive_data, 'material');
+			var sailMaterial_id = this.reader.getString(primitive_data, 'sails');
 			var woodMaterial = this.textures[woodMaterial_id];
+			var sailMaterial = this.textures[sailMaterial_id]; //TODO this is not necessary for now
 			if(woodMaterial != null)
 			{
 				this.primitives[currentPrimitive_id] = new Prim_Boat(currentPrimitive_id);
 				this.primitives[currentPrimitive_id].woodMaterial_id = woodMaterial_id;
+				this.primitives[currentPrimitive_id].sailMaterial_id = sailMaterial_id;
 			}
 			break;
 		default:

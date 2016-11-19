@@ -5,6 +5,7 @@
 function Prim_Boat(primitive_id) {
 	this.id = primitive_id;
 	this.woodMaterial_id = "";
+	this.sailMaterial_id = "";
 }
 
 Prim_Boat.prototype.toString=function(){
@@ -20,8 +21,13 @@ Prim_Boat.prototype.toString=function(){
  */
 Prim_Boat.prototype.create=function(scene){
 	var woodMaterial = scene.graph.textures[this.woodMaterial_id];
-	var theAppearance = new CGFappearance(scene);
-	theAppearance.setTexture(woodMaterial);
-	return new MyBoat(scene, theAppearance);
+	var sailMaterial = scene.graph.textures[this.sailMaterial_id];
+
+	var woodAppearance = new CGFappearance(scene);
+	var sailAppearance = new CGFappearance(scene);
+	
+	woodAppearance.loadTexture(woodMaterial.file);
+	sailAppearance.loadTexture(sailMaterial.file);
+	return new MyBoat(scene, woodAppearance, sailAppearance);
 }
 

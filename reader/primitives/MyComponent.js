@@ -82,7 +82,13 @@ MyComponent.prototype.display = function (material, texture) {
 						component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
 				}
 				else 
-					drawingMaterial.setTexture(null);
+				{
+					if(component instanceof MyBoat)
+						drawingMaterial.setTexture(component.woodMaterial.texture);
+					else
+						drawingMaterial.setTexture(null);
+
+				}
 
 				//Apply Material
 				drawingMaterial.apply();

@@ -132,6 +132,7 @@
 		
 		<animation id="onespin" span="3" type="circular"
 		centerx="0" centery="0" centerz="0" radius="0.01" startang="0" rotang="180" />
+		
 	</animations>
 	
 	<primitives>
@@ -172,7 +173,7 @@
 		</primitive>
 		
 		<primitive id="test_boat">
-			<vehicle material="wood" />
+			<vehicle material="wood" sails="sauron" />
 		</primitive>
 		
 		<primitive id="test_patch">
@@ -212,10 +213,31 @@
 				<componentref id="mysticObject" />
 				<componentref id="landscape" />
 				<componentref id="trident" />
-				<primitiveref id="test_boat" />
+				<componentref id="boatAnimated" />
 			</children>
 		</component>
-				
+		
+		<component id="boatAnimated">
+			<transformation>
+			</transformation>
+			
+			<animation>
+				<animationref id="linearanimationtest" />
+				<animationref id="circleanimationtest" />
+				<animationref id="linearanimationtest" />
+			</animation>
+			
+			<materials>
+				<material id="darkMaterial" />
+			</materials>
+			
+			<texture id="none" />
+			
+			<children>
+				<primitiveref id="test_boat"/>
+			</children>
+		</component>
+		
 		<component id="floor">
 			<transformation>
 				<scale x="2" y="1" z="2" />
@@ -312,11 +334,6 @@
 			<transformation>
 				<translate x="2" y="0" z="2" />
 			</transformation>
-			
-			<animation>
-            	<animationref id="linearanimationtest" />
-            	<animationref id="circleanimationtest" />
-        	</animation>
 
 			<materials>
 				<material id="darkMaterial" />
