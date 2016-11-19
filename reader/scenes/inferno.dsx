@@ -69,6 +69,7 @@
 		<texture id="hell4" file="resources\\images\\hell4.jpg" length_s="1.0" length_t="1.0" />
 		<texture id="hellground" file="resources\\images\\hellground.jpg" length_s="1.0" length_t="1.0" />
 		<texture id="heaven" file="resources\\images\\heaven.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="wood" file="resources\\images\\wood-texture.png" length_s="1.0" length_t="1.0" />
     </textures>
     
     <materials>
@@ -170,6 +171,10 @@
 			<plane dimX="3" dimY="2" partsX="10" partsY="10"  />
 		</primitive>
 		
+		<primitive id="test_boat">
+			<vehicle material="wood" />
+		</primitive>
+		
 		<primitive id="test_patch">
 			<patch orderU="2" orderV="3" partsU="3" partsV="3">
 				<controlpoint x="-1.5" y="-1.5" z="0" />
@@ -207,7 +212,7 @@
 				<componentref id="mysticObject" />
 				<componentref id="landscape" />
 				<componentref id="trident" />
-				<primitiveref id="test_patch" />
+				<primitiveref id="test_boat" />
 			</children>
 		</component>
 				

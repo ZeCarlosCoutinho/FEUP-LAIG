@@ -480,6 +480,15 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 				this.primitives[currentPrimitive_id].controlPoints.push(controlPoint);
 			}
 			break;
+		case 'vehicle':
+			var woodMaterial_id = this.reader.getString(primitive_data, 'material');
+			var woodMaterial = this.textures[woodMaterial_id];
+			if(woodMaterial != null)
+			{
+				this.primitives[currentPrimitive_id] = new Prim_Boat(currentPrimitive_id);
+				this.primitives[currentPrimitive_id].woodMaterial_id = woodMaterial_id;
+			}
+			break;
 		default:
 			return "invalid primitive type"
 		}
