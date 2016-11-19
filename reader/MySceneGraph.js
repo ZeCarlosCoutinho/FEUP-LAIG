@@ -407,7 +407,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		
 		//Check number of primitives types
 		var primitive_data = currentPrimitive.getElementsByTagName('*');
-		if (primitive_data.length != 1 && primitive_data[0].tagName != "patch")
+		if (primitive_data.length != 1 && primitive_data[0].tagName != "patch" && primitive_data[0].tagName != "chessboard")
 		{
 			return "ID ERROR: primitives[" + currentPrimitive_id + "] has none or more than one primitive types";
 		}
@@ -491,6 +491,34 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 				this.primitives[currentPrimitive_id].woodMaterial_id = woodMaterial_id;
 				this.primitives[currentPrimitive_id].sailMaterial_id = sailMaterial_id;
 			}
+			break;
+		case 'chessboard':
+			this.primitives[currentPrimitive_id] = new Prim_ChessBoard(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].dimensions[0] = this.reader.getInteger(primitive_data, 'du');
+			this.primitives[currentPrimitive_id].dimensions[1] = this.reader.getInteger(primitive_data, 'dv');
+			this.primitives[currentPrimitive_id].textureref = this.reader.getString(primitive_data, 'textureref');
+			this.primitives[currentPrimitive_id].selected[0] = this.reader.getInteger(primitive_data, 'su');
+			this.primitives[currentPrimitive_id].selected[1] = this.reader.getInteger(primitive_data, 'sv');
+			var colorsChosen = primitive_data.children;
+			if(colorsChosen.length != 3)
+			{
+				return "chessboard doenst have enough colors";
+			}
+			var c1 = primitive_data.children[0];
+			var c2 = primitive_data.children[1];
+			var cs = primitive_data.children[2];
+			this.primitives[currentPrimitive_id].c1[0] = this.reader.getFloat(c1, 'r');
+			this.primitives[currentPrimitive_id].c2[0] = this.reader.getFloat(c2, 'r');
+			this.primitives[currentPrimitive_id].cs[0] = this.reader.getFloat(cs, 'r');
+			this.primitives[currentPrimitive_id].c1[1] = this.reader.getFloat(c1, 'g');
+			this.primitives[currentPrimitive_id].c2[1] = this.reader.getFloat(c2, 'g');
+			this.primitives[currentPrimitive_id].cs[1] = this.reader.getFloat(cs, 'g');
+			this.primitives[currentPrimitive_id].c1[2] = this.reader.getFloat(c1, 'b');
+			this.primitives[currentPrimitive_id].c2[2] = this.reader.getFloat(c2, 'b');
+			this.primitives[currentPrimitive_id].cs[2] = this.reader.getFloat(cs, 'b');
+			this.primitives[currentPrimitive_id].c1[3] = this.reader.getFloat(c1, 'a');
+			this.primitives[currentPrimitive_id].c2[3] = this.reader.getFloat(c2, 'a');
+			this.primitives[currentPrimitive_id].cs[3] = this.reader.getFloat(cs, 'a');
 			break;
 		default:
 			return "invalid primitive type"

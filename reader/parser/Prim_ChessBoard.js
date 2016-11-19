@@ -14,8 +14,9 @@ function Prim_ChessBoard(primitive_id) {
 }
 
 Prim_ChessBoard.prototype.toString=function(){
-	return "Primitive Plane Item " + this.id
+	return "Primitive ChessBoard Item " + this.id
 	+ "\nDimensions: " + this.dimensions + " Selected: " + this.selected
+	+ "\nTexture : " + this.textureref
 	+ "\nColor 1: " + this.c1 + " Color 2: " + this.c2 + " Color Selected: " + this.cs
 	+ "\n";
 }
@@ -26,6 +27,7 @@ Prim_ChessBoard.prototype.toString=function(){
  * @return {MyCylinderWithTops} a cylinder
  */
 Prim_ChessBoard.prototype.create=function(scene){
-	return new MyChessBoard(scene, this.dimensions, this.selected, scene.textures[textureref], this.c1, this.c2, this.cs);
+	var boardTexture = new CGFtexture(scene, scene.graph.textures[this.textureref].file);
+	return new MyChessBoard(scene, this.dimensions, this.selected, boardTexture, this.c1, this.c2, this.cs);
 }
 
