@@ -22,7 +22,7 @@ Prim_Patch.prototype.toString=function(){
 /**
  * Creates a new MyPatch using the current data.
  * @param {CGFscene} scene
- * @return {MyCylinderWithTops} a cylinder
+ * @return {MyPatch} a patch
  */
 Prim_Patch.prototype.create=function(scene){
 	var controlPoints = [];

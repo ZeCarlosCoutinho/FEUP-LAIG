@@ -21,7 +21,7 @@ Prim_Plane.prototype.toString=function(){
 /**
  * Creates a new MyPlane using the current data.
  * @param {CGFscene} scene
- * @return {MyCylinderWithTops} a cylinder
+ * @return {MyPlane} a plane
  */
 Prim_Plane.prototype.create=function(scene){
 	return new MyPlane(scene, this.u_length, this.v_length, this.u_parts, this.v_parts);
