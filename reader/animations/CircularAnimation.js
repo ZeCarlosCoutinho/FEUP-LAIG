@@ -19,7 +19,10 @@ function CircularAnimation(id, center, radius, initialAngle, rotAngle, time) {
 	this.speed = rotAngle / this.time;
 }
 
-
+/**
+ * Updates the animation matrix.
+ * @param {Float} currTime
+ */
 CircularAnimation.prototype.updateMatrix = function(currTime)
 {
 	this.initialTime = this.initialTime || currTime;
@@ -49,6 +52,10 @@ CircularAnimation.prototype.updateMatrix = function(currTime)
 	this.matrix = matrix;
 }
 
+/**
+ * Returns the state of the animations
+ * @return {Boolean} finished or not
+ */
 CircularAnimation.prototype.isFinished = function(){
 	return this.finished;
 }

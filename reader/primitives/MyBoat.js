@@ -25,10 +25,10 @@ MyBoat.prototype.display = function () {
 	//Cannons
 	this.displayAllCannons();
 	
-	
 	//Body
 	this.displayBody();
 	
+	//Wheel
 	this.scene.pushMatrix();
 		this.scene.translate(0,-0.1, 5);
 		this.displayWheel();
@@ -49,6 +49,9 @@ MyBoat.prototype.display = function () {
 
 };
 
+/**
+ * Displays wheel
+ */
 MyBoat.prototype.displayWheel = function () {
 	this.woodMaterial.apply();
 	this.scene.pushMatrix();
@@ -81,6 +84,9 @@ MyBoat.prototype.displayWheel = function () {
 
 };
 
+/**
+ * Displays all cannons
+ */
 MyBoat.prototype.displayAllCannons = function () {
 	//Left
 	this.scene.pushMatrix();
@@ -146,6 +152,10 @@ MyBoat.prototype.displayAllCannons = function () {
 
 
 };
+
+/**
+ * Displays the boat body
+ */
 MyBoat.prototype.displayBody = function () {
 	this.woodMaterial.apply();
 	this.scene.pushMatrix();
@@ -158,6 +168,9 @@ MyBoat.prototype.displayBody = function () {
 	this.scene.popMatrix();
 };
 
+/**
+ * Displays a sail
+ */
 MyBoat.prototype.displaySail = function () {
 		this.scene.pushMatrix();
 			this.sail.display();
@@ -166,6 +179,9 @@ MyBoat.prototype.displaySail = function () {
 
 };
 
+/**
+ * Displays a mast
+ */
 MyBoat.prototype.displayMast = function () {
 	this.woodMaterial.apply();
 
@@ -204,6 +220,9 @@ MyBoat.prototype.displayMast = function () {
 	this.scene.popMatrix();
 };
 
+/**
+ * Displays a cannon
+ */
 MyBoat.prototype.displayCannon = function (){
 	this.cannonMaterial.apply();
 	this.scene.pushMatrix();
@@ -233,7 +252,9 @@ MyBoat.prototype.displayCannon = function (){
 
 };
 
-
+/**
+ * Displays all sails
+ */
 MyBoat.prototype.displayAllSails = function()
 {
 	//FM Upper Sail
@@ -270,6 +291,9 @@ MyBoat.prototype.displayAllSails = function()
 
 }
 
+/**
+ * Initiatiates the cannon components.
+ */
 MyBoat.prototype.initCannonsParts = function (){
 	this.cannonMaterial = new CGFappearance(this.scene);
 	this.cannonMaterial.setDiffuse(0.02,0.02,0.02,0.02);
@@ -279,6 +303,10 @@ MyBoat.prototype.initCannonsParts = function (){
 	this.cannonWheel = new MyCylinderWithTops(this.scene, 0.2, 0.3, 0.3, 6, 10);
 	this.cannon = new MyCylinderWithTops(this.scene, 1, 0.2, 0.15, 6, 10);
 };
+
+/**
+ * Initiatiates the various patches.
+ */
 MyBoat.prototype.initPatches = function (){
 	var hullPointSize = -0.2;
 

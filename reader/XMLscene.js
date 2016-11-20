@@ -36,10 +36,10 @@ XMLscene.prototype.init = function (application) {
 	this.axis = new CGFaxis(this);
 
 	//TESTING
-	this.testAppearance = new CGFappearance(this);
-	this.testAppearance.loadTexture("../reader/resources/images/sauroneye.jpg");
-	this.testAppearance2 = new CGFappearance(this);
-	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");
+	/*this.testAppearance = new CGFappearance(this);
+	this.testAppearance.loadTexture("../reader/resources/images/sauroneye.jpg");//*/
+	/*this.testAppearance2 = new CGFappearance(this);
+	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");//*/
 	
 	/*this.testAnimation = new CompoundAnimation("id",
 		[	new LinearAnimation("id", [[0,0,0], [0,0,2]], 5),
@@ -132,10 +132,6 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
 	this.setUpdatePeriod(10);
-
-	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
-	/*this.lights[0].setVisible(true);
-    this.lights[0].enable();*/
 };
 
 XMLscene.prototype.display = function () {
@@ -184,9 +180,9 @@ XMLscene.prototype.display = function () {
 
 
 XMLscene.prototype.update = function (currTime) {
-	//TODO PERCORRER A ARVORE TODA, E DAR UPDATE AS ANIMACOES
-	//this.testAnimation.updateMatrix(currTime);
 	this.rootObject.updateAnimation(currTime);
+	//TESTING
+	//this.testAnimation.updateMatrix(currTime);
 };
 
 //Updates all ligths

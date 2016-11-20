@@ -20,6 +20,10 @@ function LinearAnimation(id, controlPoints, time) {
 	this.speed = this.totalDistance / this.time;
 }
 
+/**
+ * Calculates the total distance an object will travel during the animation.
+ * @return {Boolean} finished or not
+ */
 LinearAnimation.prototype.calculateTotalDistance = function()
 {
 	for (var i = 1; i < this.controlPoints.length; i++){
@@ -47,7 +51,10 @@ LinearAnimation.prototype.calculateTotalDistance = function()
 }
 
 
-
+/**
+ * Updates the animation matrix.
+ * @param {Float} currTime
+ */
 LinearAnimation.prototype.updateMatrix = function(currTime)
 {
 	this.initialTime = this.initialTime || currTime;
@@ -86,6 +93,11 @@ LinearAnimation.prototype.updateMatrix = function(currTime)
 	this.matrix = matrix;
 }
 
+
+/**
+ * Returns the state of the animations
+ * @return {Boolean} finished or not
+ */
 LinearAnimation.prototype.isFinished = function(){
 	return this.finished;
 }

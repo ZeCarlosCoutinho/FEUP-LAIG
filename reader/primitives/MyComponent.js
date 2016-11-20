@@ -57,7 +57,7 @@ MyComponent.prototype.updateMaterial = function (currentMaterialIndex){
 			component.updateMaterial(currentMaterialIndex)
 }
 
-// Changes the material applied to the component, according to the index chosen
+// Updates the animation
 MyComponent.prototype.updateAnimation = function (currTime){
 	if(this.animation != null)
 			this.animation.updateMatrix(currTime);

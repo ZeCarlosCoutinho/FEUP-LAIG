@@ -13,6 +13,10 @@ function CompoundAnimation(id, animations) {
 }
 
 
+/**
+ * Updates the animation matrix.
+ * @param {Float} currTime
+ */
 CompoundAnimation.prototype.updateMatrix = function(currTime)
 {
 	this.initialTime = this.initialTime || currTime;
@@ -33,16 +37,14 @@ CompoundAnimation.prototype.updateMatrix = function(currTime)
 			break;
 		mat4.multiply(matrix,matrix,this.animations[i].matrix);
 	}
-	//*/
-	/***
-	for(var i = this.animations.length-1; i >= 0; i--){
-		mat4.multiply(matrix,matrix,this.animations[i].matrix);
-	}
-	//*/
 
 	this.matrix = matrix;
 }
 
+/**
+ * Returns the state of the animations
+ * @return {Boolean} finished or not
+ */
 CompoundAnimation.prototype.isFinished = function(currTime){
 	return this.finished;
 }

@@ -30,6 +30,5 @@ MyChessBoard.prototype.display = function () {
 		this.scene.setActiveShader(this.shader);
 		this.board.display();
 		this.scene.setActiveShader(this.scene.defaultShader);
-		//this.texture.unbind(0);
 	this.scene.popMatrix();
  };
