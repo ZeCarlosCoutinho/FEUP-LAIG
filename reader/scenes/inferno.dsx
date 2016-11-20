@@ -178,7 +178,7 @@
 		</primitive>
 		
 		<primitive id="test_boat">
-			<vehicle material="wood" sails="sauron" />
+			<vehicle textureref="wood"/>
 		</primitive>
 		
 		<primitive id="test_board">
@@ -295,10 +295,11 @@
 			</animation>
 			
 			<materials>
+				<material id="reflectingMaterial" />
 				<material id="darkMaterial" />
 			</materials>
 			
-			<texture id="none" />
+			<texture id="sauron" />
 			
 			<children>
 				<primitiveref id="test_boat"/>

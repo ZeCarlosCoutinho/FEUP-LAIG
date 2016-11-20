@@ -1,28 +1,29 @@
 /**
- * Prim_Plane
+ * Prim_Vehicle
  * @constructor
  */
-function Prim_Plane(primitive_id) {
+function Prim_Vehicle(primitive_id) {
 	this.id = primitive_id;
 	
 	this.textureref = null;
 }
 
-Prim_Plane.prototype.toString=function(){
-	return "Primitive Plane Item " + this.id
-	+ "\nTexture If: " + this.textureref + "\n";
+Prim_Vehicle.prototype.toString=function(){
+	return "Primitive Vehicle Item " + this.id
+	+ "\nTexture Id: " + this.textureref + "\n";
 }
 
 /**
- * Creates a new MyPlane using the current data.
+ * Creates a new MyBoat using the current data.
  * @param {CGFscene} scene
- * @return {MyCylinderWithTops} a cylinder
+ * @return {MyBoat} a boat
  */
-Prim_Plane.prototype.create=function(scene){
+Prim_Vehicle.prototype.create=function(scene){
 	if (this.textureref == null)
 		return new MyBoat(scene);
-	var material = new CGFAppearance(scene);
-	material.setTexture(scene.textures[this.textureref]);
+	var material = new CGFappearance(scene);
+	material.setTexture(scene.textures[this.textureref].text);
+	material.setTextureWrap('REPEAT', 'REPEAT');
 	return new MyBoat(scene, material);
 }
 

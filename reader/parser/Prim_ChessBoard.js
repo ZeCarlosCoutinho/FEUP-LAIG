@@ -27,7 +27,7 @@ Prim_ChessBoard.prototype.toString=function(){
  * @return {MyCylinderWithTops} a cylinder
  */
 Prim_ChessBoard.prototype.create=function(scene){
-	var boardTexture = new CGFtexture(scene, scene.graph.textures[this.textureref].file);
+	var boardTexture = scene.textures[this.textureref].text;
 	return new MyChessBoard(scene, this.dimensions, this.selected, boardTexture, this.c1, this.c2, this.cs);
 }
 

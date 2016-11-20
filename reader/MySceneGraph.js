@@ -455,7 +455,6 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_data, 'slices');
 			this.primitives[currentPrimitive_id].loops = this.reader.getInteger(primitive_data, 'loops');
 			break;
-			//TODO PLANE AND PATCH
 		case "plane":
 			this.primitives[currentPrimitive_id] = new Prim_Plane(currentPrimitive_id);
 			this.primitives[currentPrimitive_id].u_length = this.reader.getFloat(primitive_data, 'dimX');
@@ -481,15 +480,12 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			}
 			break;
 		case 'vehicle':
-			var woodMaterial_id = this.reader.getString(primitive_data, 'material');
-			var sailMaterial_id = this.reader.getString(primitive_data, 'sails');
-			var woodMaterial = this.textures[woodMaterial_id];
-			var sailMaterial = this.textures[sailMaterial_id]; //TODO this is not necessary for now
-			if(woodMaterial != null)
-			{
-				this.primitives[currentPrimitive_id] = new Prim_Boat(currentPrimitive_id);
-				this.primitives[currentPrimitive_id].woodMaterial_id = woodMaterial_id;
-				this.primitives[currentPrimitive_id].sailMaterial_id = sailMaterial_id;
+			this.primitives[currentPrimitive_id] = new Prim_Vehicle(currentPrimitive_id);
+			var textureref = this.reader.getString(primitive_data, 'textureref');
+			if(textureref != null){
+				if(this.textures[textureref] == null)
+					return "textureref not found in primitive vehicle"
+				this.primitives[currentPrimitive_id].textureref = textureref;
 			}
 			break;
 		case 'chessboard':

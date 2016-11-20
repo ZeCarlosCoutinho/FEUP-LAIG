@@ -25,8 +25,6 @@ MyChessBoard.prototype = Object.create(CGFobject.prototype);
 MyChessBoard.prototype.constructor = MyChessBoard;
 
 MyChessBoard.prototype.display = function () {
-
-	//Display Cylinder
 	this.scene.pushMatrix();
 		this.texture.bind(0);
 		this.scene.setActiveShader(this.shader);

@@ -2,14 +2,13 @@
  * MyBoat
  * @constructor
  */
-function MyBoat(scene, woodMaterial, sailMaterial) {
+function MyBoat(scene, woodMaterial) {
  	CGFobject.call(this,scene);
 
 	this.initPatches();
 	this.initCannonsParts();
 		
 	this.woodMaterial = woodMaterial || new CGFappearance(this.scene);
-	this.sailMaterial = sailMaterial || new CGFappearance(this.scene);
 
 	this.mast = new MyCylinderWithTops(this.scene, 4, 0.07, 0.03, 6, 10);
 	this.yard = new MyCylinderWithTops(this.scene, 2, 0.03, 0.03, 6, 10);
@@ -237,7 +236,6 @@ MyBoat.prototype.displayCannon = function (){
 
 MyBoat.prototype.displayAllSails = function()
 {
-	this.sailMaterial.apply();
 	//FM Upper Sail
 	this.scene.pushMatrix();
 		this.scene.translate(0,-0.1, 3.5); // FM Position
