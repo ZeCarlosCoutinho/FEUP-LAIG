@@ -471,10 +471,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			var controlPointsElems = primitive_data.getElementsByTagName('controlpoint');
 			for(var currentElem = 0; currentElem < controlPointsElems.length; currentElem++)
 			{
-				var controlPoint = [];
-				controlPoint[0] = this.reader.getFloat(controlPointsElems[currentElem], 'x');
-				controlPoint[1] = this.reader.getFloat(controlPointsElems[currentElem], 'y');
-				controlPoint[2] = this.reader.getFloat(controlPointsElems[currentElem], 'z');
+				var controlPoint = this.readPatternXYZ(controlPointsElems[currentElem]);
 				controlPoint[3] = 1;
 				this.primitives[currentPrimitive_id].controlPoints.push(controlPoint);
 			}
@@ -503,18 +500,9 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			var c1 = primitive_data.children[0];
 			var c2 = primitive_data.children[1];
 			var cs = primitive_data.children[2];
-			this.primitives[currentPrimitive_id].c1[0] = this.reader.getFloat(c1, 'r');
-			this.primitives[currentPrimitive_id].c2[0] = this.reader.getFloat(c2, 'r');
-			this.primitives[currentPrimitive_id].cs[0] = this.reader.getFloat(cs, 'r');
-			this.primitives[currentPrimitive_id].c1[1] = this.reader.getFloat(c1, 'g');
-			this.primitives[currentPrimitive_id].c2[1] = this.reader.getFloat(c2, 'g');
-			this.primitives[currentPrimitive_id].cs[1] = this.reader.getFloat(cs, 'g');
-			this.primitives[currentPrimitive_id].c1[2] = this.reader.getFloat(c1, 'b');
-			this.primitives[currentPrimitive_id].c2[2] = this.reader.getFloat(c2, 'b');
-			this.primitives[currentPrimitive_id].cs[2] = this.reader.getFloat(cs, 'b');
-			this.primitives[currentPrimitive_id].c1[3] = this.reader.getFloat(c1, 'a');
-			this.primitives[currentPrimitive_id].c2[3] = this.reader.getFloat(c2, 'a');
-			this.primitives[currentPrimitive_id].cs[3] = this.reader.getFloat(cs, 'a');
+			this.primitives[currentPrimitive_id].c1 = this.readPatternRGBA(c1);
+			this.primitives[currentPrimitive_id].c2 = this.readPatternRGBA(c2);
+			this.primitives[currentPrimitive_id].cs = this.readPatternRGBA(cs);
 			break;
 		default:
 			return "invalid primitive type"
