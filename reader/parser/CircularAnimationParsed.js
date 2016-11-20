@@ -19,6 +19,6 @@ CircularAnimationParsed.prototype.toString=function(){
 }
 
 CircularAnimationParsed.prototype.create=function(){
-	var animation = new CircularAnimation(this.id, this.center, this.radius, this.initialAngle, this.rotAngle, this.time)
+	var animation = new CircularAnimation(this.id, this.center, this.radius, this.initialAngle, this.rotAngle, this.time);
 	return animation;
 }

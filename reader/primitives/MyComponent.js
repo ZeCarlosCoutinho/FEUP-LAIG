@@ -57,6 +57,16 @@ MyComponent.prototype.updateMaterial = function (currentMaterialIndex){
 			component.updateMaterial(currentMaterialIndex)
 }
 
+// Changes the material applied to the component, according to the index chosen
+MyComponent.prototype.updateAnimation = function (currTime){
+	if(this.animation != null)
+			this.animation.updateMatrix(currTime);
+	for(var component of this.components)
+		if(component instanceof MyComponent)
+			component.updateAnimation(currTime)
+}
+
+
 MyComponent.prototype.display = function (material, texture) {
 	var drawingMaterial = this.currentMaterial;
 	if (this.currentMaterial == "inherit")
@@ -67,7 +77,6 @@ MyComponent.prototype.display = function (material, texture) {
 
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
-		//Apply animation
 		if(this.animation != null)
 			this.scene.multMatrix(this.animation.matrix);
 		for(var component of this.components){

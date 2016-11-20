@@ -119,14 +119,19 @@
 	</transformations>
 	
 	<animations>
-		<animation id="circleanimationtest" span="5" type="circular"
-		centerx="4" centery="4" centerz="4" radius="5" startang="30" rotang="60" />
-		
-		<animation id="linearanimationtest" span="10" type="linear">
+		<animation id="turn" span="3" type="circular"
+		centerx="1" centery="0" centerz="0" radius="1" startang="0" rotang="90" />
+		<animation id="moveFront" span="2" type="linear">
 			<controlpoint xx="0" yy="0" zz="0"/>
-			<controlpoint xx="2" yy="0" zz="0" />
-			<controlpoint xx="2" yy="1" zz="0" />
-			<controlpoint xx="0" yy="1" zz="0" />
+			<controlpoint xx="0" yy="0" zz="3" />
+		</animation>
+
+		<animation id="comeAndGo" span="2" type="linear">
+			<controlpoint xx="0" yy="0" zz="0"/>
+			<controlpoint xx="0" yy="0" zz="3" />
+			<controlpoint xx="3" yy="2" zz="3" />
+			<controlpoint xx="-3" yy="2" zz="3" />
+			<controlpoint xx="0" yy="0" zz="3" />
 			<controlpoint xx="0" yy="0" zz="0"/>
 		</animation>
 		
@@ -186,9 +191,9 @@
 		
 		<primitive id="test_board2">
 			<chessboard du="20" dv="20" textureref="carrots" su="10" sv="5">
-				<c1 r="1" g="1" b="1" a="1" />
-				<c2 r="0" g="0" b="0" a="1" />
-				<c3 r="0" g="0" b="1" a="1" />
+				<c1 r="0" g="1" b="0" a="1" />
+				<c2 r="1" g="0" b="1" a="1" />
+				<c3 r="1" g="1" b="1" a="1" />
 			</chessboard>
 		</primitive>
 		
@@ -274,12 +279,19 @@
 		
 		<component id="boatAnimated">
 			<transformation>
+				<translate x="0" y="1" z="0"/>
+				<scale x="0.5" y="0.5" z="0.5" />
+
 			</transformation>
 			
 			<animation>
-				<animationref id="linearanimationtest" />
-				<animationref id="circleanimationtest" />
-				<animationref id="linearanimationtest" />
+				<animationref id="moveFront" />
+				<animationref id="moveFront" />
+				<animationref id="turn" />
+				<animationref id="comeAndGo" />
+				<animationref id="turn" />
+				<animationref id="moveFront" />
+				<animationref id="moveFront" />
 			</animation>
 			
 			<materials>

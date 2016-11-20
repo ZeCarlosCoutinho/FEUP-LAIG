@@ -41,9 +41,9 @@ CircularAnimation.prototype.updateMatrix = function(currTime)
 	var matrix = mat4.create();
 	
 	mat4.translate(matrix, matrix, this.center);
-	mat4.translate(matrix, matrix, [-this.radius,0,0]);
-	mat4.rotate(matrix, matrix, angle, [0,1,0]);
 	mat4.translate(matrix, matrix, [this.radius,0,0]);
+	mat4.rotate(matrix, matrix, angle, [0,1,0]);
+	mat4.translate(matrix, matrix, [-this.radius,0,0]);
 	mat4.translate(matrix, matrix, this.negCenter);
 
 	this.matrix = matrix;

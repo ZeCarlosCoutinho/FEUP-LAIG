@@ -593,7 +593,6 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 		//  ----   Parse the ANIMATIONS  -----
 		if(currentComponentAnimations != null)
 		{
-			var animationList = [];
 			var currentComponentAnimationRefs = currentComponentAnimations.getElementsByTagName('animationref');
 			for(var j = 0; j < currentComponentAnimationRefs.length; j++)
 			{
@@ -602,11 +601,8 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 				if(actualAnimation == null)
 					return "In component " + currentComponent_id + ", animation id " + j + " is invalid";
 
-				animationList.push(actualAnimation);
+				this.components[currentComponent_id].animationList.push(actualAnimation);
 			}
-			var compoundAnimationParsed = new CompoundAnimationParsed(currentAnimation_id);
-			compoundAnimationParsed.animations = animationList;
-			this.components[currentComponent_id].animation =  compoundAnimationParsed.create();
 		}
 		
 		//  ----   Parse the MATERIALS  -----

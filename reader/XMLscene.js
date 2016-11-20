@@ -33,7 +33,6 @@ XMLscene.prototype.init = function (application) {
 	this.defaultAppearance = new CGFappearance(this);
 
 	this.enableTextures(true); //È necessário para texturas
-	this.setUpdatePeriod(10);
 	this.axis = new CGFaxis(this);
 
 	//TESTING
@@ -42,7 +41,7 @@ XMLscene.prototype.init = function (application) {
 	this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");
 	
-	this.testAnimation = new CompoundAnimation("id",
+	/*this.testAnimation = new CompoundAnimation("id",
 		[	new LinearAnimation("id", [[0,0,0], [0,0,2]], 5),
 			new CircularAnimation("id", [1,0,0], 1, 0, Math.PI/2, 5),
 			new LinearAnimation("id", [[0,0,0], [0,0,2]], 5) 
@@ -132,6 +131,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.createPrimitives();
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
+	this.setUpdatePeriod(10);
 
 	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
 	/*this.lights[0].setVisible(true);
@@ -186,11 +186,7 @@ XMLscene.prototype.display = function () {
 XMLscene.prototype.update = function (currTime) {
 	//TODO PERCORRER A ARVORE TODA, E DAR UPDATE AS ANIMACOES
 	//this.testAnimation.updateMatrix(currTime);
-	for(component_id in this.graph.components)
-	{
-		if(this.graph.components[component_id].animation != null)
-			this.graph.components[component_id].animation.updateMatrix(currTime);
-	}
+	this.rootObject.updateAnimation(currTime);
 };
 
 //Updates all ligths
