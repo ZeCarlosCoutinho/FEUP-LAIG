@@ -33,13 +33,52 @@ XMLscene.prototype.init = function (application) {
 	this.defaultAppearance = new CGFappearance(this);
 
 	this.enableTextures(true); //È necessário para texturas
-	this.testAppearance = new CGFappearance(this);
-	this.testAppearance.loadTexture("../reader/resources/images/sauroneye.jpg");
-	this.testAppearance2 = new CGFappearance(this);
-	this.testAppearance2.loadTexture("../reader/primitives/carrotsPattern.png");
+	this.axis = new CGFaxis(this);
+
+	//TESTING
+	/*this.testAppearance = new CGFappearance(this);
+	this.testAppearance.loadTexture("../reader/resources/images/sauroneye.jpg");//*/
+	/*this.testAppearance2 = new CGFappearance(this);
+	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");//*/
 	
+	/*this.testAnimation = new CompoundAnimation("id",
+		[	new LinearAnimation("id", [[0,0,0], [0,0,2]], 5),
+			new CircularAnimation("id", [1,0,0], 1, 0, Math.PI/2, 5),
+			new LinearAnimation("id", [[0,0,0], [0,0,2]], 5) 
+			]); //*/
+	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
+	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
+	
+	//this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , 
+	//[1,1,1,1], [0,0,0,1], [1,0,0,1]);
+	//this.test = new MyBoat(this, this.testAppearance2);
+	/*this.test = new MyPatch(this, 2,3,30,30,
+		[	// U = 0
+						[ // V = 0..3;
+							 [ -1.5, -1.5, 0.0, 1 ],
+							 [ -2.0, -2.0, 2.0, 1 ],
+							 [ -2.0,  2.0, 2.0, 1 ],
+							 [ -1.5,  1.5, 0.0, 1 ]
+							
+						],
+						// U = 1
+						[ // V = 0..3
+							 [ 0, 0, 3.0, 1 ],
+							 [ 0, -2.0, 3.0, 1],
+							 [ 0,  2.0, 3.0, 1 ],
+							 [ 0,  0, 3.0, 1 ]							 
+						],
+						// U = 2
+						[ // V = 0..3							 
+							 [ 1.5, -1.5, 0.0, 1 ],
+							 [ 2.0, -2.0, 2.0, 1 ],
+							 [ 2.0,  2.0, 2.0, 1 ],
+							 [ 1.5,  1.5, 0.0, 1 ]
+						]
+					]);//*/
+	//this.test = new MyPlane(this, 2,2,30,30);
 	/*this.test = new MyTorus(this, 1, 2, 10, 10);//*/
-	/*this.test = new MySphere(this, 3, 10, 10);//*/
+	//this.test = new MySphere(this, 1, 10, 10);//*/
 	/*this.test = new MyCylinder(this, 2, 2, 1, 3, 6);//*/
 	/*this.test = new MyCylinderWithTops(this, 2, 2, 1, 3, 12);//*/
 /*	this.test = new MyCircle(this, 4);
@@ -51,7 +90,6 @@ XMLscene.prototype.init = function (application) {
     									0,0,0,
     									2,0,0);//*/
 
-	this.axis = new CGFaxis(this);
 };
 
 //Initializes the interface
@@ -93,10 +131,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.createPrimitives();
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
-
-	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
-	/*this.lights[0].setVisible(true);
-    this.lights[0].enable();*/
+	this.setUpdatePeriod(10);
 };
 
 XMLscene.prototype.display = function () {
@@ -129,12 +164,25 @@ XMLscene.prototype.display = function () {
 		this.rootObject.display();
 	};	
 	
+	//TESTING
+	/*
 	this.pushMatrix();
 		this.testAppearance.apply();
-		//this.test.display();
-	this.popMatrix();
+		this.multMatrix(this.testAnimation.matrix);
+		//this.rotate(Math.PI/2,0,0,1);
+		//this.rotate(Math.PI/2,0,1,0);
+		this.test.display();
+		console.log(this.testAnimation.isFinished());
+	this.popMatrix();*/
 	
 
+};
+
+
+XMLscene.prototype.update = function (currTime) {
+	this.rootObject.updateAnimation(currTime);
+	//TESTING
+	//this.testAnimation.updateMatrix(currTime);
 };
 
 //Updates all ligths

@@ -2,11 +2,12 @@
  * MyComponent
  * @constructor
  */
-function MyComponent(scene, transformation_matrix, material_ids, texture_id, component_refs, primitive_refs) {
+function MyComponent(scene, transformation_matrix, animation, material_ids, texture_id, component_refs, primitive_refs) {
  	CGFobject.call(this,scene);
 	
 // Matrix of transformations applied to the component
 	this.transformation_matrix = transformation_matrix;
+	this.animation = animation;
 
 // Saves a list of Materials of the component
 // All Materials are applied later, when the object is drawn on screen
@@ -56,6 +57,16 @@ MyComponent.prototype.updateMaterial = function (currentMaterialIndex){
 			component.updateMaterial(currentMaterialIndex)
 }
 
+// Updates the animation
+MyComponent.prototype.updateAnimation = function (currTime){
+	if(this.animation != null)
+			this.animation.updateMatrix(currTime);
+	for(var component of this.components)
+		if(component instanceof MyComponent)
+			component.updateAnimation(currTime)
+}
+
+
 MyComponent.prototype.display = function (material, texture) {
 	var drawingMaterial = this.currentMaterial;
 	if (this.currentMaterial == "inherit")
@@ -66,6 +77,8 @@ MyComponent.prototype.display = function (material, texture) {
 
 	this.scene.pushMatrix();
 		this.scene.multMatrix(this.transformation_matrix);
+		if(this.animation != null)
+			this.scene.multMatrix(this.animation.matrix);
 		for(var component of this.components){
 			if(component instanceof MyComponent)
 				component.display(drawingMaterial, this.texture); //Recursively, calls the display for each of the child components

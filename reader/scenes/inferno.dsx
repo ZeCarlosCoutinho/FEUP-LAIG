@@ -2,20 +2,20 @@
 	<scene root="root" axis_length="3" />
 	
 	 <views default="view_default" >
-        <perspective id="view_default" near="0.1" far="100" angle="1">
-            <from x="20" y="10" z="30" />
-            <to x="0.5" y="0" z="-1" />
-        </perspective>
+        	<perspective id="view_default" near="0.1" far="500" angle="20">
+            		<from x="15" y="15" z="15" />
+            		<to x="0" y="0" z="0" />
+       		</perspective>
 		
 		<perspective id="view_1" near="0.1" far="100" angle="1">
-            <from x="5" y="5" z="5" />
-            <to x="0.5" y="0" z="-1" />
-        </perspective>
+            		<from x="5" y="5" z="5" />
+            		<to x="0.5" y="0" z="-1" />
+       		</perspective>
 		
 		<perspective id="view_2" near="0.1" far="100" angle="1">
-            <from x="-3" y="2" z="5" />
-            <to x="1" y="0" z="1" />
-        </perspective>
+            		<from x="-3" y="2" z="5" />
+            		<to x="1" y="0" z="1" />
+        		</perspective>
 	 </views>
 	 
 	<illumination doublesided="true" local="true" >
@@ -47,6 +47,13 @@
             <diffuse r="1" g="1" b="1" a="0.1" />
             <specular r="1" g="1" b="1" a="0.3" />
         </spot>
+		
+		 <omni id="sauron_light2" enabled="true" >
+            <location x="0" y="0.5" z="0.01" w="0.2" />
+            <ambient r="1" g="0.1" b="0.1" a="0.5" />
+            <diffuse r="1" g="0.1" b="0.1" a="0.5" />
+            <specular r="1" g="1" b="1" a="1" />
+        </omni>
     </lights>    
 
 	<textures>
@@ -62,6 +69,7 @@
 		<texture id="hell4" file="resources\\images\\hell4.jpg" length_s="1.0" length_t="1.0" />
 		<texture id="hellground" file="resources\\images\\hellground.jpg" length_s="1.0" length_t="1.0" />
 		<texture id="heaven" file="resources\\images\\heaven.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="wood" file="resources\\images\\wood-texture.png" length_s="1.0" length_t="1.0" />
     </textures>
     
     <materials>
@@ -110,6 +118,28 @@
 		</transformation>
 	</transformations>
 	
+	<animations>
+		<animation id="turn" span="3" type="circular"
+		centerx="1" centery="0" centerz="0" radius="1" startang="0" rotang="90" />
+		<animation id="moveFront" span="2" type="linear">
+			<controlpoint xx="0" yy="0" zz="0"/>
+			<controlpoint xx="0" yy="0" zz="3" />
+		</animation>
+
+		<animation id="comeAndGo" span="2" type="linear">
+			<controlpoint xx="0" yy="0" zz="0"/>
+			<controlpoint xx="0" yy="0" zz="3" />
+			<controlpoint xx="3" yy="2" zz="3" />
+			<controlpoint xx="-3" yy="2" zz="3" />
+			<controlpoint xx="0" yy="0" zz="3" />
+			<controlpoint xx="0" yy="0" zz="0"/>
+		</animation>
+		
+		<animation id="onespin" span="3" type="circular"
+		centerx="0" centery="0" centerz="0" radius="0.01" startang="0" rotang="180" />
+		
+	</animations>
+	
 	<primitives>
 		<primitive id="rectangle">
 			<rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
@@ -142,6 +172,50 @@
 		<primitive id="torus_thin">
             <torus inner="0.1" outer="1" slices="20" loops="20" />
         </primitive>
+		
+		<primitive id="test_plane">
+			<plane dimX="3" dimY="2" partsX="10" partsY="10"  />
+		</primitive>
+		
+		<primitive id="test_boat">
+			<vehicle textureref="wood"/>
+		</primitive>
+		
+		<primitive id="test_board">
+			<chessboard du="9" dv="9" textureref="wood" su="5" sv="5">
+				<c1 r="1" g="1" b="1" a="1" />
+				<c2 r="0" g="0" b="0" a="1" />
+				<c3 r="1" g="0" b="0" a="1" />
+			</chessboard>
+		</primitive>
+		
+		<primitive id="test_board2">
+			<chessboard du="20" dv="20" textureref="carrots" su="10" sv="5">
+				<c1 r="0" g="1" b="0" a="1" />
+				<c2 r="1" g="0" b="1" a="1" />
+				<c3 r="1" g="1" b="1" a="1" />
+			</chessboard>
+		</primitive>
+		
+		<primitive id="test_patch">
+			<patch orderU="2" orderV="4" partsU="15" partsV="15">
+				<controlpoint x="-1" y="-1" z="0" />
+				<controlpoint x="0" y="-1" z="1" />
+				<controlpoint x="1" y="-1" z="0" />
+				<controlpoint x="-1" y="-0.5" z="3" />
+				<controlpoint x="0" y="-0.5" z="0" />
+				<controlpoint x="1" y="-0.5" z="3" />
+				<controlpoint x="-1" y="0" z="0" />
+				<controlpoint x="0" y="0" z="0" />
+				<controlpoint x="1" y="0" z="0" />
+				<controlpoint x="-1" y="0.5" z="3" />
+				<controlpoint x="0" y="0.5" z="0" />
+				<controlpoint x="1" y="0.5" z="3" />
+				<controlpoint x="-1" y="1" z="0" />
+				<controlpoint x="0" y="1" z="1" />
+				<controlpoint x="1" y="1" z="0" />
+			</patch>
+		</primitive>
 	</primitives>
 	
 	
@@ -163,9 +237,78 @@
 				<componentref id="mysticObject" />
 				<componentref id="landscape" />
 				<componentref id="trident" />
+				<componentref id="boatAnimated" />
+				<componentref id="chessBoard" />
+				<componentref id="chessBoard2" />
 			</children>
 		</component>
-				
+		
+		<component id="chessBoard">
+			<transformation>
+				<translate x="-3" y="1" z="3"/>
+				<rotate axis="x" angle="-45" />
+				<rotate axis="y" angle="30" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+			</materials>
+			
+			<texture id="none" />
+			
+			<children>
+				<primitiveref id="test_board"/>
+			</children>
+		</component>
+		
+		<component id="chessBoard2">
+			<transformation>
+				<translate x="3" y="1" z="3"/>
+				<rotate axis="x" angle="-45" />
+				<rotate axis="y" angle="-30" />
+				<scale x="2" y="1" z="2" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+			</materials>
+			
+			<texture id="none" />
+			
+			<children>
+				<primitiveref id="test_board2"/>
+			</children>
+		</component>
+		
+		<component id="boatAnimated">
+			<transformation>
+				<translate x="0" y="1" z="0"/>
+				<scale x="0.5" y="0.5" z="0.5" />
+
+			</transformation>
+			
+			<animation>
+				<animationref id="moveFront" />
+				<animationref id="moveFront" />
+				<animationref id="turn" />
+				<animationref id="comeAndGo" />
+				<animationref id="turn" />
+				<animationref id="moveFront" />
+				<animationref id="moveFront" />
+			</animation>
+			
+			<materials>
+				<material id="reflectingMaterial" />
+				<material id="darkMaterial" />
+			</materials>
+			
+			<texture id="sauron" />
+			
+			<children>
+				<primitiveref id="test_boat"/>
+			</children>
+		</component>
+		
 		<component id="floor">
 			<transformation>
 				<scale x="2" y="1" z="2" />
@@ -260,9 +403,9 @@
 		
 		<component id="mysticObject">
 			<transformation>
-				
+				<translate x="2" y="0" z="2" />
 			</transformation>
-			
+
 			<materials>
 				<material id="darkMaterial" />
 				<material id="reflectingMaterial" />
@@ -279,7 +422,7 @@
 		
 		<component id="mysticSupport">
 			<transformation>
-				<translate x="2" y="0" z="2" />
+				<translate x="0" y="0" z="0" />
 				<rotate axis="x" angle="-90" />
 			</transformation>
 			
@@ -290,17 +433,21 @@
 			<texture id="darkwood" />
 			
 			<children>
-				<primitiveref id="cylinder" />
+				<primitiveref id="test_patch" />
 			</children>
 		</component>
 		
 		<component id="mysticEye">
 			<transformation>
-				<translate x="2" y="2" z="2" />
+				<translate x="0" y="2" z="0" />
 				<scale x="0.5" y="0.5" z="0.5" />
 				<rotate axis="y" angle="90" />
 				<rotate axis="x" angle="-90" />
 			</transformation>
+			
+			<animation>
+				<animationref id="onespin" />
+			</animation>
 			
 			<materials>
 				<material id="emittingBall" />
@@ -315,7 +462,7 @@
 		
 		<component id="mysticRod">
 			<transformation>
-				<translate x="2" y="2" z="2" />
+				<translate x="0" y="2" z="0" />
 			</transformation>
 			
 			<materials>

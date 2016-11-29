@@ -16,6 +16,7 @@ function MySceneGraph(filename, scene) {
 	this.primitives = [];
 	this.materials = [];
 	this.viewsList=[];
+	this.animations = [];
 	this.components = [];
 
 	// File reading 
@@ -47,6 +48,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errorMaterials = this.parseMaterials(rootElement);
 	var errorTransformations = this.parseTransformations(rootElement);
 	var errorPrimitives = this.parsePrimitives(rootElement);
+	var errorAnimations = this.parseAnimations(rootElement);
 	var errorComponents = this.parseComponents(rootElement);
 	
 	if (errorScene != null) {
@@ -81,10 +83,14 @@ MySceneGraph.prototype.onXMLReady=function()
 		this.onXMLError(errorPrimitives);
 		return;
 	}	
+	if(errorAnimations != null) {
+		this.onXMLError(errorAnimations);
+		return;
+	}
 	if (errorComponents != null) {
 		this.onXMLError(errorComponents);
 		return;
-	}	
+	}
 
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
 	this.scene.onGraphLoaded();
@@ -401,7 +407,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		
 		//Check number of primitives types
 		var primitive_data = currentPrimitive.getElementsByTagName('*');
-		if (primitive_data.length != 1)
+		if (primitive_data.length != 1 && primitive_data[0].tagName != "patch" && primitive_data[0].tagName != "chessboard")
 		{
 			return "ID ERROR: primitives[" + currentPrimitive_id + "] has none or more than one primitive types";
 		}
@@ -449,6 +455,55 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			this.primitives[currentPrimitive_id].slices = this.reader.getInteger(primitive_data, 'slices');
 			this.primitives[currentPrimitive_id].loops = this.reader.getInteger(primitive_data, 'loops');
 			break;
+		case "plane":
+			this.primitives[currentPrimitive_id] = new Prim_Plane(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].u_length = this.reader.getFloat(primitive_data, 'dimX');
+			this.primitives[currentPrimitive_id].v_length = this.reader.getFloat(primitive_data, 'dimY');
+			this.primitives[currentPrimitive_id].u_parts = this.reader.getInteger(primitive_data, 'partsX');
+			this.primitives[currentPrimitive_id].v_parts = this.reader.getInteger(primitive_data,'partsY');
+			break;
+		case "patch":
+			this.primitives[currentPrimitive_id] = new Prim_Patch(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].order_u = this.reader.getInteger(primitive_data, 'orderU');
+			this.primitives[currentPrimitive_id].order_v = this.reader.getInteger(primitive_data, 'orderV');
+			this.primitives[currentPrimitive_id].u_parts = this.reader.getInteger(primitive_data, 'partsU');
+			this.primitives[currentPrimitive_id].v_parts = this.reader.getInteger(primitive_data,'partsV');
+			var controlPointsElems = primitive_data.getElementsByTagName('controlpoint');
+			for(var currentElem = 0; currentElem < controlPointsElems.length; currentElem++)
+			{
+				var controlPoint = this.readPatternXYZ(controlPointsElems[currentElem]);
+				controlPoint[3] = 1;
+				this.primitives[currentPrimitive_id].controlPoints.push(controlPoint);
+			}
+			break;
+		case 'vehicle':
+			this.primitives[currentPrimitive_id] = new Prim_Vehicle(currentPrimitive_id);
+			var textureref = this.reader.getString(primitive_data, 'textureref');
+			if(textureref != null){
+				if(this.textures[textureref] == null)
+					return "textureref not found in primitive vehicle"
+				this.primitives[currentPrimitive_id].textureref = textureref;
+			}
+			break;
+		case 'chessboard':
+			this.primitives[currentPrimitive_id] = new Prim_ChessBoard(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].dimensions[0] = this.reader.getInteger(primitive_data, 'du');
+			this.primitives[currentPrimitive_id].dimensions[1] = this.reader.getInteger(primitive_data, 'dv');
+			this.primitives[currentPrimitive_id].textureref = this.reader.getString(primitive_data, 'textureref');
+			this.primitives[currentPrimitive_id].selected[0] = this.reader.getInteger(primitive_data, 'su');
+			this.primitives[currentPrimitive_id].selected[1] = this.reader.getInteger(primitive_data, 'sv');
+			var colorsChosen = primitive_data.children;
+			if(colorsChosen.length != 3)
+			{
+				return "chessboard doenst have enough colors";
+			}
+			var c1 = primitive_data.children[0];
+			var c2 = primitive_data.children[1];
+			var cs = primitive_data.children[2];
+			this.primitives[currentPrimitive_id].c1 = this.readPatternRGBA(c1);
+			this.primitives[currentPrimitive_id].c2 = this.readPatternRGBA(c2);
+			this.primitives[currentPrimitive_id].cs = this.readPatternRGBA(cs);
+			break;
 		default:
 			return "invalid primitive type"
 		}
@@ -478,11 +533,17 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 	{		
 		//Gets Element
 		var currentComponent = componentsElems[i];
+		var index = 1;
 		var currentComponent_id = this.reader.getString(currentComponent, 'id');
 		var currentComponentTransformation = currentComponent.children[0];
-		var currentComponentMaterials = currentComponent.children[1];
-		var currentComponentTexture = currentComponent.children[2];
-		var currentComponentChildren = currentComponent.children[3];
+		var currentComponentAnimations = currentComponent.children[index];
+		if(currentComponentAnimations.localName != "animation") //Because animation block is optional
+			currentComponentAnimations = null;
+		else
+			index++;
+		var currentComponentMaterials = currentComponent.children[index];
+		var currentComponentTexture = currentComponent.children[index+1];
+		var currentComponentChildren = currentComponent.children[index+2];
 
 		//Verify if id is valid
 		if(this.components[currentComponent_id] != null)
@@ -513,6 +574,21 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 			this.components[currentComponent_id].transformation_matrix = this.transformations[transformationref].matrix;
 		}
 
+		//  ----   Parse the ANIMATIONS  -----
+		if(currentComponentAnimations != null)
+		{
+			var currentComponentAnimationRefs = currentComponentAnimations.getElementsByTagName('animationref');
+			for(var j = 0; j < currentComponentAnimationRefs.length; j++)
+			{
+				var currentAnimation_id = this.reader.getString(currentComponentAnimationRefs[j], 'id');
+				var actualAnimation = this.animations[currentAnimation_id];
+				if(actualAnimation == null)
+					return "In component " + currentComponent_id + ", animation id " + j + " is invalid";
+
+				this.components[currentComponent_id].animationList.push(actualAnimation);
+			}
+		}
+		
 		//  ----   Parse the MATERIALS  -----
 		var currentComponentMaterialsElements = currentComponentMaterials.getElementsByTagName('material');
 		if(currentComponentMaterialsElements.length == 0)
@@ -573,6 +649,96 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
 
 };
+
+MySceneGraph.prototype.parseAnimations= function(rootElement)
+{
+	//Check for errors
+	var elems = rootElement.getElementsByTagName('animations');
+	if (elems == null) {
+		return "animations element is missing.";
+	}
+	if (elems.length != 1) {
+		return "either zero or more than one 'animations' element found.";
+	}
+	
+	//Gets all elements
+	var animationElems = elems[0].getElementsByTagName('animation');
+
+	//For each animation tag
+	for(var i = 0; i < animationElems.length; i++)
+	{
+		//Gets Element
+		var currentAnimation = animationElems[i];
+		var currentAnimation_id = this.reader.getString(currentAnimation, 'id');
+		var currentAnimation_span = this.reader.getFloat(currentAnimation, 'span');
+		
+
+		//Verify if id and span time are valid
+		if(this.animations[currentAnimation_id] != null)
+		{
+			return "ID ERROR: animations[" + currentAnimation_id + "] already exists";
+		}
+		
+		if(currentAnimation_span <= 0)
+		{
+			return "In animation " + currentAnimation_id + ", span time invalid.";
+		}
+
+
+		//Get type of animation
+		var currentAnimation_type = this.reader.getString(currentAnimation, 'type');
+		if(currentAnimation_type == "linear")
+		{
+			this.animations[currentAnimation_id] = new LinearAnimationParsed(currentAnimation_id);
+			var controlPointsElems = currentAnimation.getElementsByTagName('controlpoint');
+
+			if(controlPointsElems.length < 2) //In case there are less than 2 control points
+			{
+				return "not enough control points";
+			}
+
+			
+			for(var j = 0; j < controlPointsElems.length; j++)
+			{
+				var controlPointBuffer = [0, 0, 0];
+				if(controlPointsElems[j].attributes.length != 3)
+				{
+					return "In Animation " + currentAnimation_id + ", controlpoint " + j + " is invalid";
+				}
+				controlPointBuffer[0] = this.reader.getFloat(controlPointsElems[j], 'xx');
+				controlPointBuffer[1] = this.reader.getFloat(controlPointsElems[j], 'yy');
+				controlPointBuffer[2] = this.reader.getFloat(controlPointsElems[j], 'zz');
+				this.animations[currentAnimation_id].controlPoints.push(controlPointBuffer);
+			}
+
+		}
+		else if(currentAnimation_type == "circular")
+		{
+			//Create animation with it's id
+			this.animations[currentAnimation_id] = new CircularAnimationParsed(currentAnimation_id);
+
+			//Gets animation attributes
+			var center = [];
+			center[0] = this.reader.getFloat(currentAnimation, 'centerx');
+			center[1] = this.reader.getFloat(currentAnimation, 'centery');
+			center[2] = this.reader.getFloat(currentAnimation, 'centerz');
+			this.animations[currentAnimation_id].center = center;
+
+			this.animations[currentAnimation_id].radius = this.reader.getFloat(currentAnimation, 'radius');
+			this.animations[currentAnimation_id].initialAngle = rtoa(this.reader.getFloat(currentAnimation, 'startang'));
+			this.animations[currentAnimation_id].rotAngle = rtoa(this.reader.getFloat(currentAnimation, 'rotang'));
+		}
+		else //Type not existent
+		{
+			return "Animation type not existent";
+		}
+
+		//Set animation time
+		this.animations[currentAnimation_id].time = currentAnimation_span;
+		
+		console.log(this.animations[currentAnimation_id].toString());
+	}
+}
 
 rtoa = function(degree){
 	return (degree*Math.PI)/180;
