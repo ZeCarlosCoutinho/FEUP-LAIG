@@ -57,9 +57,10 @@ XMLscene.prototype.init = function (application) {
 			]); //*/
 	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
-	
-	this.test = new MyPiece(this, "white", 3);
-	this.test2 = new MyPiece(this, "red", 1);
+
+	this.test = new MyBoard(this, new CGFtexture(this,"../reader/resources/images/wood-texture.png"));
+	//this.test = new MyPiece(this, "white", 3);
+	//this.test2 = new MyPiece(this, "red", 1);
 	//this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , 
 	//[1,1,1,1], [0,0,0,1], [1,0,0,1]);
 	//this.test = new MyBoat(this, this.testAppearance2);
@@ -194,9 +195,10 @@ XMLscene.prototype.display = function () {
 		//this.multMatrix(this.testAnimation.matrix);
 		//this.rotate(Math.PI/2,0,0,1);
 		//this.rotate(Math.PI/2,0,1,0);
+		this.scale(5,5,5);
 		this.test.display();
 		this.translate(1,0,0);
-		this.test2.display();
+		//this.test2.display();
 		//console.log(this.testAnimation.isFinished());
 	this.popMatrix();//*/
 	

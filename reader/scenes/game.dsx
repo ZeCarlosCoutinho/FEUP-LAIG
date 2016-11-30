@@ -271,7 +271,7 @@
 			</transformation>
 			
 			<materials>
-				<material id="inherit" />
+				<material id="darkMaterial" />
 			</materials>
 			
 			<texture id="inherit" />
@@ -283,6 +283,7 @@
 
 		<component id="piece1">
 			<transformation>
+				<translate x="0.5" y="0" z="0.5" />
 				<rotate axis="y" angle="45"/>
 				<rotate axis="x" angle="-90"/>
 			</transformation>
