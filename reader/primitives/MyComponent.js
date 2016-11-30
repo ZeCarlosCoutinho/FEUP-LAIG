@@ -90,6 +90,8 @@ MyComponent.prototype.display = function (material, texture) {
 					if (component.setTextureCoords != null)
 						component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
 				}
+				else if (typeof this.texture == undefined){
+				}
 				else 
 					drawingMaterial.setTexture(null);
 

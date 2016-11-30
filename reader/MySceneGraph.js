@@ -7,6 +7,8 @@ function MySceneGraph(filename, scene) {
 	scene.graph=this;
 
 	this.root;
+	this.pieces = [];
+	this.playerMaterials = [];
 	this.axis_length;
 	this.illumination = new Illumination();
 	this.omniLights = [];
@@ -112,6 +114,12 @@ MySceneGraph.prototype.parseScene= function(rootElement) {
 	var scene = elems[0];
 	this.root = this.reader.getString(scene, 'root');
 	this.axis_length = this.reader.getFloat(scene, 'axis_length');
+
+	this.pieces[1] = this.reader.getString(scene, 'piece1');
+	this.pieces[2] = this.reader.getString(scene, 'piece2');
+	this.pieces[3] = this.reader.getString(scene, 'piece3');
+	this.playerMaterials['red'] = this.reader.getString(scene, 'redMaterial');
+	this.playerMaterials['white'] = this.reader.getString(scene, 'whiteMaterial');
 
 	if (this.axis_length < 0)
 		return "axis length is invalid.";
@@ -643,6 +651,16 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 			return existingError;
 		
 		console.log(this.components[currentComponent_id]);
+	}
+
+	if(this.components["root"] == null)
+	{
+			return "Root not Found";
+	}
+	for(var i = 1; i <= 3; i++)
+	if(this.components[this.pieces[i]] == null)
+	{
+			return "Piece " + i + " not Found";
 	}
 	
 	

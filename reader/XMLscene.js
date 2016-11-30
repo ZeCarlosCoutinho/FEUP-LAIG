@@ -58,7 +58,8 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
-	this.test = new MyPiece(this, "red", 1);
+	this.test = new MyPiece(this, "white", 3);
+	this.test2 = new MyPiece(this, "red", 1);
 	//this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , 
 	//[1,1,1,1], [0,0,0,1], [1,0,0,1]);
 	//this.test = new MyBoat(this, this.testAppearance2);
@@ -141,6 +142,18 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.createPrimitives();
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
+
+
+	this.playerMaterials["red"] = this.materials[this.graph.playerMaterials['red']];
+	this.playerMaterials["white"] = this.materials[this.graph.playerMaterials['white']];
+	for (var i = 1; i <= 3; i++){
+		this.pieceObjects[i] = this.graph.components[this.graph.pieces[i]].create(this);
+		this.pieceObjects[i].updateMaterial(this.materialIndex);
+	}
+	
+
+
+
 	this.setUpdatePeriod(10);
 };
 
@@ -182,6 +195,8 @@ XMLscene.prototype.display = function () {
 		//this.rotate(Math.PI/2,0,0,1);
 		//this.rotate(Math.PI/2,0,1,0);
 		this.test.display();
+		this.translate(1,0,0);
+		this.test2.display();
 		//console.log(this.testAnimation.isFinished());
 	this.popMatrix();//*/
 	
