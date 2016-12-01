@@ -50,6 +50,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'MyInterface.js',
 	'primitives/MyPiece.js',
 	'primitives/MyBoard.js',
+	'prologConnection/prologConnection.js',
 
 	
 main=function()

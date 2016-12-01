@@ -7,12 +7,18 @@ function MyPiece(scene, player, size) {
 
  	this.player = player;
  	this.size = size;
+
+ 	//	Picked State
+	this.picked = false;
 };
 
 MyPiece.prototype = Object.create(CGFobject.prototype);
 MyPiece.prototype.constructor = MyPiece;
 
 MyPiece.prototype.display = function(){
+	if (this.picked)
+		this.scene.setActiveShader(this.scene.highlightShader);
+
     this.scene.pushMatrix();
         if(this.player == "red"){
             this.scene.translate(0.5,0,0.5);
@@ -22,5 +28,8 @@ MyPiece.prototype.display = function(){
         this.scene.playerMaterials[this.player].apply();
 		this.scene.pieceObjects[this.size].display(this.scene.playerMaterials[this.player]);
 	this.scene.popMatrix();
+
+	if (this.picked)
+		this.scene.setActiveShader(this.scene.defaultShader);
 }
 

@@ -4,13 +4,22 @@
  */
 function MyBoard(scene, texture) {
  	CGFobject.call(this,scene);
+
  	
 	this.board = new MyChessBoard(this.scene, [9,9], [0,0], texture, [1,1,1,1], [1,1,1,1], [1,1,1,1]);
 	//this.board = new MyChessBoard(this.scene, [9,9], [0,0], texture, [1,1,1,0], [1,1,1,0], [1,1,1,1]);
 	//this.board = new MyChessBoard(this.scene, [9,9], [1,5], texture, [1,0,1,1], [0,1,0,1], [1,1,1,1]);
 	this.initializePieces();
 
- };
+	//this.state = new TurnStart("red", this);
+
+	//Testing
+	this.pieces[3][5].picked = true;
+	this.pieces[7][5].picked = true;
+	console.log(this.toString());
+	requestScore(this);
+	requestMove(this);
+};
 
 MyBoard.prototype = Object.create(CGFobject.prototype);
 MyBoard.prototype.constructor = MyBoard;
@@ -58,3 +67,45 @@ MyBoard.prototype.initializePieces = function () {
 	this.pieces[8][7] = new MyPiece(this.scene, "white", 2);
 	this.pieces[7][5] = new MyPiece(this.scene, "white", 1);
 };
+
+
+MyBoard.prototype.toString = function () {
+	var str = "[";
+	for (var i = 1; i <=9; i++){
+		str = str + "[";
+		for (var j = 1; j <=9; j++){
+			if (this.pieces[j][i])
+				str = str + this.pieces[j][i].size + "-" + this.pieces[j][i].player;
+			else
+				str = str + "empty";
+			if (j < 9)
+				str = str + ",";
+		}
+		str = str + "]";
+		if (i < 9)
+			str = str + ",";
+	}
+	str = str + "]";
+	return str;
+};
+
+MyBoard.prototype.toString2 = function () {
+	var str = "[";
+	for (var i = 1; i <=9; i++){
+		str = str + "[";
+		for (var j = 1; j <=9; j++){
+			if (this.pieces[j][i])
+				str = str + this.pieces[j][i].size + "-" + this.pieces[j][i].player;
+			else
+				str = str + "empty";
+			if (j < 9)
+				str = str + ", ";
+		}
+		str = str + "]";
+		if (i < 9)
+			str = str + ",\n";
+	}
+	str = str + "]";
+	return str;
+};
+
