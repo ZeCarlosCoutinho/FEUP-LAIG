@@ -226,6 +226,11 @@
 				<controlpoint x="1" y="1" z="0" />
 			</patch>
 		</primitive>
+		
+		<primitive id="tiletest">
+			<tile x1="1" y1="1" x2="0" y2="0"
+			tx1x="0" tx1y="0" tx2x="0.5" tx2y="0.5" />
+		</primitive>
 	</primitives>
 	
 	
@@ -240,10 +245,10 @@
 				<material id="reflectingMaterial" />
 			</materials>
 			
-			<texture id="none" />
+			<texture id="sauron" />
 			
 			<children>
-				<componentref id="chessBoard" />
+				<primitiveref id="tiletest" />
 			</children>
 		</component>
 		

@@ -189,7 +189,7 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.updateLights();
-		//this.rootObject.display();
+		this.rootObject.display();
 	};	
 	
 	//TESTING
