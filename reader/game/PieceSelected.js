@@ -14,18 +14,20 @@ function PieceSelected(player, board, pieceChosen) {
 
 PieceSelected.prototype.display = function()
 {
+	if(lastResponse != ""){
+		this.board.board.selected = parseListMoves(lastResponse);
+		lastResponse = "";
+	}
+
   	//Parse pick information
 	this.logPicking();
 
     //Display the wood board
 	this.scene.pushMatrix();
-		this.scene.translate(0, 0, 1);
-		this.scene.rotate(-Math.PI/2, 1, 0, 0);
 		this.board.board.display();
 	this.scene.popMatrix();
 
     //Pick ID
-	var k = 100;
 	var chosen_position;
 
     var pieces = this.board.pieces;
@@ -37,8 +39,7 @@ PieceSelected.prototype.display = function()
 
 		    //If there's a piece and it is from the current player
 			if (typeof pieces[i][j] != "undefined" && pieces[i][j].player == this.player){
-				this.scene.registerForPick(k, pieces[i][j]);
-				k++;
+				this.scene.registerForPick(100+i*10+j, pieces[i][j]);
 			}
 
 			//Draw Piece
@@ -65,7 +66,10 @@ PieceSelected.prototype.display = function()
 			pieces[i][j].display();
 	this.scene.popMatrix();
 
-	k = 1;
+	this.scene.pushMatrix();
+		this.board.board.displaySelected();
+	this.scene.popMatrix();
+
 
    //TODO EXTRA Highlight aos tiles possiveis
 
@@ -85,10 +89,16 @@ PieceSelected.prototype.logPicking = function()
 					/*
 					console.log(customId);
 					this.scene.pickResults[i][0].picked = true;*/
-					if(Id >= 100)				
-						this.pieceChosen = this.scene.pickResults[i][0]; //TODO 
+					if(Id >= 100){
+							var coords = [];
+							coords[0] = Math.floor((this.scene.pickResults[i][1] - 100) / 10);
+							coords[1] = (this.scene.pickResults[i][1] - 100) % 10;
+    						requestPossibleMoves(this.board, this.player, coords);
+    						this.pieceChosen = this.scene.pickResults[i][0];
+					}			
+						 
 					else{
-						this.tileChosen = this.scene.pickResults[i][0]; //TODO 
+						this.tileChosen = this.scene.pickResults[i]; //TODO 
 						this.next();
 					}
 				}
@@ -99,7 +109,6 @@ PieceSelected.prototype.logPicking = function()
 };
 
 PieceSelected.prototype.next = function(){
-    //return new TileSelected(player, board, this.pieceChosen,  this.tileChosen);
+	console.log(this.tileChosen[1]);
+    //return new TileSelected(player, board, this.pieceChosen,  this.tileChosen[0]);
 }
-
-

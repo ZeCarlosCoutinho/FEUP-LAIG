@@ -48,7 +48,7 @@ XMLscene.prototype.init = function (application) {
 	this.pieceObjects[3] = new MyCylinderWithTops(this, 3, 0.5, 0.5, 3, 12);
 
 	this.testAppearance = new CGFappearance(this);
-	this.testAppearance.loadTexture("../reader/resources/images/sauroneye.jpg");//*/
+	this.testAppearance.loadTexture("../reader/resources/images/wood.png");//*/
 	this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");//*/
 	
@@ -61,7 +61,8 @@ XMLscene.prototype.init = function (application) {
 			]); //*/
 	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
-
+	
+	//this.test = new MyGameBoard(this, 9, 9);
 	this.test = new MyBoard(this, new CGFtexture(this,"../reader/resources/images/wood.png"));
 	//this.test = new MyPiece(this, "white", 3);
 	//this.test2 = new MyPiece(this, "red", 1);
@@ -189,19 +190,19 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.updateLights();
-		this.rootObject.display();
+		//this.rootObject.display();
 	};	
 	
 	//TESTING
 	
 	this.pushMatrix();
-		//this.testAppearance.apply();
+		this.testAppearance.apply();
 		//this.multMatrix(this.testAnimation.matrix);
 		//this.rotate(Math.PI/2,0,0,1);
 		//this.rotate(Math.PI/2,0,1,0);
 		this.scale(5,5,5);
 		this.test.display();
-		this.translate(1,0,0);
+		//this.translate(1,0,0);
 		//this.test2.display();
 		//console.log(this.testAnimation.isFinished());
 	this.popMatrix();//*/

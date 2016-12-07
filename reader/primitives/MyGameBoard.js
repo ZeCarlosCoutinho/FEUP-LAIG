@@ -2,24 +2,13 @@
  * MyGameBoard
  * @constructor
  */
-function MyGameBoard(scene, dimensions, selected, texture, c1, c2, cs) {
+function MyGameBoard(scene, dX, dY) {
  	CGFobject.call(this,scene);
 	
-	this.dimensions = dimensions;
-	this.selected = selected;
-	this.texture = texture;
-	this.c1 = c1;
-	this.c2 = c2;
-	this.cs = cs;
-
-	this.shader  = new CGFshader(this.scene.gl, 'shaders/customShader.vert', 'shaders/customShader.frag');
-	this.shader.setUniformsValues({	dimensions: dimensions,
-									c1: c1,
-									c2: c2,
-									cs: cs,
-									selected: selected});
-	this.board = [];
-	new MyPlane(this.scene, 1 , 1, dimensions[0] * 8, dimensions[1] * 8);
+	this.dX = dX;
+	this.dY = dY;
+	this.initializeBoard();
+	this.selected = [];
  };
 
 MyGameBoard.prototype = Object.create(CGFobject.prototype);
@@ -27,21 +16,43 @@ MyGameBoard.prototype.constructor = MyGameBoard;
 
 MyGameBoard.prototype.display = function () {
 	this.scene.pushMatrix();
-		this.texture.bind(0);
-		this.scene.setActiveShader(this.shader);
-		this.board.display();
-		this.scene.setActiveShader(this.scene.defaultShader);
+		for(var i = 1; i <= this.dX; i++){
+			for(var j = 1; j <= this.dY; j++){
+				//Draw Piece
+				this.scene.pushMatrix();
+					this.scene.translate((i-1)/this.dX,0, (j-1)/this.dY);
+					this.scene.scale(1/this.dX, 1/((this.dY+this.dX)/2), 1/this.dY);
+						this.tiles[i][j].display();
+				this.scene.popMatrix();
+		}
+	}   
 	this.scene.popMatrix();
  };
 
+MyGameBoard.prototype.displaySelected = function () {
+	for(var k = 0; k < this.selected.length; k++){
+		var i = this.selected[k][0];
+		var j = this.selected[k][1];
+
+		this.scene.registerForPick(i*10+j, this.tiles[i][j]);
+		this.scene.pushMatrix();
+			this.scene.translate(0,0.001,0); //TODO This may not be the best way, cause we are displaying 2 times;
+			this.scene.translate((i-1)/this.dX,0, (j-1)/this.dY);
+			this.scene.scale(1/this.dX, 1/((this.dY+this.dX)/2), 1/this.dY);
+			this.tiles[i][j].display();
+		this.scene.popMatrix();
+	}
+};
+
 MyGameBoard.prototype.initializeBoard = function()
 {
-	for(var i = 0; i < this.dimensions[0]; i++)
+	this.tiles = [];
+	for(var i = 1; i <= this.dX; i++)
 	{
-		var row = [];
-		for(var j = 0; j < this.dimensions[1]; j++)
-		{
-			row.push(new MyPlane(this.scene, 1, 1, 1, 1));
+		this.tiles[i] = [];
+		for(var j = 1; j <= this.dY; j++){
+			this.tiles[i][j] = new MyTile(this.scene, (i-1)/this.dX, (j-1)/this.dY, i/this.dX, j/this.dY);
 		}
 	}
-}
+};
+

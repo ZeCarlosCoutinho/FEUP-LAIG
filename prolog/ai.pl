@@ -3,7 +3,7 @@
 This module discovers the best move possible that one of the players can
 do in given state of the board.
 */
-:- module(ai, [thinkMove/4, getAllValidMoves/3]).
+:- module(ai, [thinkMove/4, getValidMovesForPiece/4]).
 
 :- use_module(library(random)).
 :- use_module(library(lists)).
@@ -30,10 +30,20 @@ thinkMove(Board, Player, Difficulty, Move):-
 
 
 /** getAllValidMoves(+Board, +Player, -ListMoves)
-
 Gets all valid moves the player can make.
 */
 getAllValidMoves(Board, Player, ListMoves):-
+	findall(	Row-Col-Dir-Spaces,
+				(member(Spaces,[1,2,3]), movePiece(Board, Row-Col, Dir, Spaces, Player, _NewBoard, _NextPlayer)),
+				ListMoves).
+
+
+
+/** getValidMovesForPiece(+Board, +Player,+Row-Col, -ListMoves)
+
+Gets all valid moves the player can make.
+*/
+getValidMovesForPiece(Board, Player, Row-Col, ListMoves):-
 	findall(	Row-Col-Dir-Spaces,
 				(member(Spaces,[1,2,3]), movePiece(Board, Row-Col, Dir, Spaces, Player, _NewBoard, _NextPlayer)),
 				ListMoves).

@@ -2,11 +2,11 @@
  * MyBoard
  * @constructor
  */
-function MyBoard(scene, texture) {
+function MyBoard(scene) {
  	CGFobject.call(this,scene);
 
  	
-	this.board = new MyChessBoard(this.scene, [9,9], [0,0], texture, [1,1,1,1], [1,1,1,1], [1,1,1,1]);
+	this.board = new MyGameBoard(this.scene, 9, 9);
 	//this.board = new MyChessBoard(this.scene, [9,9], [0,0], texture, [1,1,1,0], [1,1,1,0], [1,1,1,1]);
 	//this.board = new MyChessBoard(this.scene, [9,9], [1,5], texture, [1,0,1,1], [0,1,0,1], [1,1,1,1]);
 	this.initializePieces();

@@ -1,19 +1,36 @@
 /**
- * MyMove
+ * dYove
  * @constructor
  */
-function MyMove(coordinates, direction, distance) {
-    this.coordinates;
-    this.direction;
-    this.distance;
+function Move(coordinates, direction, distance) {
+    this.coordinates = coordinates;
+    this.direction = direction;
+    this.distance = distance;
 };
 
-MyMove.prototype = Object.create(CGFobject.prototype);
-MyMove.prototype.constructor = MyMove;
+Move.prototype = Object.create(CGFobject.prototype);
+Move.prototype.constructor = Move;
 
-function parseMove(string){
-    var res = string.split('-');
-    var coord = [];
-    coord[0] = res[0];
-    coord[0] = res[1];
+Move.prototype.destination = function(){
+    this.destination = [];
+    this.destination[0] = this.coordinates[0];
+    this.destination[1] = this.coordinates[1];
+    
+    switch(this.direction){
+        case "north":
+            this.destination[1] -= this.distance;
+            break;
+        case "south":
+            this.destination[1] += this.distance;
+            break;
+        case "west":
+            this.destination[0] -= this.distance;
+            break;
+        case "east":
+            this.destination[0] += this.distance;
+            break;
+        default:
+            break;
+    }
+    return this.destination;
 }

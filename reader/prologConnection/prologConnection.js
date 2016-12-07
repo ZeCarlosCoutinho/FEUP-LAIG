@@ -38,10 +38,10 @@ function requestMove(board, player, difficulty)
 	getPrologRequest(requestString, handleReply);
 }
 
-function requestPossibleMoves(board, player)
+function requestPossibleMoves(board, player, coords)
 {
 	// Get Parameter Values
-	var requestString = "getAllValidMoves(" + board.toString() + "," + player + ")";				
+	var requestString = "getAllValidMoves(" + board.toString() + "," + player + "," + coords[1] +  "-" + coords[0] + ")";				
 	
 	// Make Request
 	getPrologRequest(requestString, handleReply);
