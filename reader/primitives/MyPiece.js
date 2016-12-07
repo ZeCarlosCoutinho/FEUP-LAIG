@@ -16,7 +16,7 @@ MyPiece.prototype = Object.create(CGFobject.prototype);
 MyPiece.prototype.constructor = MyPiece;
 
 MyPiece.prototype.display = function(){
-	if (this.picked)
+	if (this.picked & !this.scene.pickMode)
 		this.scene.setActiveShader(this.scene.highlightShader);
 
     this.scene.pushMatrix();
@@ -28,8 +28,7 @@ MyPiece.prototype.display = function(){
         this.scene.playerMaterials[this.player].apply();
 		this.scene.pieceObjects[this.size].display(this.scene.playerMaterials[this.player]);
 	this.scene.popMatrix();
-
-	if (this.picked)
-		this.scene.setActiveShader(this.scene.defaultShader);
+	if (this.picked & !this.scene.pickMode)
+		this.scene.setActiveShaderSimple(this.scene.defaultShader);
 }
 

@@ -62,7 +62,7 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new CircularAnimation("id", [0,0,0], 3, 0, Math.PI*2, 10);
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 
-	this.test = new MyBoard(this, new CGFtexture(this,"../reader/resources/images/wood-texture.png"));
+	this.test = new MyBoard(this, new CGFtexture(this,"../reader/resources/images/wood.png"));
 	//this.test = new MyPiece(this, "white", 3);
 	//this.test2 = new MyPiece(this, "red", 1);
 	//this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , 
@@ -158,7 +158,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	
 
 
-
+	this.setPickEnabled(true);
 	this.setUpdatePeriod(10);
 };
 
