@@ -514,10 +514,6 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			break;
 		case 'tile':
 			this.primitives[currentPrimitive_id] = new Prim_Tile(currentPrimitive_id);
-			this.primitives[currentPrimitive_id].x1 = this.reader.getFloat(primitive_data, 'x1');
-			this.primitives[currentPrimitive_id].y1 = this.reader.getFloat(primitive_data, 'y1');
-			this.primitives[currentPrimitive_id].x2 = this.reader.getFloat(primitive_data, 'x2');
-			this.primitives[currentPrimitive_id].y2 = this.reader.getFloat(primitive_data, 'y2');
 			this.primitives[currentPrimitive_id].tx1[0] = this.reader.getFloat(primitive_data, 'tx1x');
 			this.primitives[currentPrimitive_id].tx1[1] = this.reader.getFloat(primitive_data, 'tx1y');
 			this.primitives[currentPrimitive_id].tx2[0] = this.reader.getFloat(primitive_data, 'tx2x');

@@ -5,10 +5,6 @@
 function Prim_Tile(primitive_id) {
 	this.id = primitive_id;
 	
-	this.x1 = 0.0;
-	this.y1 = 0.0;
-	this.x2 = 0.0;
-	this.y2 = 0.0;
 	this.tx1 = [];
 	this.tx2 = [];
 }
@@ -32,5 +28,5 @@ Prim_Tile.prototype.create = function(scene){
 		this.tx2[0] = 1;
 	if(this.tx2[1] == null)
 		this.tx2[1] = 1;
-	return new MyTile(scene, this.x1, this.y1, this.x2, this.y2, this.tx1, this.tx2);
+	return new MyTile(scene, this.tx1[0],this.tx1[1], this.tx2[0], this.tx2[1]);
 }

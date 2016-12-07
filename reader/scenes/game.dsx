@@ -228,8 +228,7 @@
 		</primitive>
 		
 		<primitive id="tiletest">
-			<tile x1="1" y1="1" x2="0" y2="0"
-			tx1x="0" tx1y="0" tx2x="0.5" tx2y="0.5" />
+			<tile tx1x="0" tx1y="0" tx2x="0.5" tx2y="0.5" />
 		</primitive>
 	</primitives>
 	
