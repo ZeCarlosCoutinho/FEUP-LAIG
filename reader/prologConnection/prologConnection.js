@@ -1,5 +1,8 @@
+var lastResponse = "";
+
 function getPrologRequest(requestString, onSuccess, onError, port)
 {
+	lastResponse = "";
 	var requestPort = port || 8081;
 	var request = new XMLHttpRequest();
 	request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
@@ -29,7 +32,16 @@ function requestScore(board)
 function requestMove(board, player, difficulty)
 {
 	// Get Parameter Values
-	var requestString = "thinkMove(" + board.toString() + "," + "red" + "," + 1 + ")";				
+	var requestString = "thinkMove(" + board.toString() + "," + player + "," + 1 + ")";				
+	
+	// Make Request
+	getPrologRequest(requestString, handleReply);
+}
+
+function requestPossibleMoves(board, player)
+{
+	// Get Parameter Values
+	var requestString = "getAllValidMoves(" + board.toString() + "," + player + ")";				
 	
 	// Make Request
 	getPrologRequest(requestString, handleReply);
@@ -40,5 +52,6 @@ function requestMove(board, player, difficulty)
 function handleReply(data){
 	//document.querySelector("#query_result").innerHTML=data.target.response;
 	console.log("Request successful. Reply: " + data.target.response);
+	lastResponse = data.target.response;
 
 }

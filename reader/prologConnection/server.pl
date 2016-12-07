@@ -109,6 +109,7 @@ parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(score(Board), Res) :- getScore(Board, Res).
 parse_input(thinkMove(Board,Player,Difficulty), Res) :- thinkMove(Board,Player,Difficulty,Res).
+parse_input(getAllValidMoves(Board,Player), Res) :- getAllValidMoves(Board,Player,Res).
 parse_input(quit, goodbye).
 
 test(_,[],N) :- N =< 0.

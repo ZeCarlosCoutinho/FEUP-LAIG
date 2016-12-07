@@ -35,8 +35,8 @@ uniform MaterialProperties uFrontMaterial;
 
 void main() {
 		vec4 textureColor = texture2D(uSampler, vTextureCoord);
-		//gl_FragColor = uFrontMaterial.specular + uFrontMaterial.ambient + uFrontMaterial.diffuse;
-		gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);  
+		gl_FragColor = uFrontMaterial.specular + uFrontMaterial.ambient + uFrontMaterial.diffuse;
+		gl_FragColor = gl_FragColor * vec4(0.0, 0.0, 1.0, 1.0);  
 
 }
 

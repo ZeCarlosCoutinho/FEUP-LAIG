@@ -38,8 +38,8 @@ XMLscene.prototype.init = function (application) {
 	this.enableTextures(true); //È necessário para texturas
 	this.axis = new CGFaxis(this);
 	
-	this.highlightShader  = new CGFshader(this.gl, 'shaders/gourad.vert', 'shaders/gourad.frag');
-	//this.highlightShader  = new CGFshader(this.gl, 'shaders/highligthShader.vert', 'shaders/highligthShader.frag');
+	//this.highlightShader  = new CGFshader(this.gl, 'shaders/gourad.vert', 'shaders/gourad.frag');
+	this.highlightShader  = new CGFshader(this.gl, 'shaders/highligthShader.vert', 'shaders/highligthShader.frag');
 	//this.highligthShader.setUniformsValues({	});
 
 	//TESTING

@@ -11,21 +11,20 @@ function MyBoard(scene, texture) {
 	//this.board = new MyChessBoard(this.scene, [9,9], [1,5], texture, [1,0,1,1], [0,1,0,1], [1,1,1,1]);
 	this.initializePieces();
 	this.pickingTable = []; //Stores picking ids;
-	//this.state = new TurnStart("red", this);
+	this.state = new TurnStart("red", this);
 
 	//Testing
-	/*this.pieces[3][5].picked = true;
-	this.pieces[7][5].picked = true;
-	console.log(this.toString());
-	requestScore(this);
-	requestMove(this);*/
+	/*
+	this.pieces[1][1].picked = true;
+	this.pieces[7][5].picked = true;//*/
 };
 
 MyBoard.prototype = Object.create(CGFobject.prototype);
 MyBoard.prototype.constructor = MyBoard;
 
 MyBoard.prototype.display = function () {
-	this.logPicking();
+	this.state.display();
+	/*this.logPicking();
 	this.scene.clearPickRegistration();
 
 
@@ -50,7 +49,7 @@ MyBoard.prototype.display = function () {
 			this.scene.popMatrix();
 			this.scene.clearPickRegistration();
 		}
-	}
+	}*/
 };
 
 MyBoard.prototype.logPicking = function()

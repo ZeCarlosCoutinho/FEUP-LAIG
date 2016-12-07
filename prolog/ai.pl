@@ -3,7 +3,7 @@
 This module discovers the best move possible that one of the players can
 do in given state of the board.
 */
-:- module(ai, [thinkMove/4]).
+:- module(ai, [thinkMove/4, getAllValidMoves/3]).
 
 :- use_module(library(random)).
 :- use_module(library(lists)).
