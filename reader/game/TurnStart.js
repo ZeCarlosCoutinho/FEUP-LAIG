@@ -70,10 +70,11 @@ TurnStart.prototype.logPicking = function()
 
 TurnStart.prototype.next = function(){
 	var coords = [];
+	console.log("Error = " + this.pieceChosen[1]);
 	coords[0] = Math.floor((this.pieceChosen[1] - 100) / 10);
 	coords[1] = (this.pieceChosen[1] - 100) % 10;
     requestPossibleMoves(this.board, this.player, coords);
-    this.board.state = new PieceSelected(this.player, this.board, this.pieceChosen[0]);
+    this.board.state = new PieceSelected(this.player, this.board, this.pieceChosen);
 }
 
 

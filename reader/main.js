@@ -48,6 +48,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'animations/LinearAnimation.js',
 	'animations/CircularAnimation.js',
 	'animations/CompoundAnimation.js',
+	'animations/PieceAnimation.js',
 	'MyInterface.js',
 	'primitives/MyPiece.js',
 	'primitives/MyBoard.js',
@@ -59,6 +60,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'game/GameState.js',
 	'game/TurnStart.js',
 	'game/PieceSelected.js',
+	'game/MoveSelected.js',
 	
 main=function()
 {

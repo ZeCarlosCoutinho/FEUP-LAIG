@@ -4,7 +4,7 @@ function parseListMoves(string)
 	var listMoves = str.split(',');
 	var res = [];
 	for (move in listMoves)
-	   res.push(parseMove(listMoves[move]).destination());
+	   res.push(parseMove(listMoves[move]).destination);
     return res;
 }
 

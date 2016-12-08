@@ -47,6 +47,7 @@ MyGameBoard.prototype.displaySelected = function () {
 
 			this.tiles[i][j].display();
 		this.scene.popMatrix();
+		this.scene.clearPickRegistration();
 	}
 };
 

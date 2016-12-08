@@ -212,8 +212,9 @@ XMLscene.prototype.display = function () {
 
 
 XMLscene.prototype.update = function (currTime) {
-	this.rootObject.updateAnimation(currTime);
+	//this.rootObject.updateAnimation(currTime);
 	//TESTING
+	this.test.updateAnimation(currTime);
 	//this.testAnimation.updateMatrix(currTime);
 };
 
