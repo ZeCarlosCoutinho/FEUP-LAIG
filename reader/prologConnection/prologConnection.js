@@ -32,7 +32,7 @@ function requestScore(board)
 function requestMove(board, player, difficulty)
 {
 	// Get Parameter Values
-	var requestString = "thinkMove(" + board.toString() + "," + player + "," + 1 + ")";				
+	var requestString = "thinkMove(" + board.toString() + "," + player + "," + difficulty + ")";				
 	
 	// Make Request
 	getPrologRequest(requestString, handleReply);

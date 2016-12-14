@@ -57,10 +57,12 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'prologConnection/prologConnection.js',
 	'prologConnection/prologParse.js',
 	'game/Move.js',
-	'game/GameState.js',
-	'game/TurnStart.js',
-	'game/PieceSelected.js',
-	'game/MoveSelected.js',
+	'game/Player.js',
+	'game/states/GameState.js',
+	'game/states/TurnStart.js',
+	'game/states/PieceSelected.js',
+	'game/states/MoveSelected.js',
+	'game/states/PCTurnStart.js',
 	
 main=function()
 {

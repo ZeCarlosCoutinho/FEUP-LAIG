@@ -5,11 +5,16 @@
 function MyBoard(scene) {
  	CGFobject.call(this,scene);
 
- 	
+ 	this.scene.players = [];
+	this.scene.players["red"] = new Player("Red", "red", "human");
+	this.scene.players["white"] = new Player("Human", "white", "pc", 1);
+	
 	this.board = new MyGameBoard(this.scene, 9, 9);
 	this.initializePieces();
 	this.pickingTable = []; //Stores picking ids;
-	this.state = new TurnStart("red", this);
+
+
+	this.state = new TurnStart(this.scene.players["red"], this);
 	//Testing
 	//var array = (new Move([2,5], "east", 1)).getImplication(this);
 	//console.log(array);
@@ -37,23 +42,23 @@ MyBoard.prototype.initializePieces = function () {
 	for (var i = 1; i <=9; i++){
 		this.pieces[i] = [];
 	}
-	this.pieces[1][1] = new MyPiece(this.scene, "red", 3);
-	this.pieces[1][9] = new MyPiece(this.scene, "red", 3);
-	this.pieces[2][3] = new MyPiece(this.scene, "red", 2);
-	this.pieces[2][4] = new MyPiece(this.scene, "red", 1);
-	this.pieces[2][5] = new MyPiece(this.scene, "red", 1);
-	this.pieces[2][6] = new MyPiece(this.scene, "red", 1);
-	this.pieces[2][7] = new MyPiece(this.scene, "red", 2);
-	this.pieces[3][5] = new MyPiece(this.scene, "red", 1);
+	this.pieces[1][1] = new MyPiece(this.scene, this.scene.players["red"], 3);
+	this.pieces[1][9] = new MyPiece(this.scene, this.scene.players["red"], 3);
+	this.pieces[2][3] = new MyPiece(this.scene, this.scene.players["red"], 2);
+	this.pieces[2][4] = new MyPiece(this.scene, this.scene.players["red"], 1);
+	this.pieces[2][5] = new MyPiece(this.scene, this.scene.players["red"], 1);
+	this.pieces[2][6] = new MyPiece(this.scene, this.scene.players["red"], 1);
+	this.pieces[2][7] = new MyPiece(this.scene, this.scene.players["red"], 2);
+	this.pieces[3][5] = new MyPiece(this.scene, this.scene.players["red"], 1);
 
-	this.pieces[9][1] = new MyPiece(this.scene, "white", 3);
-	this.pieces[9][9] = new MyPiece(this.scene, "white", 3);
-	this.pieces[8][3] = new MyPiece(this.scene, "white", 2);
-	this.pieces[8][4] = new MyPiece(this.scene, "white", 1);
-	this.pieces[8][5] = new MyPiece(this.scene, "white", 1);
-	this.pieces[8][6] = new MyPiece(this.scene, "white", 1);
-	this.pieces[8][7] = new MyPiece(this.scene, "white", 2);
-	this.pieces[7][5] = new MyPiece(this.scene, "white", 1);
+	this.pieces[9][1] = new MyPiece(this.scene, this.scene.players["white"], 3);
+	this.pieces[9][9] = new MyPiece(this.scene, this.scene.players["white"], 3);
+	this.pieces[8][3] = new MyPiece(this.scene, this.scene.players["white"], 2);
+	this.pieces[8][4] = new MyPiece(this.scene, this.scene.players["white"], 1);
+	this.pieces[8][5] = new MyPiece(this.scene, this.scene.players["white"], 1);
+	this.pieces[8][6] = new MyPiece(this.scene, this.scene.players["white"], 1);
+	this.pieces[8][7] = new MyPiece(this.scene, this.scene.players["white"], 2);
+	this.pieces[7][5] = new MyPiece(this.scene, this.scene.players["white"], 1);
 };
 
 
@@ -63,7 +68,7 @@ MyBoard.prototype.toString = function () {
 		str = str + "[";
 		for (var j = 1; j <=9; j++){
 			if (this.pieces[j][i])
-				str = str + this.pieces[j][i].size + "-" + this.pieces[j][i].player;
+				str = str + this.pieces[j][i].size + "-" + this.pieces[j][i].player.color;
 			else
 				str = str + "empty";
 			if (j < 9)

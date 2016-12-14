@@ -20,13 +20,13 @@ MyPiece.prototype.display = function(){
 		this.scene.setActiveShader(this.scene.highlightShader);
 
     this.scene.pushMatrix();
-        if(this.player == "red"){
+        if(this.player.color == "red"){
             this.scene.translate(0.5,0,0.5);
             this.scene.rotate(Math.PI, 0, 1, 0);
             this.scene.translate(-0.5,0,-0.5);
         }
-        this.scene.playerMaterials[this.player].apply();
-		this.scene.pieceObjects[this.size].display(this.scene.playerMaterials[this.player]);
+        this.scene.playerMaterials[this.player.color].apply();
+		this.scene.pieceObjects[this.size].display(this.scene.playerMaterials[this.player.color]);
 	this.scene.popMatrix();
 	if (this.picked & !this.scene.pickMode)
 		this.scene.setActiveShaderSimple(this.scene.defaultShader);

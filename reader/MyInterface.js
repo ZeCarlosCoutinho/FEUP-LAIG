@@ -19,12 +19,21 @@ MyInterface.prototype.init = function(application) {
 	
 	this.gui = new dat.GUI();
 
+	this.redPlayer = this.gui.addFolder(this.scene.players["red"].name);
+	//this.redPlayer.add(this.scene.players["red"], "name");
+	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]);
+	this.redPlayer.add(this.scene.players["red"], "difficulty", [0, 1, 2, 3]);
+
+	this.redPlayer = this.gui.addFolder(this.scene.players["white"].name);
+	//this.redPlayer.add(this.scene.players["red"], "name");
+	this.redPlayer.add(this.scene.players["white"], "type", ["pc", "human"]);
+	this.redPlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]);
 
 	this.omniLights = this.gui.addFolder("Omni Lights");
-	this.omniLights.open();
+	//this.omniLights.open();
 
 	this.spotLights = this.gui.addFolder("Spot Lights");
-	this.spotLights.open();
+	//this.spotLights.open();
 
 	return true;
 };
