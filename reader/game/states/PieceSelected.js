@@ -95,7 +95,7 @@ PieceSelected.prototype.logPicking = function()
 							var coords = [];
 							coords[0] = Math.floor((this.scene.pickResults[i][1] - 100) / 10);
 							coords[1] = (this.scene.pickResults[i][1] - 100) % 10;
-    						requestPossibleMoves(this.board, this.player, coords);
+    						requestPossibleMoves(this.board, this.player.color, coords);
     						this.pieceChosen = this.scene.pickResults[i];
 					}			
 						 

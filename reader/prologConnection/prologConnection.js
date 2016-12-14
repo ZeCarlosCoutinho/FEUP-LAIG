@@ -41,7 +41,7 @@ function requestMove(board, player, difficulty)
 function requestPossibleMoves(board, player, coords)
 {
 	// Get Parameter Values
-	var requestString = "getAllValidMoves(" + board.toString() + "," + player + "," + coords[1] +  "-" + coords[0] + ")";				
+	var requestString = "getAllValidMoves(" + board.toString() + "," + player + "," + coords[1] + "-" + coords[0] + ")";				
 	
 	// Make Request
 	getPrologRequest(requestString, handleReply);
