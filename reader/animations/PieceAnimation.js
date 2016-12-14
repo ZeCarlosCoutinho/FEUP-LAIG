@@ -5,14 +5,14 @@
 
 PieceAnimation.prototype = new Animation(); 
 
-function PieceAnimation(dest, initTime, dur) {
+function PieceAnimation(dest, initTime, dur, animationSpeed) {
 	this.finished = false;
 
 	this.dest = dest;
-	this.initTime = initTime;
-	this.dur = dur;
-	this.time = dur + initTime;
-		
+	this.initTime = initTime / animationSpeed;
+	this.dur = dur / animationSpeed;
+	this.time = (dur + initTime) / animationSpeed;
+	this.animationSpeed = animationSpeed;
 	this.speed = scaleVec(this.dest, 1 / this.dur);
 }
 
@@ -25,7 +25,7 @@ PieceAnimation.prototype.updateMatrix = function(currTime)
 {
 	this.initialTime = this.initialTime || currTime;
 	this.lastTime = this.lastTime || currTime;
-	var time = (currTime - this.initialTime) /1000;
+	var time = (currTime - this.initialTime) /1000 * this.animationSpeed;;
 	this.lastTime = currTime;
 	
 	if(time > this.time){
@@ -37,7 +37,6 @@ PieceAnimation.prototype.updateMatrix = function(currTime)
 		time = 0;
 	else
 		time =  (time - this.initTime)/9;
-
 
 	var matrix = mat4.create();
 	mat4.translate(matrix, matrix, [

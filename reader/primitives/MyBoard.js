@@ -7,7 +7,7 @@ function MyBoard(scene) {
 
  	this.scene.players = [];
 	this.scene.players["red"] = new Player("Red", "red", "human");
-	this.scene.players["white"] = new Player("Human", "white", "pc", 1);
+	this.scene.players["white"] = new Player("White", "white", "pc", 1);
 	
 	this.board = new MyGameBoard(this.scene, 9, 9);
 	this.initializePieces();

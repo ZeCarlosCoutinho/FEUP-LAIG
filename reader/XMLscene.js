@@ -32,6 +32,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.pieceObjects = [];
 	this.playerMaterials = [];
+	this.animationSpeed = 1;
 
 	this.defaultAppearance = new CGFappearance(this);
 

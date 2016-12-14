@@ -18,16 +18,16 @@ MyInterface.prototype.init = function(application) {
 	CGFinterface.prototype.init.call(this, application);
 	
 	this.gui = new dat.GUI();
-
+	
+	this.gui.add(this.scene, "animationSpeed", 0.1, 5);
+	
 	this.redPlayer = this.gui.addFolder(this.scene.players["red"].name);
-	//this.redPlayer.add(this.scene.players["red"], "name");
 	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]);
 	this.redPlayer.add(this.scene.players["red"], "difficulty", [0, 1, 2, 3]);
 
-	this.redPlayer = this.gui.addFolder(this.scene.players["white"].name);
-	//this.redPlayer.add(this.scene.players["red"], "name");
-	this.redPlayer.add(this.scene.players["white"], "type", ["pc", "human"]);
-	this.redPlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]);
+	this.whitePlayer = this.gui.addFolder(this.scene.players["white"].name);
+	this.whitePlayer.add(this.scene.players["white"], "type", ["pc", "human"]);
+	this.whitePlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]);
 
 	this.omniLights = this.gui.addFolder("Omni Lights");
 	//this.omniLights.open();

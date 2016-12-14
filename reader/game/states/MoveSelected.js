@@ -97,7 +97,7 @@ MoveSelected.prototype.calculateAnimation = function(){
 	this.animationList = [];
 	var finalTime = this.moveList[0].distance;
 	for (var k in this.moveList){
-		this.animationList.push(new PieceAnimation(this.moveList[k].difference, finalTime - this.moveList[k].distance, this.moveList[k].distance));
+		this.animationList.push(new PieceAnimation(this.moveList[k].difference, finalTime - this.moveList[k].distance, this.moveList[k].distance, this.scene.animationSpeed));
 	}
 }
 
