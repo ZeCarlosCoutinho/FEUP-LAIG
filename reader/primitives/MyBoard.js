@@ -31,27 +31,9 @@ MyBoard.prototype.getSimpleMoveList = function(move){
 	move.coordinates;
 }
 
-/*
-MyBoard.prototype.logPicking = function()
-{
-    if (this.scene.pickMode == false) {
-		if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
-			for (var i=0; i< this.scene.pickResults.length; i++) {
-				var obj = this.scene.pickResults[i][0];
-				if (obj)
-				{
-					var customId = this.scene.pickResults[i][1];
-					console.log(customId);
-					this.scene.pickResults[i][0].picked = true;
-				}
-			}
-			this.scene.pickResults.splice(0,this.scene.pickResults.length);
-		}		
-	}
-};*/
-
 MyBoard.prototype.initializePieces = function () {
 	this.pieces = [];
+	this.destroyedPieces = [];
 	for (var i = 1; i <=9; i++){
 		this.pieces[i] = [];
 	}

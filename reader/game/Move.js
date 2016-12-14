@@ -38,7 +38,10 @@ Move.prototype.apply = function(board){
     var Zi = this.coordinates[1];
     var Xf = this.destination[0];
     var Zf = this.destination[1];
-    board.pieces[Xf][Zf] = board.pieces[Xi][Zi];
+    if (isOutOfBoard(Xf, Zf))
+        board.destroyedPieces.push(board.pieces[Xi][Zi]);
+    else
+        board.pieces[Xf][Zf] = board.pieces[Xi][Zi];
     board.pieces[Xi][Zi] = undefined;
 }
 
@@ -52,6 +55,9 @@ Move.prototype.getImplication = function(board, stack){
     var i = 0;
     do{
         currCoord = sumVec(currCoord, this.directionVector);
+        if (isOutOfBoard(currCoord[0], currCoord[1])){
+            break;
+        }
         if (typeof board.pieces[currCoord[0]][currCoord[1]] != "undefined"){
             (new Move(currCoord, this.direction, this.distance - i)).getImplication(board, stack);
             break;
@@ -59,6 +65,10 @@ Move.prototype.getImplication = function(board, stack){
         i++;
     }while(i < this.distance)
     return stack;
+}
+
+isOutOfBoard = function(Xf, Zf){
+    return Xf > 9 || Xf < 1 || Zf > 9 || Zf < 1;
 }
 
 sumVec = function(vec1, vec2){

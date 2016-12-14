@@ -34,8 +34,10 @@ PieceSelected.prototype.display = function()
     //Display Pieces
 	for (var i = 1; i <= 9; i++){
 		for (var j = 1; j <= 9; j++){
-			if (this.pieceChosen[0] == pieces[i][j])
+			if (this.pieceChosen[0] == pieces[i][j]){
 				chosen_position = [i, j];
+				continue;
+			}
 
 		    //If there's a piece and it is from the current player
 			if (typeof pieces[i][j] != "undefined" && pieces[i][j].player == this.player){
