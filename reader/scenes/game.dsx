@@ -6,6 +6,8 @@
 		<pieces piece1="piece1" piece2="piece2" piece3="piece3"/>
 		<red material="redMaterial" texture="wood"/>
 		<white material="whiteMaterial" texture="wood"/>
+		<background_ost file="resources/sounds/background.mp3"/>
+		<select_ost file="resources/sounds/select.wav"/>
 	</game>
 
 	<views default="view_default" >
