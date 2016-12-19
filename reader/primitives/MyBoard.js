@@ -15,20 +15,21 @@ function MyBoard(scene) {
 
 
 	this.state = new TurnStart(this.scene.players["red"], this);
-	//Testing
-	//var array = (new Move([2,5], "east", 1)).getImplication(this);
-	//console.log(array);
-
-	/*
-	this.pieces[1][1].picked = true;
-	this.pieces[7][5].picked = true;//*/
 };
 
 MyBoard.prototype = Object.create(CGFobject.prototype);
 MyBoard.prototype.constructor = MyBoard;
 
 MyBoard.prototype.display = function () {
+	var material = this.scene.gameMaterials["board"];
+	if (this.scene.gameTextures["board"])
+		material.setTexture(this.scene.gameTextures["board"].text);
+	
+	this.scene.gameMaterials["board"].apply();
 	this.state.display();
+	
+	material.setTexture(null);
+	
 };
 
 

@@ -71,8 +71,9 @@ MyComponent.prototype.display = function (material, texture) {
 	var drawingMaterial = this.currentMaterial;
 	if (this.currentMaterial == "inherit")
 		drawingMaterial = material;		
-	if (this.texture == "inherit")
-		this.texture = texture; 
+	if (this.texture == "inherit"){
+		this.drawingTexture = texture;
+	}
 	
 
 	this.scene.pushMatrix();
@@ -81,16 +82,16 @@ MyComponent.prototype.display = function (material, texture) {
 			this.scene.multMatrix(this.animation.matrix);
 		for(var component of this.components){
 			if(component instanceof MyComponent)
-				component.display(drawingMaterial, this.texture); //Recursively, calls the display for each of the child components
+				component.display(drawingMaterial, this.drawingTexture); //Recursively, calls the display for each of the child components
 			else{
 				//Sets texture
 				if (this.texture != null){
-					drawingMaterial.setTexture(this.texture.text);
+					drawingMaterial.setTexture(this.drawingTexture.text);
 					//Length ST
 					if (component.setTextureCoords != null)
-						component.setTextureCoords(this.texture.lengthS, this.texture.lengthT);
+						component.setTextureCoords(this.drawingTexture.lengthS, this.drawingTexture.lengthT);
 				}
-				else if (typeof this.texture == undefined){
+				else if (typeof this.drawingTexture == undefined){
 				}
 				else 
 					drawingMaterial.setTexture(null);

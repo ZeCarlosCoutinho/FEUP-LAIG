@@ -25,9 +25,19 @@ MyPiece.prototype.display = function(){
             this.scene.rotate(Math.PI, 0, 1, 0);
             this.scene.translate(-0.5,0,-0.5);
         }
-        this.scene.playerMaterials[this.player.color].apply();
-		this.scene.pieceObjects[this.size].display(this.scene.playerMaterials[this.player.color]);
+        var material = this.scene.gameMaterials[this.player.color];
+        var texture = this.scene.gameTextures[this.player.color];
+		if (texture){
+			material.setTexture(texture.text);
+			if (this.scene.pieceObjects[this.size].setTextureCoords != null)
+				this.scene.pieceObjects[this.size].setTextureCoords(texture.lengthS, texture.lengthT);
+		}
+        
+		this.scene.pieceObjects[this.size].display(material, texture);
+
+		material.setTexture(null);
 	this.scene.popMatrix();
+	
 	if (this.picked & !this.scene.pickMode)
 		this.scene.setActiveShaderSimple(this.scene.defaultShader);
 }

@@ -8,7 +8,8 @@ function MySceneGraph(filename, scene) {
 
 	this.root;
 	this.pieces = [];
-	this.playerMaterials = [];
+	this.gameMaterials = [];
+	this.gameTextures = [];
 	this.axis_length;
 	this.illumination = new Illumination();
 	this.omniLights = [];
@@ -52,6 +53,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errorPrimitives = this.parsePrimitives(rootElement);
 	var errorAnimations = this.parseAnimations(rootElement);
 	var errorComponents = this.parseComponents(rootElement);
+	var errorScene = this.parseGame(rootElement);
 	
 	if (errorScene != null) {
 		this.onXMLError(errorScene);
@@ -115,16 +117,71 @@ MySceneGraph.prototype.parseScene= function(rootElement) {
 	this.root = this.reader.getString(scene, 'root');
 	this.axis_length = this.reader.getFloat(scene, 'axis_length');
 
-	this.pieces[1] = this.reader.getString(scene, 'piece1');
-	this.pieces[2] = this.reader.getString(scene, 'piece2');
-	this.pieces[3] = this.reader.getString(scene, 'piece3');
-	this.playerMaterials['red'] = this.reader.getString(scene, 'redMaterial');
-	this.playerMaterials['white'] = this.reader.getString(scene, 'whiteMaterial');
 
 	if (this.axis_length < 0)
 		return "axis length is invalid.";
 
 	console.log("Scene read from file: {root=" + this.root + ", axis_length=" + this.axis_length + "}");
+};
+
+MySceneGraph.prototype.parseGame= function(rootElement) {
+	//Check for errors
+	var elems =  rootElement.getElementsByTagName('game');
+	if (elems == null) {
+		return "game element is missing.";
+	}
+
+	if (elems.length != 1) {
+		return "either zero or more than one 'game' element found.";
+	}
+
+	var game = elems[0];
+
+
+	var board = game.getElementsByTagName('board');
+	if (board.length != 1) 
+		return "either zero or more than one 'board' element found.";
+	else
+		board = board[0];
+	
+	var pieces = game.getElementsByTagName('pieces');
+	if (pieces.length != 1) 
+		return "either zero or more than one 'pieces' element found.";
+	else
+		pieces = pieces[0];
+	
+	var red = game.getElementsByTagName('red');
+	if (red.length != 1) 
+		return "either zero or more than one 'red' element found.";
+	else
+		red = red[0];
+	
+	var white = game.getElementsByTagName('white');
+	if (white.length != 1) 
+		return "either zero or more than one 'white' element found.";
+	else
+		white = white[0];
+
+	
+
+	
+	this.pieces[1] = this.reader.getString(pieces, 'piece1');
+	this.pieces[2] = this.reader.getString(pieces, 'piece2');
+	this.pieces[3] = this.reader.getString(pieces, 'piece3');
+	this.gameMaterials['board'] = this.reader.getString(board, 'material');
+	this.gameMaterials['red'] = this.reader.getString(red, 'material');
+	this.gameMaterials['white'] = this.reader.getString(white, 'material');
+	
+	this.gameTextures['board'] = this.reader.getString(board, 'texture');
+	this.gameTextures['red'] = this.reader.getString(red, 'texture');
+	this.gameTextures['white'] = this.reader.getString(white, 'texture');
+
+	for(var i = 1; i <= 3; i++)
+	if(this.components[this.pieces[i]] == null)
+	{
+			return "Piece " + i + " not Found";
+	}
+
 };
 
 MySceneGraph.prototype.parseViews= function(rootElement) {
@@ -664,14 +721,6 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 	{
 			return "Root not Found";
 	}
-	for(var i = 1; i <= 3; i++)
-	if(this.components[this.pieces[i]] == null)
-	{
-			return "Piece " + i + " not Found";
-	}
-	
-	
-
 
 };
 

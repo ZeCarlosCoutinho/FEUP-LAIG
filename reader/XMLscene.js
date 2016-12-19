@@ -31,7 +31,8 @@ XMLscene.prototype.init = function (application) {
 	//BOARD Display Variables
 
 	this.pieceObjects = [];
-	this.playerMaterials = [];
+	this.gameMaterials = [];
+	this.gameTextures = [];
 	this.animationSpeed = 1;
 
 	this.defaultAppearance = new CGFappearance(this);
@@ -39,8 +40,8 @@ XMLscene.prototype.init = function (application) {
 	this.enableTextures(true); //È necessário para texturas
 	this.axis = new CGFaxis(this);
 	
-	//this.highlightShader  = new CGFshader(this.gl, 'shaders/gourad.vert', 'shaders/gourad.frag');
-	this.highlightShader  = new CGFshader(this.gl, 'shaders/highligthShader.vert', 'shaders/highligthShader.frag');
+	this.highlightShader  = new CGFshader(this.gl, 'shaders/gourad.vert', 'shaders/gourad.frag');
+	//this.highlightShader  = new CGFshader(this.gl, 'shaders/highligthShader.vert', 'shaders/highligthShader.frag');
 	//this.highligthShader.setUniformsValues({	});
 
 	//TESTING
@@ -48,12 +49,12 @@ XMLscene.prototype.init = function (application) {
 	this.pieceObjects[2] = new MyCylinderWithTops(this, 2, 0.5, 0.5, 3, 12);
 	this.pieceObjects[3] = new MyCylinderWithTops(this, 3, 0.5, 0.5, 3, 12);
 
-	this.testAppearance = new CGFappearance(this);
+	/*this.testAppearance = new CGFappearance(this);
 	this.testAppearance.loadTexture("../reader/resources/images/wood.png");//*/
-	this.testAppearance2 = new CGFappearance(this);
+	/*this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");//*/
 	
-	this.playerMaterials["red"]=this.testAppearance;
+	/*this.playerMaterials["red"]=this.testAppearance;
 	this.playerMaterials["white"]=this.testAppearance2;
 	/*this.testAnimation = new CompoundAnimation("id",
 		[	new LinearAnimation("id", [[0,0,0], [0,0,2]], 5),
@@ -64,9 +65,9 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
 	//this.test = new MyGameBoard(this, 9, 9);
-	this.test = new MyBoard(this, new CGFtexture(this,"../reader/resources/images/wood.png"));
-	//this.test = new MyPiece(this, "white", 3);
-	//this.test2 = new MyPiece(this, "red", 1);
+	this.test = new MyBoard(this);
+	//this.test3 = new MyPiece(this, new Player("Red", "white", "human"), 3);
+	//this.test2 = new MyPiece(this,new Player("Red", "red", "human"), 1);
 	//this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , 
 	//[1,1,1,1], [0,0,0,1], [1,0,0,1]);
 	//this.test = new MyBoat(this, this.testAppearance2);
@@ -150,9 +151,14 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
 
+	this.gameMaterials["board"] = this.materials[this.graph.gameMaterials['board']];
+	this.gameMaterials["red"] = this.materials[this.graph.gameMaterials['red']];
+	this.gameMaterials["white"] = this.materials[this.graph.gameMaterials['white']];
 
-	this.playerMaterials["red"] = this.materials[this.graph.playerMaterials['red']];
-	this.playerMaterials["white"] = this.materials[this.graph.playerMaterials['white']];
+	this.gameTextures["board"]  = this.textures[this.graph.gameTextures["board"]];
+	this.gameTextures["red"]  = this.textures[this.graph.gameTextures["red"]];
+	this.gameTextures["white"]  = this.textures[this.graph.gameTextures["white"]];
+
 	for (var i = 1; i <= 3; i++){
 		this.pieceObjects[i] = this.graph.components[this.graph.pieces[i]].create(this);
 		this.pieceObjects[i].updateMaterial(this.materialIndex);
@@ -192,17 +198,25 @@ XMLscene.prototype.display = function () {
 	{
 		this.updateLights();
 		//this.rootObject.display();
+
+
+		//TESTING
+	
+		this.pushMatrix();
+			this.scale(5,5,5);
+			this.test.display();
+		this.popMatrix();//*/
 	};	
 	
 	//TESTING
 	
 	this.pushMatrix();
-		this.testAppearance.apply();
+		//this.testAppearance.apply();
 		//this.multMatrix(this.testAnimation.matrix);
 		//this.rotate(Math.PI/2,0,0,1);
 		//this.rotate(Math.PI/2,0,1,0);
-		this.scale(5,5,5);
-		this.test.display();
+		//this.scale(5,5,5);
+		//this.test.display();
 		//this.translate(1,0,0);
 		//this.test2.display();
 		//console.log(this.testAnimation.isFinished());

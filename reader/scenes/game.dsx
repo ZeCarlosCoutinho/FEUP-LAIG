@@ -1,6 +1,13 @@
 <dsx>
-	<scene root="root" axis_length="3" piece1="piece1"  piece2="piece2"  piece3="piece3" redMaterial="redMaterial" whiteMaterial="whiteMaterial"/>
+	<scene root="root" axis_length="3"/>
 	
+	<game>
+		<board material="whiteMaterial" texture="board"/>
+		<pieces piece1="piece1" piece2="piece2" piece3="piece3"/>
+		<red material="redMaterial" texture="wood"/>
+		<white material="whiteMaterial" texture="wood"/>
+	</game>
+
 	<views default="view_default" >
         	<perspective id="view_default" near="0.1" far="500" angle="20">
             		<from x="15" y="15" z="15" />
@@ -46,9 +53,10 @@
 	<textures>
 		<texture id="carrots" file="resources\\images\\carrotsPattern.png" length_s="1.0" length_t="1.0" />
 		<texture id="carpet" file="resources\\images\\carpet.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="board" file="resources\\images\\wood.png" length_s="1.0" length_t="1.0" />
 		<texture id="darkwood" file="resources\\images\\darkwood.jpg" length_s="1.0" length_t="1.0" />
 		<texture id="illuminati" file="resources\\images\\illuminatieye.jpg" length_s="1.0" length_t="1.0" />
-		<texture id="sauron" file="resources\\images\\sauroneye.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="sauron" file="resources\\images\\sauroneye.jpg" length_s="2.0" length_t="1.0" />
 		<texture id="redmetal" file="resources\\images\\redmetal.jpg" length_s="1.0" length_t="1.0" />
 		<texture id="hell" file="resources\\images\\hell.jpg" length_s="1.0" length_t="1.0" />
 		<texture id="hell2" file="resources\\images\\hell2.jpg" length_s="1.0" length_t="1.0" />
