@@ -7,6 +7,8 @@ MoveSelected.prototype = Object.create(GameState.prototype);
 
 function MoveSelected(player, board, move) {
     GameState.call(this, player, board);
+    this.move = move;
+    this.player = player;
     this.moveList = move.getImplication(board);
 
     this.calculateAnimation();
@@ -41,7 +43,7 @@ MoveSelected.prototype.display = function()
 				this.scene.popMatrix();
 			}
 		}
-	}   
+	}
 
    	if(this.animationList[0].finished)
 		this.next();
@@ -52,6 +54,13 @@ MoveSelected.prototype.next = function(){
 		var move = this.moveList.pop();
 		move.apply(this.board);
 	}
+
+	//Puts the move in the stack
+	var moveEntry = [];
+	moveEntry.move = this.move;
+	moveEntry.player = this.player;
+	this.board.movesDone.push(moveEntry);
+
 	var nextPlayer;
 	if (this.player.color == "red")
 		nextPlayer = "white";

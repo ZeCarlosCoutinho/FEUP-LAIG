@@ -13,6 +13,7 @@ function MyBoard(scene) {
 	this.initializePieces();
 	this.pickingTable = []; //Stores picking ids;
 
+	this.movesDone = [];
 
 	this.state = new TurnStart(this.scene.players["red"], this);
 };

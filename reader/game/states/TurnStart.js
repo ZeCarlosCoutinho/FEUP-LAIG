@@ -77,4 +77,36 @@ TurnStart.prototype.next = function(){
     this.board.state = new PieceSelected(this.player, this.board, this.pieceChosen);
 }
 
+TurnStart.prototype.undo = function()
+{
+	//Resets board
+	var previousBoard = new MyBoard(this.scene);
 
+	//Store last player
+	var lastPlayer;
+
+	var lastMove = this.board.movesDone.pop(); //Delete last move from the moves stack
+	lastPlayer = lastMove.player;
+	if(lastPlayer.type == "pc")
+	{
+		//Pops again if the AI did the last turn
+		lastMove = this.board.movesDone.pop();
+		lastPlayer = lastMove.player;
+	}
+
+
+	//Copy movesDone to the new board
+	previousBoard.movesDone = this.board.movesDone;
+
+	//Remakes moves until last one
+	for(var i = 0; i < this.board.movesDone.length; i++)
+	{
+		var moveList = this.board.movesDone[i].move.getImplication(previousBoard);
+		while (moveList.length != 0){
+		var move = moveList.pop();
+		move.apply(previousBoard);
+		}
+	}
+	
+	this.board.state = new TurnStart(lastPlayer, previousBoard);
+}

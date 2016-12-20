@@ -80,5 +80,12 @@ MyInterface.prototype.processKeyboard = function(event) {
 				this.scene.rootObject.updateMaterial(this.scene.materialIndex);
 			}
 			break;
+		case (85):
+		case (117):
+			if(this.scene.test.state instanceof TurnStart)
+			{
+				this.scene.test.state.remakeMove();
+			}
+			break;
 	};
 };
