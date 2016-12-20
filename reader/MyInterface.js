@@ -82,7 +82,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 			break;
 		case (85):
 		case (117):
-			if(this.scene.test.state instanceof TurnStart)
+			if(this.scene.test.state instanceof TurnStart || this.scene.test.state instanceof PieceSelected)
 			{
 				this.scene.test.state.remakeMove();
 			}
