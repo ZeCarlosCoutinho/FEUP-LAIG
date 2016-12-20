@@ -10,6 +10,7 @@ function MySceneGraph(filename, scene) {
 	this.pieces = [];
 	this.gameMaterials = [];
 	this.gameTextures = [];
+	this.gameSounds = [];
 	this.axis_length;
 	this.illumination = new Illumination();
 	this.omniLights = [];
@@ -163,8 +164,6 @@ MySceneGraph.prototype.parseGame= function(rootElement) {
 		white = white[0];
 
 	
-
-	
 	this.pieces[1] = this.reader.getString(pieces, 'piece1');
 	this.pieces[2] = this.reader.getString(pieces, 'piece2');
 	this.pieces[3] = this.reader.getString(pieces, 'piece3');
@@ -180,6 +179,22 @@ MySceneGraph.prototype.parseGame= function(rootElement) {
 	if(this.components[this.pieces[i]] == null)
 	{
 			return "Piece " + i + " not Found";
+	}
+
+	//Opcional
+
+	var background = game.getElementsByTagName('background_ost');
+	if (background.length > 1) 
+		return "more than one 'background_ost' element found.";
+	else if (background.length == 1){
+		this.gameSounds['background'] = this.reader.getString(background[0], 'file');
+	}
+
+	var select = game.getElementsByTagName('select_ost');
+	if (select.length > 1) 
+		return "more than one 'select_ost' element found.";
+	else if (select.length == 1){
+		this.gameSounds['select'] = this.reader.getString(select[0], 'file');
 	}
 
 };

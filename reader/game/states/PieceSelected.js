@@ -97,9 +97,24 @@ PieceSelected.prototype.logPicking = function()
 							coords[1] = (this.scene.pickResults[i][1] - 100) % 10;
     						requestPossibleMoves(this.board, this.player.color, coords);
     						this.pieceChosen = this.scene.pickResults[i];
+							//SOUND
+    						var audio = this.scene.gameSounds["select"];
+    						if (audio.paused) {
+    						    audio.play();
+    						}else{
+    						    audio.currentTime = 0
+    						}
 					}			
 						 
 					else{
+						//SOUND
+    					var audio = this.scene.gameSounds["select"];
+    					if (audio.paused) {
+    					    audio.play();
+    					}else{
+    					    audio.currentTime = 0
+    					}
+    					
 						this.tileChosen = this.scene.pickResults[i];
 						this.next();
 					}

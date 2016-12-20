@@ -54,18 +54,23 @@ TurnStart.prototype.logPicking = function()
 				var obj = this.scene.pickResults[i][0];
 				if (obj)
 				{
-				    /*
-					var customId = this.scene.pickResults[i][1];
-					console.log(customId);
-					this.scene.pickResults[i][0].picked = true;*/
-					this.pieceChosen = this.scene.pickResults[i];
+				   this.pieceChosen = this.scene.pickResults[i];
 				}
 			}
 			this.scene.pickResults.splice(0,this.scene.pickResults.length);
 		}		
 	}
-	if (this.pieceChosen != null)
-	   this.next();
+	if (this.pieceChosen != null){
+		//SOUND
+    	var audio = this.scene.gameSounds["select"];
+    	if (audio.paused) {
+    	    audio.play();
+    	}else{
+    	    audio.currentTime = 0
+    	}
+    	
+	   	this.next();
+	}
 };
 
 TurnStart.prototype.next = function(){
