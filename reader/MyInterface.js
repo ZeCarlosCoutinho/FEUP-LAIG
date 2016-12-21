@@ -99,5 +99,11 @@ MyInterface.prototype.processKeyboard = function(event) {
 				this.scene.test.state.remakeMove();
 			}
 			break;
+		case (65):
+		case (97):
+			{
+				this.scene.test.animation_on = !this.scene.test.animation_on;
+			}
+			break;
 	};
 };

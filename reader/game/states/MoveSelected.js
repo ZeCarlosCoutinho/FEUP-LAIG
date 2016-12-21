@@ -10,7 +10,8 @@ function MoveSelected(player, board, move) {
     this.move = move;
     this.player = player;
     this.moveList = move.getImplication(board);
-
+	this.animation_on = this.board.animation_on;
+    
     this.calculateAnimation();
 };
 
@@ -45,7 +46,7 @@ MoveSelected.prototype.display = function()
 		}
 	}
 
-   	if(this.animationList[0].finished)
+   	if(!this.animation_on || this.animationList[0].finished)
 		this.next();
 };
 
@@ -55,54 +56,10 @@ MoveSelected.prototype.next = function(){
 		move.apply(this.board);
 	}
 
-	//Puts the move in the stack
-	var moveEntry = [];
-	moveEntry.move = this.move;
-	moveEntry.player = this.player;
-	this.board.movesDone.push(moveEntry);
-
-	var nextPlayer;
-	if (this.player.color == "red")
-		nextPlayer = "white";
-	else
-		nextPlayer = "red";
-	nextPlayer =  this.scene.players[nextPlayer];
-	switch(nextPlayer.type ){
-	case "human":
-		this.board.state = new TurnStart(nextPlayer, this.board);
-		break;
-	case "pc":
-		this.board.state = new PCTurnStart(nextPlayer, this.board);
-		break;
-	default:
-		console.log("Error");
-	}
+	this.board.state = new TurnEnd(this.player, this.board, this.move, this.animation_on);
 }
 
 MoveSelected.prototype.calculateAnimation = function(){
-    /*this.animationList = [];
-    //for (var k = 0; k <= move.distance; k++){
-        var x = move.coordinates[0];
-        var z = move.coordinates[1];
-        if (typeof this.board.pieces[x][z] != "undefined"){
-            this.animationList[x][z] = new 
-            for (var j = 0; j < k; j++){
-                if ()
-            }
-            this.animationList[x][z] = new LinearAnimation("", )
-        }
-	//}  */
-	/*this.animationList = [];
-	var x = move.coordinates[0];
-    var z = move.coordinates[1];
-    for (var k = 0; k <= move.distance; k++){
-        if (typeof this.board.pieces[x][z] != "undefined"){
-            var dest = [move.distance - k, move.distance - k];
-            vec3.mult(dest, move.directionVector);
-            this.animationList[x][z] = new PieceAnimation(dest, initTime, dur);
-        }
-	} */
-
 	this.animationList = [];
 	var finalTime = this.moveList[0].distance;
 	for (var k in this.moveList){

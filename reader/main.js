@@ -63,6 +63,8 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'game/states/PieceSelected.js',
 	'game/states/MoveSelected.js',
 	'game/states/PCTurnStart.js',
+	'game/states/TurnEnd.js',
+	'game/states/AutoTurnStart.js',
 	
 main=function()
 {

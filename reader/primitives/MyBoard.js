@@ -9,11 +9,14 @@ function MyBoard(scene) {
 	this.scene.players["red"] = new Player("Red", "red", "human");
 	this.scene.players["white"] = new Player("White", "white", "pc", 1);
 	
+	this.animation_on = true;
+	
 	this.board = new MyGameBoard(this.scene, 9, 9);
 	this.initializePieces();
 	this.pickingTable = []; //Stores picking ids;
 
 	this.movesDone = [];
+	this.turn = 0;
 
 	this.state = new TurnStart(this.scene.players["red"], this);
 };
