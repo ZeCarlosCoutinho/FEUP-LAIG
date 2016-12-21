@@ -20,6 +20,8 @@ MyInterface.prototype.init = function(application) {
 	this.gui = new dat.GUI();
 	
 	this.gui.add(this.scene, "animationSpeed", 0.1, 5);
+
+	this.sound = this.gui.addFolder("Sounds");
 	
 	this.redPlayer = this.gui.addFolder(this.scene.players["red"].name);
 	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]);
@@ -37,6 +39,16 @@ MyInterface.prototype.init = function(application) {
 
 	return true;
 };
+
+/**
+ * Adds a new light to Omni Lights folder
+ * @param {String} id
+ * @param {Number} i
+ */
+MyInterface.prototype.addVolume = function(id, name) {
+	this.sound.add(this.scene.gameSounds[id], "volume", 0, 1).name(name);
+}
+
 
 /**
  * Adds a new light to Omni Lights folder

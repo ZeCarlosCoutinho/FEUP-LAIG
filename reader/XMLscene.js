@@ -160,11 +160,15 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.gameTextures["red"]  = this.textures[this.graph.gameTextures["red"]];
 	this.gameTextures["white"]  = this.textures[this.graph.gameTextures["white"]];
 
-	if(this.graph.gameSounds["background"])
+	if(this.graph.gameSounds["background"]){
 		this.gameSounds["background"] = new Audio(this.graph.gameSounds["background"]);
-	if(this.graph.gameSounds["select"])
+		this.interface.addVolume("background", "Background Volume");
+	}
+	if(this.graph.gameSounds["select"]){
 		this.gameSounds["select"] = new Audio(this.graph.gameSounds["select"]);
-
+		this.interface.addVolume("select", "Effects Volume");
+	}
+	
 	for (var i = 1; i <= 3; i++){
 		this.pieceObjects[i] = this.graph.components[this.graph.pieces[i]].create(this);
 		this.pieceObjects[i].updateMaterial(this.materialIndex);
