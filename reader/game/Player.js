@@ -11,6 +11,7 @@ function Player(name, color, type, difficulty) {
 
     //Default Camera position for player
     this.cameraPosition = vec3.fromValues(15, 15, 15);
+    this.points = 0;
 };
 
 Player.prototype.constructor = Player;

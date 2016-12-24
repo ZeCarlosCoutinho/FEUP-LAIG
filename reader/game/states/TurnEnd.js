@@ -7,6 +7,7 @@ TurnEnd.prototype = Object.create(GameState.prototype);
 
 function TurnEnd(player, board, move) {
 	GameState.call(this, player, board);
+	requestScore(this.board);
     
     if(this.player.type != "auto"){
     	//Puts the move in the stack
@@ -38,7 +39,13 @@ TurnEnd.prototype.display = function()
 		}
 	}   
 	
- 	this.next();
+	if(lastResponse != ""){
+		var scores = parseScores(lastResponse);
+		lastResponse = "";
+		this.board.updateScores(scores);
+		this.next();
+	}
+ 
 };
 
 TurnEnd.prototype.next = function(){
