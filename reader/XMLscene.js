@@ -388,14 +388,48 @@ XMLscene.prototype.createPrimitives = function (){
 
 XMLscene.prototype.setGameCam = function(player)
 {
+	//Defines the normal direction of the camera in the y direction
+	this.camera._up = vec3.fromValues(0, 1, 0);
+	
+	this.camera.setTarget(this.game.boardCentre);
 	if(player == "Red")
 	{
-		this.camera.target = vec3.fromValues(2.5,0, 2.5);
-		this.camera.position = vec3.fromValues(-10, 15, 2.5);
+		this.camera.setPosition(vec3.fromValues(-10, 15, 2.5));
 	}
 	else if(player == "White")
 	{
-		this.camera.target = vec3.fromValues(2.5,0, 2.5);
-		this.camera.position = vec3.fromValues(20, 15, 2.5);
+		this.camera.setPosition(vec3.fromValues(20, 15, 2.5));
+	}
+	else
+	{
+		var playerCamPosition = this.game.state.player.cameraPosition;
+		this.camera.setPosition(playerCamPosition);
+	}
+}
+
+XMLscene.prototype.transitionGameCam = function(currTime)
+{	
+	//Define Speed (can't be changed)
+	var speed = Math.PI / 3; //Rad per Second
+
+	//Calculate difference of time
+	if(this.game.camRotating)
+	{	
+		var timeDifference = currTime - this.game.initialAnimationTime;
+		var angleIncrement = speed * timeDifference;
+		
+		//Rotates the camera
+		//this.camera.orbit(Y, angleIncrement); //TODO Como definir o Axis necessário? Quero-lhe passar o centro do tabuleiro
+
+		//Updates the animation values
+		this.game.initialAnimationTime = currTime;
+		this.game.camAnimationAngle += angleIncrement;
+
+		//When it reaches the end of the animation
+		if(this.game.camAnimationAngle > Math.PI)
+		{
+			this.game.camAnimationAngle = 0;
+			this.game.camRotating = false;
+		}
 	}
 }

@@ -8,6 +8,12 @@ function MyBoard(scene) {
  	this.scene.players = [];
 	this.scene.players["red"] = new Player("Red", "red", "human");
 	this.scene.players["white"] = new Player("White", "white", "pc", 1);
+	this.scene.players["red"].setCamera(-10, 15, 2.5);
+	this.scene.players["white"].setCamera(20, 15, 2.5);
+
+	this.boardCentre = vec3.fromValues(2.5, 0, 2.5);
+	this.camAnimationAngle = 0;
+	this.camRotating = false;
 	
 	this.animation_on = true;
 	

@@ -101,7 +101,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 			}
 			break;
 		case (85):
-		case (117):
+		case (117): // U/u
 			if(this.scene.game.state instanceof TurnStart || this.scene.game.state instanceof PieceSelected)
 			{
 				this.scene.game.state.remakeMove();
@@ -114,8 +114,9 @@ MyInterface.prototype.processKeyboard = function(event) {
 			}
 			break;
 		case(67):
-		case(99):
-			this.scene.setGameCam("Red");
+		case(99): // C/c
+			//this.scene.setGameCam(this.scene.game.state.player.name);
+			this.scene.setGameCam();
 			break;
 	};
 };
