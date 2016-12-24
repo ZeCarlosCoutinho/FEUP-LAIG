@@ -101,17 +101,21 @@ MyInterface.prototype.processKeyboard = function(event) {
 			}
 			break;
 		case (85):
-		case (117):
+		case (117): // U/u
 			if(this.scene.test.state instanceof TurnStart || this.scene.test.state instanceof PieceSelected)
 			{
 				this.scene.test.state.remakeMove();
 			}
 			break;
 		case (65):
-		case (97):
+		case (97): // A/a
 			{
 				this.scene.test.animation_on = !this.scene.test.animation_on;
 			}
+			break;
+		case(67):
+		case(99):
+			this.scene.setGameCam("Red");
 			break;
 	};
 };
