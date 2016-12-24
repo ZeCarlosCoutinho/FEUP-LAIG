@@ -52,7 +52,7 @@ XMLscene.prototype.init = function (application) {
 	this.pieceObjects[2] = new MyCylinderWithTops(this, 2, 0.5, 0.5, 3, 12);
 	this.pieceObjects[3] = new MyCylinderWithTops(this, 3, 0.5, 0.5, 3, 12);//*/;
 
-	/*this.testAppearance = new CGFappearance(this);
+	this.testAppearance = new CGFappearance(this);
 	this.testAppearance.loadTexture("../reader/resources/images/wood.png");//*/
 	/*this.testAppearance2 = new CGFappearance(this);
 	this.testAppearance2.loadTexture("../reader/resources/images/wood-texture.png");//*/
@@ -68,6 +68,7 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
 	//this.test = new MyGameBoard(this, 9, 9);
+
 	
 	//this.test3 = new MyPiece(this, new Player("Red", "white", "human"), 3);
 	//this.test2 = new MyPiece(this,new Player("Red", "red", "human"), 1);
@@ -155,6 +156,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.rootObject.updateMaterial(this.materialIndex);
 
 	//this.test = new MyBoard(this);
+	this.test = new MyLightScorer(this, this.players["red"]);
 
 	this.interface.addPlayerOptions();
 
@@ -219,14 +221,15 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.updateLights();
-		this.rootObject.display();
+		//this.rootObject.display();
 
 
 		//TESTING
 	
 		this.pushMatrix();
-			this.scale(5,5,5);
-			//this.test.display();
+			this.testAppearance.apply();
+			//this.scale(5,5,5);
+			this.test.display();
 		this.popMatrix();//*/
 	};	
 	
