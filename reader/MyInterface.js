@@ -22,14 +22,6 @@ MyInterface.prototype.init = function(application) {
 	this.gui.add(this.scene, "animationSpeed", 0.1, 5);
 
 	this.sound = this.gui.addFolder("Sounds");
-	
-	this.redPlayer = this.gui.addFolder(this.scene.players["red"].name);
-	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]);
-	this.redPlayer.add(this.scene.players["red"], "difficulty", [0, 1, 2, 3]);
-
-	this.whitePlayer = this.gui.addFolder(this.scene.players["white"].name);
-	this.whitePlayer.add(this.scene.players["white"], "type", ["pc", "human"]);
-	this.whitePlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]);
 
 	this.omniLights = this.gui.addFolder("Omni Lights");
 	//this.omniLights.open();
@@ -40,8 +32,24 @@ MyInterface.prototype.init = function(application) {
 	return true;
 };
 
+
 /**
- * Adds a new light to Omni Lights folder
+ * Adds a new Volume Option to Sounds folder
+ * @param {String} id
+ * @param {Number} i
+ */
+MyInterface.prototype.addPlayerOptions = function() {
+	this.redPlayer = this.gui.addFolder(this.scene.players["red"].name);
+	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]);
+	this.redPlayer.add(this.scene.players["red"], "difficulty", [0, 1, 2, 3]);
+
+	this.whitePlayer = this.gui.addFolder(this.scene.players["white"].name);
+	this.whitePlayer.add(this.scene.players["white"], "type", ["pc", "human"]);
+	this.whitePlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]);
+}
+
+/**
+ * Adds a new Volume Option to Sounds folder
  * @param {String} id
  * @param {Number} i
  */

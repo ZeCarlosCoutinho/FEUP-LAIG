@@ -43,12 +43,14 @@ XMLscene.prototype.init = function (application) {
 	
 	this.highlightShader  = new CGFshader(this.gl, 'shaders/gourad.vert', 'shaders/gourad.frag');
 	//this.highlightShader  = new CGFshader(this.gl, 'shaders/highligthShader.vert', 'shaders/highligthShader.frag');
+	//this.highlightShader  = new CGFshader(this.gl, 'shaders/gourad2.vert', 'shaders/gourad2.frag');
+	//this.highlightShader  = new CGFshader(this.gl, 'shaders/customShader.vert', 'shaders/customShader.frag');
 	//this.highligthShader.setUniformsValues({	});
 
 	//TESTING
-	this.pieceObjects[1] = new MyCylinderWithTops(this, 1, 0.5, 0.5, 3, 12);//*/;
+	/*this.pieceObjects[1] = new MyCylinderWithTops(this, 1, 0.5, 0.5, 3, 12);
 	this.pieceObjects[2] = new MyCylinderWithTops(this, 2, 0.5, 0.5, 3, 12);
-	this.pieceObjects[3] = new MyCylinderWithTops(this, 3, 0.5, 0.5, 3, 12);
+	this.pieceObjects[3] = new MyCylinderWithTops(this, 3, 0.5, 0.5, 3, 12);//*/;
 
 	/*this.testAppearance = new CGFappearance(this);
 	this.testAppearance.loadTexture("../reader/resources/images/wood.png");//*/
@@ -66,7 +68,7 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
 	//this.test = new MyGameBoard(this, 9, 9);
-	this.test = new MyBoard(this);
+	
 	//this.test3 = new MyPiece(this, new Player("Red", "white", "human"), 3);
 	//this.test2 = new MyPiece(this,new Player("Red", "red", "human"), 1);
 	//this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , 
@@ -151,6 +153,10 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.createPrimitives();
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
+
+	this.test = new MyBoard(this);
+
+	this.interface.addPlayerOptions();
 
 	this.gameMaterials["board"] = this.materials[this.graph.gameMaterials['board']];
 	this.gameMaterials["red"] = this.materials[this.graph.gameMaterials['red']];
