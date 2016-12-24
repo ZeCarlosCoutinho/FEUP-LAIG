@@ -108,10 +108,14 @@ MyInterface.prototype.processKeyboard = function(event) {
 			}
 			break;
 		case (65):
-		case (97):
+		case (97): // A/a
 			{
 				this.scene.game.animation_on = !this.scene.game.animation_on;
 			}
+			break;
+		case(67):
+		case(99):
+			this.scene.setGameCam("Red");
 			break;
 	};
 };

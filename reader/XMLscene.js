@@ -387,3 +387,18 @@ XMLscene.prototype.createPrimitives = function (){
 		this.primitives[key] = this.graph.primitives[key].create(this);
 	}
 }
+
+
+XMLscene.prototype.setGameCam = function(player)
+{
+	if(player == "Red")
+	{
+		this.camera.target = vec3.fromValues(2.5,0, 2.5);
+		this.camera.position = vec3.fromValues(-10, 15, 2.5);
+	}
+	else if(player == "White")
+	{
+		this.camera.target = vec3.fromValues(2.5,0, 2.5);
+		this.camera.position = vec3.fromValues(20, 15, 2.5);
+	}
+}
