@@ -111,3 +111,8 @@ MyBoard.prototype.updateAnimation = function (currTime){
 	if (this.state instanceof MoveSelected)
 		this.state.updateAnimation(currTime);
 }
+
+MyBoard.prototype.updateScores = function (scores){
+	this.scene.players["red"].points = scores[1];
+	this.scene.players["white"].points = scores[0];
+}

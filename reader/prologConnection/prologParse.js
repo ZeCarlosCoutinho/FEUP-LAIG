@@ -17,3 +17,11 @@ function parseMove(string){
     distance =  Number(res[3]);
     return new Move(coord, direction, distance);
 }
+
+function parseScores(string){
+    var res = string.split('-');
+    var score = [];
+    score[0] = Number(res[1]);
+    score[1] =  Number(res[0]);
+    return score;
+}

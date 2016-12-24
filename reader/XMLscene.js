@@ -157,6 +157,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	//this.test = new MyBoard(this);
 	this.test = new MyLightScorer(this, this.players["red"]);
+	this.test2 = new MyLightScorer(this, this.players["white"]);
 
 	this.interface.addPlayerOptions();
 
@@ -221,15 +222,22 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.updateLights();
-		//this.rootObject.display();
+		this.rootObject.display();
 
 
 		//TESTING
+		this.pushMatrix();
+			this.testAppearance.apply();
+			this.scale(0.5,0.5,0.5);
+			this.translate(-1,0,0);
+			this.test.display();
+		this.popMatrix();//*/
 	
 		this.pushMatrix();
 			this.testAppearance.apply();
-			//this.scale(5,5,5);
-			this.test.display();
+			this.scale(0.5,0.5,0.5);
+			this.translate(10,0,0);
+			this.test2.display();
 		this.popMatrix();//*/
 	};	
 	
