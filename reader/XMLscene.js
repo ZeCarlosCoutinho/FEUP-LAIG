@@ -154,7 +154,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
 
-	this.test = new MyBoard(this);
+	//this.test = new MyBoard(this);
 
 	this.interface.addPlayerOptions();
 
@@ -219,14 +219,14 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.updateLights();
-		//this.rootObject.display();
+		this.rootObject.display();
 
 
 		//TESTING
 	
 		this.pushMatrix();
 			this.scale(5,5,5);
-			this.test.display();
+			//this.test.display();
 		this.popMatrix();//*/
 	};	
 	
@@ -249,9 +249,10 @@ XMLscene.prototype.display = function () {
 
 
 XMLscene.prototype.update = function (currTime) {
-	//this.rootObject.updateAnimation(currTime);
+	this.rootObject.updateAnimation(currTime);
+	this.game.updateAnimation(currTime);
 	//TESTING
-	this.test.updateAnimation(currTime);
+	//this.test.updateAnimation(currTime);
 	//this.testAnimation.updateMatrix(currTime);
 };
 

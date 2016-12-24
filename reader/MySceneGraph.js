@@ -591,6 +591,9 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			this.primitives[currentPrimitive_id].tx2[0] = this.reader.getFloat(primitive_data, 'tx2x');
 			this.primitives[currentPrimitive_id].tx2[1] = this.reader.getFloat(primitive_data, 'tx2y');
 			break;
+		case 'game_board':
+			this.primitives[currentPrimitive_id] = new Prim_GameBoard(currentPrimitive_id);
+			break;
 		default:
 			return "invalid primitive type"
 		}
@@ -712,11 +715,20 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 			case "primitiveref":
 				this.components[currentComponent_id].primitive_refs.push(this.reader.getString(currentChild, 'id'));
 				break;
+			/*case "game":
+				if (this.gameFound)
+					return "More than one game found"; 
+				this.gameFound = true;
+				this.components[currentComponent_id].game = new Prim_GameBoard(this.primitives.length);
+				break;*/
 			default:
 				return "Invalid tag in child[" + j + "]"; 
 				break;
 			}
 		 }
+
+		 /*if (!this.gameFound)
+				return "No game found"; */
 	}
 
 	//Check ids

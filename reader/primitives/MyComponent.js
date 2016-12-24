@@ -69,6 +69,7 @@ MyComponent.prototype.updateAnimation = function (currTime){
 
 MyComponent.prototype.display = function (material, texture) {
 	var drawingMaterial = this.currentMaterial;
+	this.drawingTexture = this.texture;
 	if (this.currentMaterial == "inherit")
 		drawingMaterial = material;		
 	if (this.texture == "inherit"){

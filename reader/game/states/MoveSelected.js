@@ -13,6 +13,7 @@ function MoveSelected(player, board, move) {
 	this.animation_on = this.board.animation_on;
     
     this.calculateAnimation();
+    var a = 5;
 };
 
 MoveSelected.prototype.display = function()

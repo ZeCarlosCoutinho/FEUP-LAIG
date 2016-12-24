@@ -103,14 +103,18 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case (85):
 		case (117): // U/u
 			if(this.scene.test.state instanceof TurnStart || this.scene.test.state instanceof PieceSelected)
+		case (117):
+			if(this.scene.game.state instanceof TurnStart || this.scene.game.state instanceof PieceSelected)
 			{
 				this.scene.test.state.remakeMove();
+				this.scene.game.state.remakeMove();
 			}
 			break;
 		case (65):
 		case (97): // A/a
 			{
 				this.scene.test.animation_on = !this.scene.test.animation_on;
+				this.scene.game.animation_on = !this.scene.game.animation_on;
 			}
 			break;
 		case(67):
