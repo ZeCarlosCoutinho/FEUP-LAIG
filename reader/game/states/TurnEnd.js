@@ -51,6 +51,25 @@ TurnEnd.prototype.display = function()
 };
 
 TurnEnd.prototype.next = function(){
+	//Check if someone won
+	var winner = false;
+	if(this.scene.players["red"].points >= 7)
+		winner = this.scene.players["red"];
+	if(this.scene.players["white"].points >= 7)
+		if (winner)
+			winner = true;
+		else
+			winner = this.scene.players["white"];
+	
+	if (winner){
+		this.board.state = new End(winner, this.board);
+		return;
+	}
+
+		
+	
+
+
 	var nextPlayer;
 	if (this.player.color == "red")
 		nextPlayer = "white";

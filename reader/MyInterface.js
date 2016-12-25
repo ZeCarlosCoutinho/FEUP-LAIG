@@ -119,5 +119,10 @@ MyInterface.prototype.processKeyboard = function(event) {
 			//this.scene.setGameCam();
 			this.scene.game.camRotating = true;
 			break;
+		case(83):
+		case(115): // S/s
+			if(this.scene.game.state instanceof Start)
+				this.scene.game.state.next();
+			break;
 	};
 };

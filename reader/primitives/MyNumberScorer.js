@@ -66,8 +66,8 @@ MyNumberScorer.prototype.displayBody = function () {
 
 MyNumberScorer.prototype.displayNumbers = function () {
 	this.numbers_material.apply();
-	var red = this.scene.players["red"].points;
-	var white = this.scene.players["white"].points;
+	var red = Math.min(this.scene.players["red"].points, 7);
+	var white = Math.min(this.scene.players["white"].points, 7);
 		
 	this.scene.pushMatrix();
 		this.scene.translate(0.05, 0.95, 1.01);

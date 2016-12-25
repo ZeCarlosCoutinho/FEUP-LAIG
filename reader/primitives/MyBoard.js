@@ -24,7 +24,7 @@ function MyBoard(scene) {
 	this.movesDone = [];
 	this.turn = 0;
 
-	this.state = new TurnStart(this.scene.players["red"], this);
+	this.state = new Start(this.scene.players["red"], this);
 };
 
 MyBoard.prototype = Object.create(CGFobject.prototype);
