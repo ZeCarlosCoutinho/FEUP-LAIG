@@ -68,7 +68,7 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
 	//this.test = new MyGameBoard(this, 9, 9);
-	this.test = new MyLightScorer(this, "red");
+	/*this.test = new MyLightScorer(this, "red");
 	this.test2 = new MyLightScorer(this, "white");
 	this.test3 = new MyNumberScorer(this);
 
@@ -230,21 +230,21 @@ XMLscene.prototype.display = function () {
 
 
 		//TESTING
-		this.pushMatrix();
+		/*this.pushMatrix();
 			this.testAppearance.apply();
 			this.scale(0.5,0.5,0.5);
 			this.translate(-1,0,0);
 			this.test.display();
 		this.popMatrix();//*/
 	
-		this.pushMatrix();
+		/*this.pushMatrix();
 			this.testAppearance.apply();
 			this.scale(0.5,0.5,0.5);
 			this.translate(10,0,0);
 			this.test2.display();
 		this.popMatrix();//*/
 
-		this.pushMatrix();
+		/*this.pushMatrix();
 			this.testAppearance.apply();
 			this.scale(0.5,0.5,0.5);
 			this.translate(4,0,-1);

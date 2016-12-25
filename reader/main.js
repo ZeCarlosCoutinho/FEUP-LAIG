@@ -68,6 +68,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'game/states/TurnEnd.js',
 	'game/states/AutoTurnStart.js',
 	'parser/Prim_GameBoard.js',
+	'parser/Prim_Scorer.js',
 	
 main=function()
 {

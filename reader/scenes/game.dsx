@@ -153,12 +153,16 @@
 	</animations>
 	
 	<primitives>
-		<primitive id="rectangle">
-			<rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+		<primitive id="redScorer">
+			<light_scorer player="red"/>
 		</primitive>
 		
-		<primitive id="rectangle_tile">
-			<rectangle x1="1" y1="1" x2="0" y2="0" />
+		<primitive id="whiteScorer">
+			<light_scorer player="white"/>
+		</primitive>
+
+		<primitive id="dualScorer">
+			<number_scorer/>
 		</primitive>
 		
 		<primitive id="triangle">
@@ -262,7 +266,10 @@
 			<texture id="sauron" />
 			
 			<children>
+				<componentref id="redScorer" />
+				<componentref id="whiteScorer" />
 				<primitiveref id="game" />
+				<componentref id="dualScorer" />
 			</children>
 		</component>
 		
@@ -382,6 +389,62 @@
 			<children>
 				<componentref id="piece2"/>
 				<componentref id="piece2plus"/>
+			</children>
+		</component>
+
+		<component id="redScorer">
+			<transformation>
+				<rotate axis="x" angle="-90" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<translate x="-1" y="-8.5" z="-0.5" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="wood" />
+			
+			<children>
+				<primitiveref id="redScorer" />
+			</children>
+		</component>
+
+		<component id="whiteScorer">
+			<transformation>
+				<rotate axis="x" angle="-90" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<translate x="10" y="-8.5" z="-0.5" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="wood" />
+			
+			<children>
+				<primitiveref id="whiteScorer" />
+			</children>
+		</component>
+
+		<component id="dualScorer">
+			<transformation>
+				<scale x="0.1" y="0.1" z="0.1" />
+				<translate x="4" y="0" z="-1" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="wood" />
+			
+			<children>
+				<primitiveref id="dualScorer" />
 			</children>
 		</component>
 	</components> 
