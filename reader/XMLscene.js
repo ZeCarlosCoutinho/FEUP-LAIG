@@ -68,8 +68,10 @@ XMLscene.prototype.init = function (application) {
 	//this.testAnimation = new LinearAnimation("id", [[0,0,0], [0,0,2], [2,0,2], [2,0,0],[0,0,0]], 10);
 	
 	//this.test = new MyGameBoard(this, 9, 9);
+	this.test = new MyLightScorer(this, "red");
+	this.test2 = new MyLightScorer(this, "white");
+	this.test3 = new MyNumberScorer(this);
 
-	
 	//this.test3 = new MyPiece(this, new Player("Red", "white", "human"), 3);
 	//this.test2 = new MyPiece(this,new Player("Red", "red", "human"), 1);
 	//this.test = new MyChessBoard(this, [8,8], [5,5], new CGFtexture(this, "../reader/resources/images/wood-texture.png") , 
@@ -159,8 +161,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.setGameCam("Red");
 
 	//this.test = new MyBoard(this);
-	this.test = new MyLightScorer(this, this.players["red"]);
-	this.test2 = new MyLightScorer(this, this.players["white"]);
+
 
 	this.interface.addPlayerOptions();
 
@@ -241,6 +242,13 @@ XMLscene.prototype.display = function () {
 			this.scale(0.5,0.5,0.5);
 			this.translate(10,0,0);
 			this.test2.display();
+		this.popMatrix();//*/
+
+		this.pushMatrix();
+			this.testAppearance.apply();
+			this.scale(0.5,0.5,0.5);
+			this.translate(4,0,-1);
+			this.test3.display();
 		this.popMatrix();//*/
 	};	
 	

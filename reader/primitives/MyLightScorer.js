@@ -14,7 +14,7 @@ function MyLightScorer(scene, player) {
 
 	this.on_material = new CGFappearance(this.scene);
 	this.on_material.setShininess(10);
-	if (this.player.color == "red"){
+	if (this.player == "red"){
 		this.on_material.setAmbient(1,0.1,0.1,1);
 		this.on_material.setDiffuse(1,0.1,0.1,1);
 	}
@@ -82,7 +82,7 @@ MyLightScorer.prototype.displayLights = function () {
 		this.scene.translate(0.5, -0.5, 0.9);
 
 		for(var i = 1; i <= 7; i++){
-			if (i > this.player.points)
+			if (i > this.scene.players[this.player].points)
 				this.off_material.apply();
 			this.scene.translate(0, 1, 0);	
 			this.lights.display();
