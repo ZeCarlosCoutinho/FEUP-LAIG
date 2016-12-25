@@ -591,11 +591,10 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			this.primitives[currentPrimitive_id].tx2[0] = this.reader.getFloat(primitive_data, 'tx2x');
 			this.primitives[currentPrimitive_id].tx2[1] = this.reader.getFloat(primitive_data, 'tx2y');
 			break;
-		case 'light_scorer':
-			this.primitives[currentPrimitive_id] = new Prim_Scorer(currentPrimitive_id);
-			this.primitives[currentPrimitive_id].player = this.reader.getString(primitive_data, 'player');
+		case 'timer':
+			this.primitives[currentPrimitive_id] = new Prim_Timer(currentPrimitive_id);
 			break;
-		case 'number_scorer':
+		case 'scorer':
 			this.primitives[currentPrimitive_id] = new Prim_Scorer(currentPrimitive_id);
 			break;
 		case 'game_board':

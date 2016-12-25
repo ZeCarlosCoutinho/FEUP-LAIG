@@ -11,6 +11,8 @@ function MoveSelected(player, board, move) {
     this.player = player;
     this.moveList = move.getImplication(board);
 	this.animation_on = this.board.animation_on;
+
+	this.board.timer_on = false;
     
     this.calculateAnimation();
     var a = 5;

@@ -17,8 +17,5 @@ Prim_Scorer.prototype.toString=function(){
  * @return {MyScorer} a Scorer
  */
 Prim_Scorer.prototype.create = function(scene) {
-	if(this.player)
-		return new MyLightScorer(scene, this.player);
-	else
-		return new MyNumberScorer(scene);
+	return new MyNumberScorer(scene);
 }

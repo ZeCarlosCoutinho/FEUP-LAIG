@@ -21,6 +21,11 @@ function MyBoard(scene) {
 	this.initializePieces();
 	this.pickingTable = []; //Stores picking ids;
 
+	this.timer = 0;
+	this.timer_init = 0;
+	this.timer_end = 0;
+	this.timer_on = false;
+
 	this.movesDone = [];
 	this.turn = 0;
 
@@ -114,6 +119,16 @@ MyBoard.prototype.toString2 = function () {
 };
 
 MyBoard.prototype.updateAnimation = function (currTime){
+	if (!this.timer_init || !this.timer_end){
+		this.timer_init = currTime;
+		this.timer_end = currTime + this.scene.timer*1000;
+	}
+	if (this.timer_on){
+		this.timer = this.timer_end - currTime;
+		if (this.timer < 0)
+			this.state.timeout = true;
+	}
+
 	if (this.state instanceof MoveSelected)
 		this.state.updateAnimation(currTime);
 }
@@ -126,4 +141,15 @@ MyBoard.prototype.updateScores = function (scores){
 MyBoard.prototype.startCamAnimation = function()
 {
 	this.camRotating = true;
+}
+
+MyBoard.prototype.nextPlayer = function()
+{
+	var nextPlayer;
+	if (this.state.player.color == "red")
+		nextPlayer = "white";
+	else
+		nextPlayer = "red";
+	nextPlayer =  this.scene.players[nextPlayer];
+	return nextPlayer;
 }

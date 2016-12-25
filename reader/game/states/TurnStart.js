@@ -7,6 +7,9 @@ TurnStart.prototype = Object.create(GameState.prototype);
 
 function TurnStart(player, board) {
 	GameState.call(this, player, board);
+	this.board.timer_on = true;
+	this.board.timer_init = false; //Next update sets timer_init
+	this.board.timer = 0;
     
     this.pieceChosen = null; //Piece passed to the next state
 };
@@ -44,6 +47,9 @@ TurnStart.prototype.display = function()
 			this.scene.clearPickRegistration();
 		}
 	}   
+
+	if (this.timeout)
+		this.board.state = new End(this.board.nextPlayer(), this.board);
 };
 
 TurnStart.prototype.logPicking = function()

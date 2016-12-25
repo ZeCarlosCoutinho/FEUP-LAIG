@@ -77,6 +77,9 @@ PieceSelected.prototype.display = function()
 
    if (!this.scene.pickMode)
 		this.scene.setActiveShaderSimple(this.scene.defaultShader);
+
+	if (this.timeout)
+		this.board.state = new End(this.board.nextPlayer(), this.board);
 };
 
 PieceSelected.prototype.logPicking = function()

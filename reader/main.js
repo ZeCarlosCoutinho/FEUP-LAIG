@@ -54,7 +54,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'primitives/MyBoard.js',
 	'primitives/MyGameBoard.js',
 	'primitives/MyTile.js',
-	'primitives/MyLightScorer.js',
+	'primitives/MyTimer.js',
 	'primitives/MyNumberScorer.js',
 	'prologConnection/prologConnection.js',
 	'prologConnection/prologParse.js',
@@ -71,6 +71,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'game/states/AutoTurnStart.js',
 	'parser/Prim_GameBoard.js',
 	'parser/Prim_Scorer.js',
+	'parser/Prim_Timer.js',
 	
 main=function()
 {

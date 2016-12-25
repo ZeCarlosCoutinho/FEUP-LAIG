@@ -153,16 +153,12 @@
 	</animations>
 	
 	<primitives>
-		<primitive id="redScorer">
-			<light_scorer player="red"/>
-		</primitive>
-		
-		<primitive id="whiteScorer">
-			<light_scorer player="white"/>
+		<primitive id="timer">
+			<timer/>
 		</primitive>
 
 		<primitive id="dualScorer">
-			<number_scorer/>
+			<scorer/>
 		</primitive>
 		
 		<primitive id="triangle">
@@ -266,8 +262,8 @@
 			<texture id="sauron" />
 			
 			<children>
-				<componentref id="redScorer" />
-				<componentref id="whiteScorer" />
+				<componentref id="redTimer" />
+				<componentref id="whiteTimer" />
 				<primitiveref id="game" />
 				<componentref id="dualScorer" />
 			</children>
@@ -392,7 +388,7 @@
 			</children>
 		</component>
 
-		<component id="redScorer">
+		<component id="redTimer">
 			<transformation>
 				<rotate axis="x" angle="-90" />
 				<scale x="0.1" y="0.1" z="0.1" />
@@ -407,11 +403,11 @@
 			<texture id="wood" />
 			
 			<children>
-				<primitiveref id="redScorer" />
+				<primitiveref id="timer" />
 			</children>
 		</component>
 
-		<component id="whiteScorer">
+		<component id="whiteTimer">
 			<transformation>
 				<rotate axis="x" angle="-90" />
 				<scale x="0.1" y="0.1" z="0.1" />
@@ -426,7 +422,7 @@
 			<texture id="wood" />
 			
 			<children>
-				<primitiveref id="whiteScorer" />
+				<primitiveref id="timer" />
 			</children>
 		</component>
 

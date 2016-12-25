@@ -19,15 +19,18 @@ MyInterface.prototype.init = function(application) {
 	
 	this.gui = new dat.GUI();
 	
-	this.gui.add(this.scene, "animationSpeed", 0.1, 5);
+	this.animation = this.gui.addFolder("Animations");
+	this.animation.add(this.scene, "animationSpeed", 0.1, 5).name("Animation Speed");
 
 	this.sound = this.gui.addFolder("Sounds");
 
-	this.omniLights = this.gui.addFolder("Omni Lights");
-	//this.omniLights.open();
+	this.gameplay = this.gui.addFolder("Gameplay");
+	this.gameplay.add(this.scene, "timer").min(0).step(1).name("Timer");
+	
+	this.lights = this.gui.addFolder("Lights");
+	this.omniLights = this.lights.addFolder("Omni Lights");
+	this.spotLights = this.lights.addFolder("Spot Lights");
 
-	this.spotLights = this.gui.addFolder("Spot Lights");
-	//this.spotLights.open();
 
 	return true;
 };
@@ -39,11 +42,11 @@ MyInterface.prototype.init = function(application) {
  * @param {Number} i
  */
 MyInterface.prototype.addPlayerOptions = function() {
-	this.redPlayer = this.gui.addFolder(this.scene.players["red"].name);
+	this.redPlayer = this.gameplay.addFolder(this.scene.players["red"].name);
 	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]);
 	this.redPlayer.add(this.scene.players["red"], "difficulty", [0, 1, 2, 3]);
 
-	this.whitePlayer = this.gui.addFolder(this.scene.players["white"].name);
+	this.whitePlayer = this.gameplay.addFolder(this.scene.players["white"].name);
 	this.whitePlayer.add(this.scene.players["white"], "type", ["pc", "human"]);
 	this.whitePlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]);
 }

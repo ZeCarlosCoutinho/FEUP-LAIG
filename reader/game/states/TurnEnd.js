@@ -70,12 +70,7 @@ TurnEnd.prototype.next = function(){
 	
 
 
-	var nextPlayer;
-	if (this.player.color == "red")
-		nextPlayer = "white";
-	else
-		nextPlayer = "red";
-	nextPlayer =  this.scene.players[nextPlayer];
+	var nextPlayer = this.board.nextPlayer();
 
 	switch(nextPlayer.type ){
 	case "human":

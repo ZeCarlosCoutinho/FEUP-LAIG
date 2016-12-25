@@ -7,6 +7,7 @@ End.prototype = Object.create(GameState.prototype);
 
 function End(player, board) {
 	GameState.call(this, player, board);
+	this.board.timer_on = false;
 };
 
 End.prototype.display = function(){

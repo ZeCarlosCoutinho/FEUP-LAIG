@@ -35,6 +35,7 @@ XMLscene.prototype.init = function (application) {
 	this.gameTextures = [];
 	this.gameSounds = [];
 	this.animationSpeed = 1;
+	this.timer = 7;
 
 	this.defaultAppearance = new CGFappearance(this);
 
