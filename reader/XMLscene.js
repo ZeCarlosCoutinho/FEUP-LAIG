@@ -164,7 +164,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	//this.test = new MyBoard(this);
 
 
-	this.interface.addPlayerOptions();
+	this.interface.addGameOptions();
 
 	this.gameMaterials["board"] = this.materials[this.graph.gameMaterials['board']];
 	this.gameMaterials["red"] = this.materials[this.graph.gameMaterials['red']];

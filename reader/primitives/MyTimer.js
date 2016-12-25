@@ -75,7 +75,7 @@ MyTimer.prototype.displayLights = function () {
 	var game = this.scene.game;
 	this.time_percentage = game.timer_end - game.timer_init;
 	this.time_percentage = 7*game.timer/this.time_percentage;
-	console.log(this.time_percentage);
+	//console.log(this.time_percentage);
 
 	this.scene.pushMatrix();
 		this.on_material.apply();

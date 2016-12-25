@@ -7,9 +7,12 @@ TurnStart.prototype = Object.create(GameState.prototype);
 
 function TurnStart(player, board) {
 	GameState.call(this, player, board);
-	this.board.timer_on = true;
-	this.board.timer_init = false; //Next update sets timer_init
-	this.board.timer = 0;
+
+	if (this.scene.timer > 0){
+		this.board.timer_on = true;
+		this.board.timer_init = false; //Next update sets timer_init
+		this.board.timer = 0;
+	}
     
     this.pieceChosen = null; //Piece passed to the next state
 };

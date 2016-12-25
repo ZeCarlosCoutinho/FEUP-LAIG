@@ -41,14 +41,16 @@ MyInterface.prototype.init = function(application) {
  * @param {String} id
  * @param {Number} i
  */
-MyInterface.prototype.addPlayerOptions = function() {
+MyInterface.prototype.addGameOptions = function() {
+	this.animation.add(this.scene.game, "animation_on").name("Animation ON/OFF");
+	
 	this.redPlayer = this.gameplay.addFolder(this.scene.players["red"].name);
-	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]);
-	this.redPlayer.add(this.scene.players["red"], "difficulty", [0, 1, 2, 3]);
+	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]).name("Type");
+	this.redPlayer.add(this.scene.players["red"], "difficulty", [0, 1, 2, 3]).name("Difficulty");
 
 	this.whitePlayer = this.gameplay.addFolder(this.scene.players["white"].name);
-	this.whitePlayer.add(this.scene.players["white"], "type", ["pc", "human"]);
-	this.whitePlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]);
+	this.whitePlayer.add(this.scene.players["white"], "type", ["pc", "human"]).name("Type");
+	this.whitePlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]).name("Difficulty");
 }
 
 /**
