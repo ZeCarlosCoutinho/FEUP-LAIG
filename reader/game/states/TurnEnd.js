@@ -37,7 +37,9 @@ TurnEnd.prototype.display = function()
 					pieces[i][j].display();
 			this.scene.popMatrix();
 		}
-	}   
+	}
+
+	this.board.startCamAnimation();
 	
 	if(lastResponse != ""){
 		var scores = parseScores(lastResponse);

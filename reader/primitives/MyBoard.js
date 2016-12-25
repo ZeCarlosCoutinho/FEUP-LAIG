@@ -122,3 +122,8 @@ MyBoard.prototype.updateScores = function (scores){
 	this.scene.players["red"].points = scores[1];
 	this.scene.players["white"].points = scores[0];
 }
+
+MyBoard.prototype.startCamAnimation = function()
+{
+	this.camRotating = true;
+}

@@ -155,6 +155,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.rootObject = this.graph.components[this.graph.root].create(this);
 	this.rootObject.updateMaterial(this.materialIndex);
 
+	//Sets the first cam to the red player side of the board
+	this.setGameCam("Red");
+
 	//this.test = new MyBoard(this);
 	this.test = new MyLightScorer(this, this.players["red"]);
 	this.test2 = new MyLightScorer(this, this.players["white"]);
@@ -261,7 +264,12 @@ XMLscene.prototype.display = function () {
 
 XMLscene.prototype.update = function (currTime) {
 	this.rootObject.updateAnimation(currTime);
-	this.game.updateAnimation(currTime);
+	//this.game.updateAnimation(currTime);
+	if(!this.game.camRotating) //TODO This has some errors!
+	{
+		this.game.updateAnimation(currTime);
+	}
+	this.transitionGameCam(currTime);
 	//TESTING
 	//this.test.updateAnimation(currTime);
 	//this.testAnimation.updateMatrix(currTime);
@@ -396,7 +404,7 @@ XMLscene.prototype.createPrimitives = function (){
 	}
 }
 
-
+//Sets the camera to face the actual player side of the board
 XMLscene.prototype.setGameCam = function(player)
 {
 	//Defines the normal direction of the camera in the y direction
@@ -405,7 +413,7 @@ XMLscene.prototype.setGameCam = function(player)
 	this.camera.setTarget(this.game.boardCentre);
 	if(player == "Red")
 	{
-		this.camera.setPosition(vec3.fromValues(-10, 15, 2.5));
+		this.camera.setPosition(vec3.fromValues(-15, 15, 2.5));
 	}
 	else if(player == "White")
 	{
@@ -420,27 +428,38 @@ XMLscene.prototype.setGameCam = function(player)
 
 XMLscene.prototype.transitionGameCam = function(currTime)
 {	
-	//Define Speed (can't be changed)
+	//Define Speed (can't be changed in the interface (yet))
 	var speed = Math.PI / 3; //Rad per Second
 
 	//Calculate difference of time
 	if(this.game.camRotating)
 	{	
-		var timeDifference = currTime - this.game.initialAnimationTime;
-		var angleIncrement = speed * timeDifference;
-		
-		//Rotates the camera
-		//this.camera.orbit(Y, angleIncrement); //TODO Como definir o Axis necessário? Quero-lhe passar o centro do tabuleiro
-
-		//Updates the animation values
-		this.game.initialAnimationTime = currTime;
-		this.game.camAnimationAngle += angleIncrement;
-
-		//When it reaches the end of the animation
-		if(this.game.camAnimationAngle > Math.PI)
+		//Beginning of rotation
+		if(this.game.initialAnimationTime == null || this.game.initialAnimationTime == 0)
 		{
-			this.game.camAnimationAngle = 0;
-			this.game.camRotating = false;
+			this.game.initialAnimationTime = currTime;
+			this.setGameCam(this.game.state.player.name); //Sets the cam to be in the default position before rotating
+		}
+		//After preparations in the beginning
+		else
+		{
+			var timeDifference = currTime - this.game.initialAnimationTime;
+			var angleIncrement = speed * (timeDifference / 1000);
+		
+			//Rotates the camera
+			this.camera.orbit(2, angleIncrement); //TODO Como definir o Axis necessário? Quero-lhe passar o centro do tabuleiro
+
+			//Updates the animation values
+			this.game.initialAnimationTime = currTime;
+			this.game.camAnimationAngle += angleIncrement;
+
+			//When it reaches the end of the animation
+			if(this.game.camAnimationAngle > Math.PI)
+			{
+				this.game.initialAnimationTime = 0;
+				this.game.camAnimationAngle = 0;
+				this.game.camRotating = false;
+			}
 		}
 	}
 }

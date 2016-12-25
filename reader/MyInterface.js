@@ -116,7 +116,8 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case(67):
 		case(99): // C/c
 			//this.scene.setGameCam(this.scene.game.state.player.name);
-			this.scene.setGameCam();
+			//this.scene.setGameCam();
+			this.scene.game.camRotating = true;
 			break;
 	};
 };
