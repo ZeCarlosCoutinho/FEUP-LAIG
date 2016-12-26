@@ -57,7 +57,7 @@ TurnEnd.prototype.next = function(){
 		winner = this.scene.players["red"];
 	if(this.scene.players["white"].points >= 7)
 		if (winner)
-			winner = true;
+			winner = "draw";
 		else
 			winner = this.scene.players["white"];
 	

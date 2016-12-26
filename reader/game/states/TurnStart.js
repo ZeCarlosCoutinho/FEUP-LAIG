@@ -13,6 +13,8 @@ function TurnStart(player, board) {
 		this.board.timer_init = false; //Next update sets timer_init
 		this.board.timer = 0;
 	}
+
+	this.scene.changeMessage(player.name + "'s Turn");
     
     this.pieceChosen = null; //Piece passed to the next state
 };

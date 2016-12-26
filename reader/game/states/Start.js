@@ -7,6 +7,8 @@ Start.prototype = Object.create(GameState.prototype);
 
 function Start(player, board) {
 	GameState.call(this, player, board);
+
+	this.scene.changeMessage("Press 'S' to start or click on 'Play'");
 };
 
 Start.prototype.display = function(){
@@ -31,6 +33,8 @@ Start.prototype.display = function(){
 };
 
 Start.prototype.next = function(){
+	this.scene.changeMessage("");
+	
 	switch(this.player.type){
 	case "human":
 		this.board.state = new TurnStart(this.player, this.board);

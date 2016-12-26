@@ -8,6 +8,11 @@ End.prototype = Object.create(GameState.prototype);
 function End(player, board) {
 	GameState.call(this, player, board);
 	this.board.timer_on = false;
+
+	if (this.player instanceof Player)
+		this.scene.changeMessage("Player '" + this.player.name + "' won!");
+	else
+	 	this.scene.changeMessage("Draw!");
 };
 
 End.prototype.display = function(){

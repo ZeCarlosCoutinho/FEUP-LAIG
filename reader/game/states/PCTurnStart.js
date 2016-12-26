@@ -8,6 +8,8 @@ PCTurnStart.prototype = Object.create(GameState.prototype);
 function PCTurnStart(player, board) {
 	GameState.call(this, player, board);
 	requestMove(this.board, this.player.color, this.player.difficulty);
+
+	this.scene.changeMessage(player.name + "'s Turn");
 };
 
 PCTurnStart.prototype.display = function(){

@@ -270,6 +270,11 @@ XMLscene.prototype.display = function () {
 
 };
 
+XMLscene.prototype.changeMessage = function (string) {
+    document.getElementsByTagName('h1')[0].innerHTML = string;
+};
+
+
 
 XMLscene.prototype.update = function (currTime) {
 	this.rootObject.updateAnimation(currTime);
