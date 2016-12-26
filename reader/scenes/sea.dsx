@@ -1,0 +1,412 @@
+<dsx>
+	<scene root="root" axis_length="1"/>
+	
+	<game>
+		<board material="darkMaterial" texture="sea"/>
+		<pieces piece1="piece1" piece2="piece2" piece3="piece3"/>
+		<red material="redMaterial" texture="white"/>
+		<white material="whiteMaterial" texture="white"/>
+		<background_ost file="resources/sounds/background.mp3"/>
+		<select_ost file="resources/sounds/select.wav"/>
+	</game>
+
+	<views default="view_default" >
+        	<perspective id="view_default" near="0.1" far="500" angle="20">
+            		<from x="15" y="15" z="15" />
+            		<to x="0" y="0" z="0" />
+       		</perspective>
+		
+		<perspective id="view_1" near="0.1" far="100" angle="1">
+            		<from x="5" y="5" z="5" />
+            		<to x="0.5" y="0" z="-1" />
+       		</perspective>
+		
+		<perspective id="view_2" near="0.1" far="100" angle="1">
+            		<from x="-3" y="2" z="5" />
+            		<to x="1" y="0" z="1" />
+        		</perspective>
+	</views>
+	 
+	<illumination doublesided="true" local="true" >
+    
+        <ambient r="0.5" g="0.5" b="0.5" a="0.8" />
+        <background r="0" g="0.6" b="1" a="1" />
+        
+    </illumination>
+	
+    <lights>
+        <omni id="omni_light1" enabled="true" >
+            <location x="10" y="10" z="10" w="0.2" />
+            <ambient r="1" g="1" b="1" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </omni>
+		
+        
+        <spot id="spot_light1" enabled="false" angle="10" exponent="0.5">            		 
+			<target x="0" y="0" z="0" />
+            <location x="10" y="10" z="10" />
+            <ambient r="0.1" g="0.1" b="0.1" a="0.1" />
+            <diffuse r="1" g="1" b="1" a="0.1" />
+            <specular r="1" g="1" b="1" a="0.3" />
+        </spot>
+    </lights>    
+
+	<textures>
+		<texture id="wood" file="resources\\images\\wood-texture.png" length_s="1.0" length_t="1.0" />
+		<texture id="sea" file="resources\\images\\sea.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="white" file="resources\\images\\white.jpg" length_s="1.0" length_t="1.0" />
+    </textures>
+    
+    <materials>
+        <material id="darkMaterial" >
+            <emission r="0.1" g="0.1" b="0.1" a="1" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="0.2" g="0.2" b="0.2" a="1" />
+            <specular r="0.2" g="0.2" b="0.2" a="1" />
+            <shininess value="0.8" />
+        </material>
+        
+		<material id="reflectingMaterial" >
+            <emission r="0.1" g="0.1" b="0.1" a="0.1" />
+            <ambient r="0.5" g="0.5" b="0.5" a="0.4" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1" />
+            <specular r="0.8" g="0.8" b="0.8" a="1" />
+            <shininess value="0.6" />
+        </material>
+		
+		<material id="transparent" >
+            <emission r="0" g="0" b="0" a="0" />
+            <ambient r="0" g="0" b="0" a="0" />
+            <diffuse r="0" g="0" b="0" a="0.1" />
+            <specular r="0" g="0" b="0" a="0" />
+            <shininess value="0" />
+        </material>
+		
+		<material id="voidMaterial" >
+            <emission r="0" g="0" b="0" a="0" />
+            <ambient r="0" g="0" b="0" a="0" />
+            <diffuse r="0" g="0" b="0" a="0" />
+            <specular r="0" g="0" b="0" a="0" />
+            <shininess value="0" />
+        </material>
+
+        <material id="redMaterial" >
+            <emission r="0.2" g="0.1" b="0.1" a="1" />
+            <ambient r="0.5" g="0.2" b="0.2" a="1" />
+            <diffuse r="0.5" g="0.2" b="0.2" a="1" />
+            <specular r="1" g="0.6" b="0.6" a="1" />
+            <shininess value="0" />
+        </material>
+
+        <material id="whiteMaterial" >
+            <emission r="0.2" g="0.2" b="0.2" a="1" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r="0.8" g="0.8" b="0.8" a="1" />
+            <shininess value="0" />
+        </material>
+    </materials>
+	
+	<transformations>
+		<transformation id="transformation1">
+			<translate x="2" y="2" z="1"/>
+			<scale x="1" y="1" z="3" />
+		</transformation>
+		
+		<transformation id="transformation2">
+			<translate x="3" y="1" z="2" />
+		</transformation>
+	</transformations>
+	
+	<animations>
+		<animation id="goUp" span="2" type="linear">
+			<controlpoint xx="0" yy="0" zz="0"/>
+			<controlpoint xx="0" yy="1" zz="0" />
+		</animation>
+
+		<animation id="goUpS" span="2" type="linear">
+			<controlpoint xx="0" yy="0" zz="0"/>
+			<controlpoint xx="0" yy="0" zz="1" />
+		</animation>
+	</animations>
+	
+	<primitives>
+		<primitive id="timer">
+			<timer/>
+		</primitive>
+
+		<primitive id="red_scorer">
+			<scorer player="red"/>
+		</primitive>
+
+		<primitive id="white_scorer">
+			<scorer player="white"/>
+		</primitive>
+
+        <primitive id="game">
+            <game_board />
+        </primitive>
+		
+		<primitive id="plane">
+			<rectangle x1="0" y1="0" x2="10" y2="10" />
+		</primitive>
+		
+		<primitive id="boat">
+			<vehicle textureref="wood"/>
+		</primitive>
+	</primitives>
+	
+	
+	<components>
+		<component id="root">
+			<transformation>
+				<scale x="5" y="5" z="5" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="sea" />
+			
+			<children>
+				<componentref id="red_scorer" />
+				<componentref id="white_scorer" />
+				<primitiveref id="game" />
+				<componentref id="timer" />
+				<componentref id="plane" />
+			</children>
+		</component>
+
+		
+		<component id="plane">
+			<transformation>
+				<translate x="0" y="-0.0005" z="0" />
+				<rotate axis="x" angle="-90"/>
+				<translate x="-5" y="-5" z="0" />
+			</transformation>
+			
+			<materials>
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="sea" />
+			
+			<children>
+				<primitiveref id="plane"/>
+			</children>
+		</component>
+
+		<component id="boat1">
+			<transformation>
+				<translate x="0.2" y="0.15" z="0.5" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<rotate axis="y" angle="90"/>
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="boat"/>
+			</children>
+		</component>
+
+		<component id="boat2">
+			<transformation>
+				<translate x="0.1" y="0.15" z="0.2" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<rotate axis="y" angle="90"/>
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="boat"/>
+			</children>
+		</component>
+
+		<component id="boat3">
+			<transformation>
+				<translate x="0.1" y="0.15" z="0.8" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<rotate axis="y" angle="90"/>
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="boat"/>
+			</children>
+		</component>
+
+		<component id="boat4">
+			<transformation>
+				<translate x="0.1" y="0.15" z="0.7" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<rotate axis="y" angle="90"/>
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="boat"/>
+			</children>
+		</component>
+
+		<component id="boat5">
+			<transformation>
+				<translate x="0.1" y="0.15" z="0.3" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<rotate axis="y" angle="90"/>
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="boat"/>
+			</children>
+		</component>
+		<component id="piece1">
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<componentref id="boat1"/>
+			</children>
+		</component>
+
+
+		<component id="piece2">
+			<transformation>
+
+			</transformation>
+			
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<componentref id="boat4"/>
+				<componentref id="boat5"/>
+			</children>
+		</component>
+
+		<component id="piece3">
+			<transformation>
+
+			</transformation>
+			
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<componentref id="boat1"/>
+				<componentref id="boat2"/>
+				<componentref id="boat3"/>
+			</children>
+		</component>
+
+		<component id="red_scorer">
+			<transformation>
+				<rotate axis="x" angle="-90" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<translate x="-1" y="-8.5" z="-1.5" />
+			</transformation>
+
+			<animation>
+				<animationref id="goUpS" />
+			</animation>
+			
+			
+			<materials>
+				<material id="darkMaterial" />
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="wood" />
+			
+			<children>
+				<primitiveref id="red_scorer" />
+			</children>
+		</component>
+
+		<component id="white_scorer">
+			<transformation>
+				<rotate axis="x" angle="-90" />
+				<scale x="0.1" y="0.1" z="0.1" />
+				<translate x="10" y="-8.5" z="-1.5" />
+			</transformation>
+
+			<animation>
+				<animationref id="goUpS" />
+			</animation>
+			
+			
+			<materials>
+				<material id="darkMaterial" />
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="wood" />
+			
+			<children>
+				<primitiveref id="white_scorer" />
+			</children>
+		</component>
+
+		<component id="timer">
+			<transformation>
+				<scale x="0.1" y="0.1" z="0.1" />
+				<translate x="4" y="-1" z="-1" />
+			</transformation>
+
+			<animation>
+				<animationref id="goUp" />
+			</animation>
+			
+			<materials>
+				<material id="darkMaterial" />
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="wood" />
+			
+			<children>
+				<primitiveref id="timer" />
+			</children>
+		</component>
+	</components> 
+</dsx>

@@ -20,7 +20,7 @@ MyPiece.prototype.display = function(){
 		this.scene.setActiveShader(this.scene.highlightShader);
 
     this.scene.pushMatrix();
-        if(this.player.color == "red"){
+        if(this.player.color == "white"){
             this.scene.translate(0.5,0,0.5);
             this.scene.rotate(Math.PI, 0, 1, 0);
             this.scene.translate(-0.5,0,-0.5);
