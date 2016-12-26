@@ -14,6 +14,7 @@ function PieceAnimation(dest, initTime, dur, animationSpeed) {
 	this.time = (dur + initTime) / animationSpeed;
 	this.animationSpeed = animationSpeed;
 	this.speed = scaleVec(this.dest, 1 / this.dur);
+	this.matrix = mat4.create();
 }
 
 
