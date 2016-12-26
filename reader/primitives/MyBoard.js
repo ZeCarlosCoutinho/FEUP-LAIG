@@ -5,31 +5,59 @@
 function MyBoard(scene) {
  	CGFobject.call(this,scene);
 
- 	this.scene.players = [];
-	this.scene.players["red"] = new Player("Red", "red", "human");
-	this.scene.players["white"] = new Player("White", "white", "pc", 1);
-	this.scene.players["red"].setCamera(-10, 15, 2.5);
-	this.scene.players["white"].setCamera(20, 15, 2.5);
+	if(this.scene.first_load){
+		this.id = 1;
+ 		this.scene.players = [];
+		this.scene.players["red"] = new Player("Red", "red", "human");
+		this.scene.players["white"] = new Player("White", "white", "pc", 1);
+		this.scene.players["red"].setCamera(-10, 15, 2.5);
+		this.scene.players["white"].setCamera(20, 15, 2.5);
 
-	this.boardCentre = vec3.fromValues(2.5, 0, 2.5);
-	this.camAnimationAngle = 0;
-	this.camRotating = false;
+		this.boardCentre = vec3.fromValues(2.5, 0, 2.5);
+		this.camAnimationAngle = 0;
+		this.camRotating = false;
+		
+		this.animation_on = true;
+		
+		this.board = new MyGameBoard(this.scene, 9, 9);
+		this.initializePieces();
 	
-	this.animation_on = true;
+		this.timer = 0;
+		this.timer_init = 0;
+		this.timer_end = 0;
+		this.timer_on = false;
 	
-	this.board = new MyGameBoard(this.scene, 9, 9);
-	this.initializePieces();
-	this.pickingTable = []; //Stores picking ids;
+		this.movesDone = [];
+		this.turn = 0;
 
-	this.timer = 0;
-	this.timer_init = 0;
-	this.timer_end = 0;
-	this.timer_on = false;
+		this.state = new Start(this.scene.players["red"], this);
+	}
+	else{
+		this.id = 2;
+		this.boardCentre = vec3.fromValues(2.5, 0, 2.5);
+		this.camAnimationAngle = 0;
+		this.camRotating = false;
+		
+		var game = this.scene.interface.game;
+		this.animation_on = game.animation_on;
+		
+		this.board = new MyGameBoard(this.scene, 9, 9);
 
-	this.movesDone = [];
-	this.turn = 0;
-
-	this.state = new Start(this.scene.players["red"], this);
+		this.pieces = game.pieces;
+		this.destroyedPieces = game.destroyedPieces;
+	
+		this.timer = game.timer;
+		this.timer_init = game.timer_init;
+		this.timer_end = game.timer_end;
+		this.timer_on = game.timer_on;
+	
+		this.movesDone = game.movesDone;
+		this.turn = game.turn;
+	
+		this.state = game.state;
+		this.state.board = this;
+		this.board.selected = game.board.selected;
+	}
 };
 
 MyBoard.prototype = Object.create(CGFobject.prototype);

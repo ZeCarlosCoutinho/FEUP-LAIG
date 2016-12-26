@@ -20,6 +20,8 @@ MyInterface.prototype.init = function(application) {
 	this.gui = new dat.GUI();
 
 	this.graphics  = this.gui.addFolder("Graphics");
+	this.dsx = this.graphics.addFolder("Scene");
+	this.filename = "game.dsx";
 
 	this.animation = this.gui.addFolder("Animations");
 	this.animation.add(this.scene, "animationSpeed", 0.1, 5).name("Animation Speed");
@@ -28,6 +30,8 @@ MyInterface.prototype.init = function(application) {
 
 	this.gameplay = this.gui.addFolder("Gameplay");
 	this.gameplay.add(this.scene, "timer").min(0).step(1).name("Timer");
+	this.redPlayer = this.gameplay.addFolder("Red");
+	this.whitePlayer = this.gameplay.addFolder("White");
 	
 	this.lights = this.gui.addFolder("Lights");
 	this.omniLights = this.lights.addFolder("Omni Lights");
@@ -51,17 +55,21 @@ MyInterface.prototype.addGameOptions = function() {
 
 	this.animation.add(this.scene.game, "animation_on").name("Animation ON/OFF").listen();
 	
-	this.redPlayer = this.gameplay.addFolder(this.scene.players["red"].name);
+	//this.redPlayer = this.gameplay.addFolder(this.scene.players["red"].name);
 	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]).name("Type");
 	this.redPlayer.add(this.scene.players["red"], "difficulty", [0, 1, 2, 3]).name("Difficulty");
 
-	this.whitePlayer = this.gameplay.addFolder(this.scene.players["white"].name);
+	//this.whitePlayer = this.gameplay.addFolder(this.scene.players["white"].name);
 	this.whitePlayer.add(this.scene.players["white"], "type", ["pc", "human"]).name("Type");
 	this.whitePlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]).name("Difficulty");
 
 	this.controls.add(this, "handlePlay").name("Play");
 	this.controls.add(this, "handleReplay").name("Replay");
 	this.controls.add(this, "handleUndo").name("Undo");
+
+	var filenames = ["sea.dsx", "wood.dsx", "game.dsx"];
+	this.dsx.add(this, "filename", filenames).name("File");
+	this.dsx.add(this, "handleSceneChange").name("Change");
 }
 
 /**
@@ -180,4 +188,11 @@ MyInterface.prototype.handleToggleLights= function(){
 
 MyInterface.prototype.handleToggleAxis= function(){
 	this.scene.axis_on = !this.scene.axis_on;		
+}
+
+MyInterface.prototype.handleSceneChange = function(){
+	this.game = this.scene.game;
+	this.scene.gameSounds["background"].pause();
+	
+	var myGraph = new MySceneGraph(this.filename, this.scene);
 }

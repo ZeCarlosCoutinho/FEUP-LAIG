@@ -42,6 +42,8 @@ XMLscene.prototype.init = function (application) {
 	this.enableTextures(true); //È necessário para texturas
 	this.axis = new CGFaxis(this);
 	this.axis_on = true;
+
+	this.first_load = true;
 	
 	this.highlightShader  = new CGFshader(this.gl, 'shaders/gourad.vert', 'shaders/gourad.frag');
 	//this.highlightShader  = new CGFshader(this.gl, 'shaders/highligthShader.vert', 'shaders/highligthShader.frag');
@@ -165,7 +167,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	//this.test = new MyBoard(this);
 
 
-	this.interface.addGameOptions();
+	
 
 	this.gameMaterials["board"] = this.materials[this.graph.gameMaterials['board']];
 	this.gameMaterials["red"] = this.materials[this.graph.gameMaterials['red']];
@@ -175,25 +177,31 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.gameTextures["red"]  = this.textures[this.graph.gameTextures["red"]];
 	this.gameTextures["white"]  = this.textures[this.graph.gameTextures["white"]];
 
-	if(this.graph.gameSounds["background"]){
-		this.gameSounds["background"] = new Audio(this.graph.gameSounds["background"]);
-		this.interface.addVolume("background", "Background Volume");
-	}
-	if(this.graph.gameSounds["select"]){
-		this.gameSounds["select"] = new Audio(this.graph.gameSounds["select"]);
-		this.interface.addVolume("select", "Effects Volume");
-	}
+	this.setPickEnabled(true);
+	this.setUpdatePeriod(10);
 	
 	for (var i = 1; i <= 3; i++){
 		this.pieceObjects[i] = this.graph.components[this.graph.pieces[i]].create(this);
 		this.pieceObjects[i].updateMaterial(this.materialIndex);
 	}
 	
-
-
-	this.setPickEnabled(true);
-	this.setUpdatePeriod(10);
+	if(this.first_load){
+		this.interface.addGameOptions();
 	
+		if(this.graph.gameSounds["background"]){
+			this.gameSounds["background"] = new Audio(this.graph.gameSounds["background"]);
+			this.interface.addVolume("background", "Background Volume");
+		}
+		if(this.graph.gameSounds["select"]){
+			this.gameSounds["select"] = new Audio(this.graph.gameSounds["select"]);
+			this.interface.addVolume("select", "Effects Volume");
+		}
+		
+		this.first_load = false;
+	}
+	//else this.game.copy(this.interface.game);
+	
+
 	//SOUND
 	if (this.gameSounds["background"]){
 		this.gameSounds["background"].loop = true;

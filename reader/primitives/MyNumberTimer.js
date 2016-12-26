@@ -50,7 +50,7 @@ MyNumberTimer.prototype.updateTimer = function () {
 };
 
 MyNumberTimer.prototype.displayLight = function () {
-	var curr_player = this.scene.game.state.player.color
+	var curr_player = this.scene.game.state.player.color;
 	if(this.timer % 2 == 0)
 		this.off_material.apply();
 	else
