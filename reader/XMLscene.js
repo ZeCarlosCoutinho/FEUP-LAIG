@@ -184,10 +184,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.pieceObjects[i] = this.graph.components[this.graph.pieces[i]].create(this);
 		this.pieceObjects[i].updateMaterial(this.materialIndex);
 	}
+
 	
 	if(this.first_load){
-		this.interface.addGameOptions();
-	
 		if(this.graph.gameSounds["background"]){
 			this.gameSounds["background"] = new Audio(this.graph.gameSounds["background"]);
 			this.interface.addVolume("background", "Background Volume");
@@ -196,10 +195,20 @@ XMLscene.prototype.onGraphLoaded = function ()
 			this.gameSounds["select"] = new Audio(this.graph.gameSounds["select"]);
 			this.interface.addVolume("select", "Effects Volume");
 		}
-		
+
+		this.interface.addGameOptions();
 		this.first_load = false;
 	}
 	//else this.game.copy(this.interface.game);
+	else{
+		if(this.graph.gameSounds["background"]){
+			this.gameSounds["background"].src = this.graph.gameSounds["background"];
+			
+		}
+		if(this.graph.gameSounds["select"]){
+			this.gameSounds["select"].src = this.graph.gameSounds["select"];
+		}
+	}
 	
 
 	//SOUND

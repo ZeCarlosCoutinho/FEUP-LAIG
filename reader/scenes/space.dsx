@@ -2,11 +2,11 @@
 	<scene root="root" axis_length="1"/>
 	
 	<game>
-		<board material="darkMaterial" texture="sea"/>
+		<board material="whiteMaterial" texture="nebula"/>
 		<pieces piece1="piece1" piece2="piece2" piece3="piece3"/>
-		<red material="redMaterial" texture="white"/>
-		<white material="whiteMaterial" texture="white"/>
-		<background_ost file="resources/sounds/sea.mp3"/>
+		<red material="redMaterial" texture="red"/>
+		<white material="whiteMaterial" texture="blue"/>
+		<background_ost file="resources/sounds/epic.mp3"/>
 		<select_ost file="resources/sounds/select.wav"/>
 	</game>
 
@@ -30,7 +30,7 @@
 	<illumination doublesided="true" local="true" >
     
         <ambient r="0.5" g="0.5" b="0.5" a="0.8" />
-        <background r="0" g="0.6" b="1" a="1" />
+        <backred r="0" g="0" b="0" a="1" />
         
     </illumination>
 	
@@ -53,9 +53,12 @@
     </lights>    
 
 	<textures>
-		<texture id="wood" file="resources\\images\\wood-texture.png" length_s="1.0" length_t="1.0" />
-		<texture id="sea" file="resources\\images\\sea.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="nebula" file="resources\\images\\nebula.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="red" file="resources\\images\\red.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="blue" file="resources\\images\\blue.jpg" length_s="1.0" length_t="1.0" />
 		<texture id="white" file="resources\\images\\white.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="moon" file="resources\\images\\moon.jpg" length_s="1.0" length_t="1.0" />
+		<texture id="sun" file="resources\\images\\sun.jpg" length_s="1.0" length_t="1.0" />
     </textures>
     
     <materials>
@@ -129,6 +132,9 @@
 			<controlpoint xx="0" yy="0" zz="0"/>
 			<controlpoint xx="0" yy="0" zz="1" />
 		</animation>
+
+		<animation id="rotation" span="3" type="circular"
+			centerx="0" centery="0" centerz="0" radius="1" startang="0" rotang="360" />
 	</animations>
 	
 	<primitives>
@@ -147,18 +153,109 @@
         <primitive id="game">
             <game_board />
         </primitive>
+
+        <primitive id="triangle">
+            <triangle x1="0" y1="1" z1="0" x2="-1" y2="0" z2="1" x3="1" y3="0" z3="1" />
+        </primitive>
 		
 		<primitive id="plane">
-			<rectangle x1="0" y1="0" x2="100" y2="100" />
+			<rectangle x1="0" y1="0" x2="10" y2="10" />
+		</primitive>
+
+		<primitive id="sphere">
+			<sphere radius="1" slices="20" stacks="20" />
 		</primitive>
 		
-		<primitive id="boat">
-			<vehicle textureref="wood"/>
-		</primitive>
 	</primitives>
 	
 	
 	<components>
+		<component id="piramid">
+			<transformation>
+				<translate x="0.5" y="0" z="0.5" />
+				<scale x="0.5" y="0.5" z="0.5" />
+				<rotate axis="x" angle="180"/>
+			</transformation>
+			
+			<materials>
+				<material id="redMaterial" />
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="nebula" />
+			
+			<children>
+				<componentref id="piramid_side_1" />
+				<componentref id="piramid_side_2" />
+				<componentref id="piramid_side_3" />
+				<componentref id="piramid_side_4" />
+			</children>
+		</component>
+
+		<component id="piramid_side_1">
+			<transformation>
+				<scale x="1" y="1" z="1" />
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="triangle" />
+			</children>
+		</component>
+
+		<component id="piramid_side_2">
+			<transformation>
+				<rotate axis="y" angle="90"/>
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="triangle" />
+			</children>
+		</component>
+
+		<component id="piramid_side_3">
+			<transformation>
+				<rotate axis="y" angle="180"/>
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="triangle" />
+			</children>
+		</component>
+
+		<component id="piramid_side_4">
+			<transformation>
+				<rotate axis="y" angle="-90"/>
+			</transformation>
+			
+			<materials>
+				<material id="inherit" />
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<primitiveref id="triangle" />
+			</children>
+		</component>
+
 		<component id="root">
 			<transformation>
 				<scale x="5" y="5" z="5" />
@@ -169,127 +266,40 @@
 				<material id="reflectingMaterial" />
 			</materials>
 			
-			<texture id="sea" />
+			<texture id="red" />
 			
 			<children>
 				<componentref id="red_scorer" />
 				<componentref id="white_scorer" />
 				<primitiveref id="game" />
 				<componentref id="timer" />
-				<componentref id="plane" />
+				<componentref id="sunmoon" />
+				<componentref id="piramid" />
 			</children>
 		</component>
 
-		
 		<component id="plane">
 			<transformation>
-				<translate x="0" y="-0.001" z="0" />
+				<translate x="0" y="-0.0005" z="0" />
 				<rotate axis="x" angle="-90"/>
-				<translate x="-50" y="-50" z="0" />
+				<translate x="-5" y="-5" z="0" />
 			</transformation>
 			
 			<materials>
 				<material id="reflectingMaterial" />
 			</materials>
 			
-			<texture id="sea" />
+			<texture id="red" />
 			
 			<children>
 				<primitiveref id="plane"/>
 			</children>
 		</component>
 
-		<component id="boat1">
-			<transformation>
-				<translate x="0.2" y="0.15" z="0.5" />
-				<scale x="0.1" y="0.1" z="0.1" />
-				<rotate axis="y" angle="90"/>
-			</transformation>
-			
-			<materials>
-				<material id="inherit" />
-			</materials>
-			
-			<texture id="inherit" />
-			
-			<children>
-				<primitiveref id="boat"/>
-			</children>
-		</component>
-
-		<component id="boat2">
-			<transformation>
-				<translate x="0.1" y="0.15" z="0.2" />
-				<scale x="0.1" y="0.1" z="0.1" />
-				<rotate axis="y" angle="90"/>
-			</transformation>
-			
-			<materials>
-				<material id="inherit" />
-			</materials>
-			
-			<texture id="inherit" />
-			
-			<children>
-				<primitiveref id="boat"/>
-			</children>
-		</component>
-
-		<component id="boat3">
-			<transformation>
-				<translate x="0.1" y="0.15" z="0.8" />
-				<scale x="0.1" y="0.1" z="0.1" />
-				<rotate axis="y" angle="90"/>
-			</transformation>
-			
-			<materials>
-				<material id="inherit" />
-			</materials>
-			
-			<texture id="inherit" />
-			
-			<children>
-				<primitiveref id="boat"/>
-			</children>
-		</component>
-
-		<component id="boat4">
-			<transformation>
-				<translate x="0.1" y="0.15" z="0.7" />
-				<scale x="0.1" y="0.1" z="0.1" />
-				<rotate axis="y" angle="90"/>
-			</transformation>
-			
-			<materials>
-				<material id="inherit" />
-			</materials>
-			
-			<texture id="inherit" />
-			
-			<children>
-				<primitiveref id="boat"/>
-			</children>
-		</component>
-
-		<component id="boat5">
-			<transformation>
-				<translate x="0.1" y="0.15" z="0.3" />
-				<scale x="0.1" y="0.1" z="0.1" />
-				<rotate axis="y" angle="90"/>
-			</transformation>
-			
-			<materials>
-				<material id="inherit" />
-			</materials>
-			
-			<texture id="inherit" />
-			
-			<children>
-				<primitiveref id="boat"/>
-			</children>
-		</component>
 		<component id="piece1">
 			<transformation>
+				<translate x="0.5" y="0.15" z="0.5" />
+				<scale x="0.15" y="0.15" z="0.15" />
 			</transformation>
 			
 			<materials>
@@ -299,14 +309,15 @@
 			<texture id="inherit" />
 			
 			<children>
-				<componentref id="boat1"/>
+				<primitiveref id="sphere"/>
 			</children>
 		</component>
 
 
 		<component id="piece2">
 			<transformation>
-
+				<translate x="0.5" y="0.25" z="0.5" />
+				<scale x="0.25" y="0.25" z="0.25" />
 			</transformation>
 			
 			<materials>
@@ -316,14 +327,14 @@
 			<texture id="inherit" />
 			
 			<children>
-				<componentref id="boat4"/>
-				<componentref id="boat5"/>
+				<primitiveref id="sphere"/>
 			</children>
 		</component>
 
 		<component id="piece3">
 			<transformation>
-
+				<translate x="0.5" y="0.4" z="0.5" />
+				<scale x="0.4" y="0.4" z="0.4" />
 			</transformation>
 			
 			<materials>
@@ -333,9 +344,62 @@
 			<texture id="inherit" />
 			
 			<children>
-				<componentref id="boat1"/>
-				<componentref id="boat2"/>
-				<componentref id="boat3"/>
+				<primitiveref id="sphere"/>
+			</children>
+		</component>
+
+		<component id="sun">
+			<transformation>
+				<translate x="-4" y="0" z="0.5" />
+				<scale x="1.6" y="1.6" z="1.6" />
+			</transformation>
+			
+			<materials>
+				<material id="whiteMaterial"/>
+			</materials>
+			
+			<texture id="sun" />
+			
+			<children>
+				<primitiveref id="sphere"/>
+			</children>
+		</component>
+
+		<component id="sunmoon">
+			<transformation>
+				<translate x="0" y="-1" z="0" />
+			</transformation>
+
+			<animation>
+				<animationref id="rotation" />
+			</animation>
+			
+			<materials>
+				<material id="inherit"/>
+			</materials>
+			
+			<texture id="inherit" />
+			
+			<children>
+				<componentref id="sun" />
+				<componentref id="moon" />
+			</children>
+		</component>
+
+		<component id="moon">
+			<transformation>
+				<translate x="4" y="0" z="0.5" />
+				<scale x="0.8" y="0.8" z="0.8" />
+			</transformation>
+
+			<materials>
+				<material id="whiteMaterial"/>
+			</materials>
+			
+			<texture id="moon" />
+			
+			<children>
+				<primitiveref id="sphere"/>
 			</children>
 		</component>
 
@@ -356,7 +420,7 @@
 				<material id="reflectingMaterial" />
 			</materials>
 			
-			<texture id="wood" />
+			<texture id="nebula" />
 			
 			<children>
 				<primitiveref id="red_scorer" />
@@ -380,7 +444,7 @@
 				<material id="reflectingMaterial" />
 			</materials>
 			
-			<texture id="wood" />
+			<texture id="nebula" />
 			
 			<children>
 				<primitiveref id="white_scorer" />
@@ -402,7 +466,7 @@
 				<material id="reflectingMaterial" />
 			</materials>
 			
-			<texture id="wood" />
+			<texture id="nebula" />
 			
 			<children>
 				<primitiveref id="timer" />

@@ -67,7 +67,7 @@ MyInterface.prototype.addGameOptions = function() {
 	this.controls.add(this, "handleReplay").name("Replay");
 	this.controls.add(this, "handleUndo").name("Undo");
 
-	var filenames = ["sea.dsx", "wood.dsx", "game.dsx"];
+	var filenames = ["sea.dsx", "space.dsx", "game.dsx"];
 	this.dsx.add(this, "filename", filenames).name("File");
 	this.dsx.add(this, "handleSceneChange").name("Change");
 }
