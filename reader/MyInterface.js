@@ -18,7 +18,7 @@ MyInterface.prototype.init = function(application) {
 	CGFinterface.prototype.init.call(this, application);
 	
 	this.gui = new dat.GUI();
-	
+
 	this.animation = this.gui.addFolder("Animations");
 	this.animation.add(this.scene, "animationSpeed", 0.1, 5).name("Animation Speed");
 
@@ -31,6 +31,8 @@ MyInterface.prototype.init = function(application) {
 	this.omniLights = this.lights.addFolder("Omni Lights");
 	this.spotLights = this.lights.addFolder("Spot Lights");
 
+	this.controls = this.gui.addFolder("Controls");
+	this.controls.open();
 
 	return true;
 };
@@ -51,6 +53,10 @@ MyInterface.prototype.addGameOptions = function() {
 	this.whitePlayer = this.gameplay.addFolder(this.scene.players["white"].name);
 	this.whitePlayer.add(this.scene.players["white"], "type", ["pc", "human"]).name("Type");
 	this.whitePlayer.add(this.scene.players["white"], "difficulty", [0, 1, 2, 3]).name("Difficulty");
+
+	this.controls.add(this, "handlePlay").name("Play");
+	this.controls.add(this, "handleReplay").name("Replay");
+	this.controls.add(this, "handleUndo").name("Undo");
 }
 
 /**
@@ -98,6 +104,7 @@ MyInterface.prototype.processKeyboard = function(event) {
      		this.scene.camera = this.scene.views[this.scene.viewIndex % this.scene.views.length];
             this.setActiveCamera(this.scene.views[this.scene.viewIndex % this.scene.views.length]);
             break;
+		
 		case (77):
         case (109):	// M/m
 			if (this.scene.rootObject != null){
@@ -105,29 +112,60 @@ MyInterface.prototype.processKeyboard = function(event) {
 				this.scene.rootObject.updateMaterial(this.scene.materialIndex);
 			}
 			break;
+		
 		case (85):
 		case (117): // U/u
-			if(this.scene.game.state instanceof TurnStart || this.scene.game.state instanceof PieceSelected)
-			{
-				this.scene.game.state.remakeMove();
-			}
+			this.handleUndo();
 			break;
+		
 		case (65):
 		case (97): // A/a
 			{
 				this.scene.game.animation_on = !this.scene.game.animation_on;
 			}
 			break;
+		
 		case(67):
 		case(99): // C/c
 			//this.scene.setGameCam(this.scene.game.state.player.name);
 			//this.scene.setGameCam();
 			this.scene.game.camRotating = true;
 			break;
+		
 		case(83):
 		case(115): // S/s
-			if(this.scene.game.state instanceof Start)
-				this.scene.game.state.next();
+			this.handlePlay();
+			break;
+		
+		case(82):
+		case(114): // R/r
+			if(this.scene.game.state instanceof TurnStart || this.scene.game.state instanceof End)
+			this.handleReplay();
 			break;
 	};
 };
+
+
+
+/*
+* -------------------------------  HANDLERS -------------------------------
+*/
+MyInterface.prototype.handlePlay= function(){
+	if(this.scene.game.state instanceof Start)
+		this.scene.game.state.next();
+			
+}
+
+MyInterface.prototype.handleReplay= function(){
+	if(this.scene.game.state instanceof TurnStart || this.scene.game.state instanceof End){
+		this.scene.game.state.replay();
+	}
+	
+}
+
+MyInterface.prototype.handleUndo= function(){
+	if(this.scene.game.state instanceof TurnStart || this.scene.game.state instanceof PieceSelected){
+		this.scene.game.state.remakeMove();
+	}
+			
+}

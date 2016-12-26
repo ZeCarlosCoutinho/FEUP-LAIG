@@ -13,7 +13,7 @@ function GameState(player, board) {
 
 GameState.prototype.constructor = GameState;
 
-GameState.prototype.remakeMove2 = function()
+GameState.prototype.replay = function()
 {
 	var movesDone = this.board.movesDone;
 	this.board.playersTypes = [];
