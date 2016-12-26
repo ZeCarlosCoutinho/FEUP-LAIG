@@ -17,5 +17,5 @@ Prim_Timer.prototype.toString=function(){
  * @return {MyTimer} a Timer
  */
 Prim_Timer.prototype.create = function(scene) {
-	return new MyTimer(scene);
+	return new MyNumberTimer(scene);
 }

@@ -44,7 +44,7 @@ MyInterface.prototype.init = function(application) {
  * @param {Number} i
  */
 MyInterface.prototype.addGameOptions = function() {
-	this.animation.add(this.scene.game, "animation_on").name("Animation ON/OFF");
+	this.animation.add(this.scene.game, "animation_on").name("Animation ON/OFF").listen();
 	
 	this.redPlayer = this.gameplay.addFolder(this.scene.players["red"].name);
 	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]).name("Type");
@@ -95,6 +95,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// call CGFinterface default code (omit if you want to override)
 	CGFinterface.prototype.processKeyboard.call(this,event);
 	
+	console.log(this.scene.game.animation_on );
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{

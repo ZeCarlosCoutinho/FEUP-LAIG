@@ -596,6 +596,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 			break;
 		case 'scorer':
 			this.primitives[currentPrimitive_id] = new Prim_Scorer(currentPrimitive_id);
+			this.primitives[currentPrimitive_id].player = this.reader.getString(primitive_data, 'player');
 			break;
 		case 'game_board':
 			this.primitives[currentPrimitive_id] = new Prim_GameBoard(currentPrimitive_id);
