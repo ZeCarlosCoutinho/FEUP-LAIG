@@ -41,6 +41,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.enableTextures(true); //È necessário para texturas
 	this.axis = new CGFaxis(this);
+	this.axis_on = false;
 	
 	this.highlightShader  = new CGFshader(this.gl, 'shaders/gourad.vert', 'shaders/gourad.frag');
 	//this.highlightShader  = new CGFshader(this.gl, 'shaders/highligthShader.vert', 'shaders/highligthShader.frag');
@@ -215,7 +216,8 @@ XMLscene.prototype.display = function () {
 	this.applyViewMatrix();
 
 	// Draw axis
-	this.axis.display();
+	if (this.axis_on)
+		this.axis.display();
 
 	this.setDefaultAppearance();
 	
@@ -353,7 +355,7 @@ XMLscene.prototype.createLights = function (){
     		this.graph.omniLights[key].specular[1],
     		this.graph.omniLights[key].specular[2],
     		this.graph.omniLights[key].specular[3]);
-    	this.lights[i].setVisible(true);
+    	this.lights[i].setVisible(false);
 
     	this.lightsStatus[i] = this.graph.omniLights[key].enabled;
     	this.interface.addOmniLight(key, i);

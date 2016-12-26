@@ -19,6 +19,8 @@ MyInterface.prototype.init = function(application) {
 	
 	this.gui = new dat.GUI();
 
+	this.graphics  = this.gui.addFolder("Graphics");
+
 	this.animation = this.gui.addFolder("Animations");
 	this.animation.add(this.scene, "animationSpeed", 0.1, 5).name("Animation Speed");
 
@@ -44,6 +46,9 @@ MyInterface.prototype.init = function(application) {
  * @param {Number} i
  */
 MyInterface.prototype.addGameOptions = function() {
+	this.graphics.add(this, "handleToggleLights").name("Show Lights");
+	this.graphics.add(this, "handleToggleAxis").name("Show Axis");
+
 	this.animation.add(this.scene.game, "animation_on").name("Animation ON/OFF").listen();
 	
 	this.redPlayer = this.gameplay.addFolder(this.scene.players["red"].name);
@@ -153,20 +158,26 @@ MyInterface.prototype.processKeyboard = function(event) {
 */
 MyInterface.prototype.handlePlay= function(){
 	if(this.scene.game.state instanceof Start)
-		this.scene.game.state.next();
-			
+		this.scene.game.state.next();		
 }
 
 MyInterface.prototype.handleReplay= function(){
 	if(this.scene.game.state instanceof TurnStart || this.scene.game.state instanceof End){
 		this.scene.game.state.replay();
 	}
-	
 }
 
 MyInterface.prototype.handleUndo= function(){
 	if(this.scene.game.state instanceof TurnStart || this.scene.game.state instanceof PieceSelected){
 		this.scene.game.state.remakeMove();
-	}
-			
+	}		
+}
+
+MyInterface.prototype.handleToggleLights= function(){
+	for(var i in this.scene.lights)
+		this.scene.lights[i].visible = !this.scene.lights[i].visible;		
+}
+
+MyInterface.prototype.handleToggleAxis= function(){
+	this.scene.axis_on = !this.scene.axis_on;		
 }
