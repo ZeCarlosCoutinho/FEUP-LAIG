@@ -156,7 +156,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	if(!this.camera_controller)
 		this.camera_controller = new Camera(this, this.views);
 	else
-		this.camera_controller.reload();
+		this.camera_controller.reload(this.views);
 	this.camera = this.camera_controller.camera;
 	this.interface.setActiveCamera(this.camera);
 	//this.camera = this.views[this.viewIndex % this.views.length];

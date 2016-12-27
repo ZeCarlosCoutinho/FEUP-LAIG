@@ -102,10 +102,13 @@ Camera.prototype.set = function(index){
     }
 }
 
-Camera.prototype.reload = function(){
+Camera.prototype.reload = function(viewsList){
+    this.viewsList = viewsList;
+
      var old = this.scene.interface.cam_com;
      this.set(old.current_view_index);
      this.center_camera_on = old.center_camera_on;
      this.speed = old.speed;
+     this.auto_set_on = old.auto_set_on;
 }
 
