@@ -152,8 +152,11 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.axis = new CGFaxis(this, this.graph.axis_length);
 	this.createIllumination();
 	this.createViews();
-	this.camera = this.views[this.viewIndex % this.views.length];
-	this.interface.setActiveCamera(this.views[this.viewIndex % this.views.length]);
+	this.camera_controller = new Camera(this.views);
+	this.camera = this.camera_controller.camera;
+	this.interface.setActiveCamera(this.camera);
+	//this.camera = this.views[this.viewIndex % this.views.length];
+	//this.interface.setActiveCamera(this.views[this.viewIndex % this.views.length]);
 	this.createLights();
 	this.loadTextures();
 	this.createMaterials();
@@ -162,7 +165,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.rootObject.updateMaterial(this.materialIndex);
 
 	//Sets the first cam to the red player side of the board
-	this.setGameCam("Red");
+	//this.setGameCam("Red");
 
 	//this.test = new MyBoard(this);
 
@@ -302,7 +305,8 @@ XMLscene.prototype.update = function (currTime) {
 	{
 		this.game.updateAnimation(currTime);
 	}
-	this.transitionGameCam(currTime);
+	this.camera_controller.centerCamera(currTime);
+	//this.transitionGameCam(currTime);
 	//TESTING
 	//this.test.updateAnimation(currTime);
 	//this.testAnimation.updateMatrix(currTime);
@@ -436,7 +440,7 @@ XMLscene.prototype.createPrimitives = function (){
 		this.primitives[key] = this.graph.primitives[key].create(this);
 	}
 }
-
+/*
 //Sets the camera to face the actual player side of the board
 XMLscene.prototype.setGameCam = function(player)
 {
@@ -496,3 +500,63 @@ XMLscene.prototype.transitionGameCam = function(currTime)
 		}
 	}
 }
+
+
+XMLscene.prototype.transitionGameCam2 = function(currTime){
+  if(!this.currentView || !this.cameraCanUpdate)
+    return;
+
+  if(!this.time){
+    this.time = time;
+    return;
+  }
+
+  var delta = time - this.time;
+  var t = this.transitionValue * delta;
+  var fov = transition_float(this.camera.fov, this.currentView.angle, t);
+  var near = transition_float(this.camera.near, this.currentView.near, t);
+  var far = transition_float(this.camera.far, this.currentView.far, t);
+
+  var from = transition_Array4To3(this.camera.position,
+                              [this.currentView.from.x,
+                              this.currentView.from.y,
+                              this.currentView.from.z,
+                              0], t);
+
+  var to = transition_Array4To3(this.camera.target,
+                              [this.currentView.to.x,
+                              this.currentView.to.y,
+                              this.currentView.to.z,
+                              0], t);
+
+  this.camera.fov = fov;
+  this.camera.near = near;
+  this.camera.far = far;
+
+  this.camera.setPosition(from);
+  this.camera.setTarget(to);
+
+  var dist = 0.1;
+  var dist2 = 0.01;
+
+  if(this.VectDistance(this.camera.position,
+      [this.currentView.from.x,
+      this.currentView.from.y,
+      this.currentView.from.z,0]) > dist)
+    return;
+
+  if(this.VectDistance(this.camera.target,
+    [this.currentView.to.x,
+    this.currentView.to.y,
+    this.currentView.to.z, 0]) > dist)
+    return;
+
+  if(Math.abs(this.camera.fov - this.currentView.angle) > dist2)
+    return;
+  if(Math.abs(this.camera.near - this.currentView.near) > dist2)
+    return;
+  if(Math.abs(this.camera.far - this.currentView.far) > dist2)
+    return;
+
+  this.cameraCanUpdate = false;
+}*/

@@ -72,6 +72,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'parser/Prim_GameBoard.js',
 	'parser/Prim_Scorer.js',
 	'parser/Prim_Timer.js',
+	'game/Camera.js',
 	
 main=function()
 {
@@ -93,7 +94,7 @@ main=function()
 	// or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
 	
 	//var filename=getUrlVars()['file'] || "demo.xml";
-    var filename=getUrlVars()['file'] || "game.dsx";
+    var filename=getUrlVars()['file'] || "sea.dsx";
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors
