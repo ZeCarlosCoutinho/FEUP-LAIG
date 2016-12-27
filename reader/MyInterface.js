@@ -146,7 +146,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case(99): // C/c
 			//this.scene.setGameCam(this.scene.game.state.player.name);
 			//this.scene.setGameCam();
-			this.scene.game.camRotating = true;
+			//this.scene.game.camRotating = true;
 			break;
 		
 		case(83):
@@ -195,6 +195,7 @@ MyInterface.prototype.handleToggleAxis= function(){
 
 MyInterface.prototype.handleSceneChange = function(){
 	this.game = this.scene.game;
+	this.cam_com = this.scene.camera_controller;
 	this.scene.gameSounds["background"].pause();
 	
 	var myGraph = new MySceneGraph(this.filename, this.scene);

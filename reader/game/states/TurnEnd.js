@@ -38,8 +38,6 @@ TurnEnd.prototype.display = function()
 			this.scene.popMatrix();
 		}
 	}
-
-	this.board.startCamAnimation();
 	
 	if(lastResponse != ""){
 		var scores = parseScores(lastResponse);
@@ -71,6 +69,7 @@ TurnEnd.prototype.next = function(){
 
 
 	var nextPlayer = this.board.nextPlayer();
+	this.scene.camera_controller.set(nextPlayer.color);
 
 	switch(nextPlayer.type ){
 	case "human":

@@ -10,21 +10,21 @@
 		<select_ost file="resources/sounds/select.wav"/>
 	</game>
 
-	<views default="view_default" >
-        	<perspective id="view_default" near="0.1" far="500" angle="20">
-            		<from x="15" y="15" z="15" />
-            		<to x="0" y="0" z="0" />
-       		</perspective>
+	<views default="view1" >
+		<perspective id="view1" near="0.1" far="50" angle="30">
+            	<from x="-7" y="7" z="2.5" />
+            	<to x="2.5" y="0" z="2.5" />
+       	</perspective>
 		
-		<perspective id="view_1" near="0.1" far="100" angle="1">
-            		<from x="5" y="5" z="5" />
-            		<to x="0.5" y="0" z="-1" />
-       		</perspective>
+		<perspective id="view2" near="0.1" far="50" angle="20">
+            	<from x="12" y="7" z="2.5" />
+            	<to x="2.5" y="0" z="2.5" />
+       	</perspective>
 		
-		<perspective id="view_2" near="0.1" far="100" angle="1">
-            		<from x="-3" y="2" z="5" />
-            		<to x="1" y="0" z="1" />
-        		</perspective>
+		<perspective id="view3" near="0.1" far="50" angle="30">
+            	<from x="2.5" y="10" z="2.5" />
+            	<to x="2.5" y="0" z="2.5" />
+       	</perspective>
 	</views>
 	 
 	<illumination doublesided="true" local="true" >

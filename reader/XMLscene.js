@@ -152,7 +152,11 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.axis = new CGFaxis(this, this.graph.axis_length);
 	this.createIllumination();
 	this.createViews();
-	this.camera_controller = new Camera(this.views);
+
+	if(!this.camera_controller)
+		this.camera_controller = new Camera(this, this.views);
+	else
+		this.camera_controller.reload();
 	this.camera = this.camera_controller.camera;
 	this.interface.setActiveCamera(this.camera);
 	//this.camera = this.views[this.viewIndex % this.views.length];
@@ -341,6 +345,7 @@ XMLscene.prototype.createIllumination = function (){
 
 //Creates the viewports from the graph
 XMLscene.prototype.createViews = function (){
+	this.views = [];
 	var i = 0;
 	for(key in this.graph.viewsList){
 		if (this.graph.defaultView == key)

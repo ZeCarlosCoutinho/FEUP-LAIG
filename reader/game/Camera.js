@@ -1,4 +1,5 @@
-function Camera(viewsList) {
+function Camera(scene, viewsList) {
+    this.scene = scene;
     this.viewsList = viewsList;
     this.current_view_index = 0;
     this.current = this.viewsList[0];
@@ -8,6 +9,7 @@ function Camera(viewsList) {
 
     this.auto_set_on = true;
 };
+
 
 Camera.prototype = Object.create(CGFobject.prototype);
 Camera.prototype.constructor = Camera;
@@ -88,10 +90,22 @@ Camera.prototype.next = function(){
 
 Camera.prototype.set = function(index){
     if(this.auto_set_on){
+        if (index == "red")
+            index = 0;
+        if (index == "white")
+            index = 1;
+
         this.current_view_index = index;
         if (this.current_view_index >= this.viewsList.length)
             this.current_view_index = 0;
         this.current = this.viewsList[this.current_view_index];
     }
+}
+
+Camera.prototype.reload = function(){
+     var old = this.scene.interface.cam_com;
+     this.set(old.current_view_index);
+     this.center_camera_on = old.center_camera_on;
+     this.speed = old.speed;
 }
 
