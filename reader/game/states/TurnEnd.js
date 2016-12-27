@@ -69,7 +69,6 @@ TurnEnd.prototype.next = function(){
 
 
 	var nextPlayer = this.board.nextPlayer();
-	this.scene.camera_controller.set(nextPlayer.color);
 
 	switch(nextPlayer.type ){
 	case "human":
