@@ -30,7 +30,7 @@ GameState.prototype.replay = function()
 		this.scene.players["red"].type = "auto";
 		this.scene.players["white"].type = "auto";
 
-		this.board.state = new AutoTurnStart(this.player, this.board);
+		this.board.state = new AutoTurnStart(this.scene.players["red"], this.board);
 	}
 }
 
