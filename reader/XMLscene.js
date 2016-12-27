@@ -252,6 +252,7 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
 	{
+		this.pickData = [];
 		this.updateLights();
 		this.rootObject.display();
 

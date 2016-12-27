@@ -91,9 +91,7 @@ PieceSelected.prototype.logPicking = function()
 				if (obj)
 				{
 					var Id = this.scene.pickResults[i][1];
-					/*
-					console.log(customId);
-					this.scene.pickResults[i][0].picked = true;*/
+					console.log(Id);
 					if(Id >= 100){
 							var coords = [];
 							coords[0] = Math.floor((this.scene.pickResults[i][1] - 100) / 10);
@@ -132,7 +130,7 @@ PieceSelected.prototype.logPicking = function()
 };
 
 PieceSelected.prototype.next = function(){
-	console.log(this.tileChosen[1]);
+	console.log(this.tileChosen);
 
 	var Xi = Math.floor((this.pieceChosen[1] - 100) / 10);
 	var Zi = (this.pieceChosen[1] - 100) % 10;

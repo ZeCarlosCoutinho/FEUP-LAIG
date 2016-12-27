@@ -41,7 +41,7 @@ MyGameBoard.prototype.displaySelected = function () {
 			this.scene.scale(1/this.dX, 1/((this.dY+this.dX)/2), 1/this.dY);
 			
 			//TODO Opcional effect
-			this.scene.translate(0.45,0,0.45);
+			this.scene.translate(0.5,0,0.5);
 			this.scene.scale(0.8,1,0.8);
 			this.scene.translate(-0.5,0,-0.5);
 
