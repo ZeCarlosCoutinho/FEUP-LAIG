@@ -1,5 +1,5 @@
 <dsx>
-	<scene root="root" axis_length="1"/>
+	<scene root="root" axis_length="4"/>
 	
 	<game>
 		<board material="darkMaterial" texture="sea"/>
@@ -10,21 +10,21 @@
 		<select_ost file="resources/sounds/select.wav"/>
 	</game>
 
-	<views default="view_default" >
-        	<perspective id="view_default" near="0.1" far="500" angle="20">
-            		<from x="15" y="15" z="15" />
-            		<to x="0" y="0" z="0" />
-       		</perspective>
+	<views default="view1" >
+		<perspective id="view1" near="0.1" far="50" angle="30">
+            	<from x="-7" y="7" z="2.5" />
+            	<to x="2.5" y="0" z="2.5" />
+       	</perspective>
 		
-		<perspective id="view_1" near="0.1" far="100" angle="1">
-            		<from x="5" y="5" z="5" />
-            		<to x="0.5" y="0" z="-1" />
-       		</perspective>
+		<perspective id="view2" near="0.1" far="50" angle="20">
+            	<from x="12" y="7" z="2.5" />
+            	<to x="2.5" y="0" z="2.5" />
+       	</perspective>
 		
-		<perspective id="view_2" near="0.1" far="100" angle="1">
-            		<from x="-3" y="2" z="5" />
-            		<to x="1" y="0" z="1" />
-        		</perspective>
+		<perspective id="view3" near="0.1" far="50" angle="30">
+            	<from x="2.5" y="10" z="2.5" />
+            	<to x="2.5" y="0" z="2.5" />
+       	</perspective>
 	</views>
 	 
 	<illumination doublesided="true" local="true" >
@@ -201,7 +201,7 @@
 
 		<component id="boat1">
 			<transformation>
-				<translate x="0.2" y="0.15" z="0.5" />
+				<translate x="0.2" y="0.15" z="0.45" />
 				<scale x="0.1" y="0.1" z="0.1" />
 				<rotate axis="y" angle="90"/>
 			</transformation>
@@ -236,8 +236,8 @@
 		</component>
 
 		<component id="boat3">
-			<transformation>
-				<translate x="0.1" y="0.15" z="0.8" />
+			<transformation>v
+				<translate x="0.1" y="0.15" z="0.7" />
 				<scale x="0.1" y="0.1" z="0.1" />
 				<rotate axis="y" angle="90"/>
 			</transformation>
@@ -255,7 +255,7 @@
 
 		<component id="boat4">
 			<transformation>
-				<translate x="0.1" y="0.15" z="0.7" />
+				<translate x="0.1" y="0.15" z="0.6" />
 				<scale x="0.1" y="0.1" z="0.1" />
 				<rotate axis="y" angle="90"/>
 			</transformation>
@@ -343,7 +343,7 @@
 			<transformation>
 				<rotate axis="x" angle="-90" />
 				<scale x="0.1" y="0.1" z="0.1" />
-				<translate x="-1" y="-8.5" z="-1.5" />
+				<translate x="-1" y="-8.5" z="-1.8" />
 			</transformation>
 
 			<animation>
@@ -367,7 +367,7 @@
 			<transformation>
 				<rotate axis="x" angle="-90" />
 				<scale x="0.1" y="0.1" z="0.1" />
-				<translate x="10" y="-8.5" z="-1.5" />
+				<translate x="10" y="-8.5" z="-1.8" />
 			</transformation>
 
 			<animation>

@@ -19,15 +19,9 @@ GameState.prototype.replay = function()
 	this.board.playersTypes = [];
 	this.board.playersTypes["red"] = this.scene.players["red"].type;//Save players defs
 	this.board.playersTypes["white"] = this.scene.players["white"].type;
-	if (movesDone.length > 0){
-		//nOW DOES THE MOVIE
 
-		/*var lastmove = movesDone.pop();
-		if(lastmove.player.type == "pc")
-		{
-			movesDone.pop();
-		}*/
-	
+	this.scene.camera_controller.set("red");
+	if (movesDone.length > 0){
 		//Board Reset
 		this.board.initializePieces();
 		//this.board.movesDone = [];

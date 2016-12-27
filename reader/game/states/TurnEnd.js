@@ -38,8 +38,6 @@ TurnEnd.prototype.display = function()
 			this.scene.popMatrix();
 		}
 	}
-
-	this.board.startCamAnimation();
 	
 	if(lastResponse != ""){
 		var scores = parseScores(lastResponse);

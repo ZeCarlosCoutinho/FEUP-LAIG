@@ -6,16 +6,9 @@ function MyBoard(scene) {
  	CGFobject.call(this,scene);
 
 	if(this.scene.first_load){
-		this.id = 1;
  		this.scene.players = [];
 		this.scene.players["red"] = new Player("Red", "red", "human");
 		this.scene.players["white"] = new Player("White", "white", "pc", 1);
-		this.scene.players["red"].setCamera(-10, 15, 2.5);
-		this.scene.players["white"].setCamera(20, 15, 2.5);
-
-		this.boardCentre = vec3.fromValues(2.5, 0, 2.5);
-		this.camAnimationAngle = 0;
-		this.camRotating = false;
 		
 		this.animation_on = true;
 		
@@ -33,11 +26,6 @@ function MyBoard(scene) {
 		this.state = new Start(this.scene.players["red"], this);
 	}
 	else{
-		this.id = 2;
-		this.boardCentre = vec3.fromValues(2.5, 0, 2.5);
-		this.camAnimationAngle = 0;
-		this.camRotating = false;
-		
 		var game = this.scene.interface.game;
 		this.animation_on = game.animation_on;
 		
@@ -166,10 +154,6 @@ MyBoard.prototype.updateScores = function (scores){
 	this.scene.players["white"].points = scores[0];
 }
 
-MyBoard.prototype.startCamAnimation = function()
-{
-	this.camRotating = true;
-}
 
 MyBoard.prototype.nextPlayer = function()
 {

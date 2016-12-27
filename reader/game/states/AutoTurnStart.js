@@ -7,7 +7,7 @@ AutoTurnStart.prototype = Object.create(GameState.prototype);
 
 function AutoTurnStart(player, board) {
 	GameState.call(this, player, board);
-
+	this.scene.camera_controller.set(player.color);
 };
 
 AutoTurnStart.prototype.display = function(){

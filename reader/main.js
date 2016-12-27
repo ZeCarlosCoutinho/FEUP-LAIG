@@ -72,6 +72,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js',
 	'parser/Prim_GameBoard.js',
 	'parser/Prim_Scorer.js',
 	'parser/Prim_Timer.js',
+	'game/Camera.js',
 	
 main=function()
 {
