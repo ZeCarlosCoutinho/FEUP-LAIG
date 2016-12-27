@@ -1,9 +1,12 @@
 function Camera(viewsList) {
     this.viewsList = viewsList;
+    this.current_view_index = 0;
     this.current = this.viewsList[0];
     this.camera = new CGFcamera(this.current.fov, this.current.near, this.current.far, this.current.position.slice(0), this.current.target.slice(0));
     this.center_camera_on = true;
     this.speed = 2;
+
+    this.auto_set_on = true;
 };
 
 Camera.prototype = Object.create(CGFobject.prototype);
@@ -76,4 +79,19 @@ Camera.prototype.centerCamera = function(currTime){
     this.time = currTime;
 }
 
+Camera.prototype.next = function(){
+    this.current_view_index++;
+    if (this.current_view_index >= this.viewsList.length)
+        this.current_view_index = 0;
+    this.current = this.viewsList[this.current_view_index];
+}
+
+Camera.prototype.set = function(index){
+    if(this.auto_set_on){
+        this.current_view_index = index;
+        if (this.current_view_index >= this.viewsList.length)
+            this.current_view_index = 0;
+        this.current = this.viewsList[this.current_view_index];
+    }
+}
 

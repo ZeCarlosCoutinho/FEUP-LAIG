@@ -21,6 +21,7 @@ MyInterface.prototype.init = function(application) {
 
 	this.graphics  = this.gui.addFolder("Graphics");
 	this.dsx = this.graphics.addFolder("Scene");
+	this.camera = this.graphics.addFolder("Camera");
 	this.filename = "game.dsx";
 
 	this.animation = this.gui.addFolder("Animations");
@@ -54,6 +55,10 @@ MyInterface.prototype.addGameOptions = function() {
 	this.graphics.add(this, "handleToggleAxis").name("Show Axis");
 
 	this.animation.add(this.scene.game, "animation_on").name("Animation ON/OFF").listen();
+
+	this.camera.add(this.scene.camera_controller, "speed", 0.1, 5).name("Camera Speed");
+	this.camera.add(this.scene.camera_controller, "center_camera_on").name("Camera Lock");
+	this.camera.add(this.scene.camera_controller, "auto_set_on").name("Camera Auto Set");
 	
 	//this.redPlayer = this.gameplay.addFolder(this.scene.players["red"].name);
 	this.redPlayer.add(this.scene.players["red"], "type", ["pc", "human"]).name("Type");
@@ -114,9 +119,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 	{
 		case (86):
         case (118): // V/v
-        	this.scene.viewIndex++;
-     		this.scene.camera = this.scene.views[this.scene.viewIndex % this.scene.views.length];
-            this.setActiveCamera(this.scene.views[this.scene.viewIndex % this.scene.views.length]);
+     		this.scene.camera_controller.next();
             break;
 		
 		case (77):
