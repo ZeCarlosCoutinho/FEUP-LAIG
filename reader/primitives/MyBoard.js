@@ -84,8 +84,7 @@ MyBoard.prototype.initializePieces = function () {
 	this.pieces[3][5] = new MyPiece(this.scene, this.scene.players["red"], 1);
 
 	this.pieces[9][1] = new MyPiece(this.scene, this.scene.players["white"], 3);
-	//this.pieces[9][9] = new MyPiece(this.scene, this.scene.players["white"], 3);
-	this.pieces[2][9] = new MyPiece(this.scene, this.scene.players["white"], 3);
+	this.pieces[9][9] = new MyPiece(this.scene, this.scene.players["white"], 3);
 	this.pieces[8][3] = new MyPiece(this.scene, this.scene.players["white"], 2);
 	this.pieces[8][4] = new MyPiece(this.scene, this.scene.players["white"], 1);
 	this.pieces[8][5] = new MyPiece(this.scene, this.scene.players["white"], 1);
@@ -148,9 +147,6 @@ MyBoard.prototype.updateAnimation = function (currTime){
 
 	if (this.state instanceof MoveSelected)
 		this.state.updateAnimation(currTime);
-		/* TODO
-	if (this.state instanceof TurnEnd)
-		this.state.updateAnimation(currTime);*/
 }
 
 MyBoard.prototype.updateScores = function (scores){

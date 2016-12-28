@@ -39,10 +39,7 @@ Move.prototype.apply = function(board){
     var Xf = this.destination[0];
     var Zf = this.destination[1];
     if (isOutOfBoard(Xf, Zf))
-    {
         board.destroyedPieces.push(board.pieces[Xi][Zi]);
-        //board.almostDestroyedPieces.push(board.pieces[Xi][Zi]);
-    }
     else
         board.pieces[Xf][Zf] = board.pieces[Xi][Zi];
     board.pieces[Xi][Zi] = undefined;
