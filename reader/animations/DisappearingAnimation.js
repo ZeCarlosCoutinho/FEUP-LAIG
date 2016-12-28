@@ -91,7 +91,7 @@ DisappearingAnimation.prototype.getAnimationPosition = function(timeDiff)
 			var positionY = initialPoint[1] + this.speed * cosangleY * timeInSegment;
 			var positionZ = initialPoint[2] + this.speed * cosangleZ * timeInSegment;
 
-			console.log("PosX: " + positionX + "\n");
+			console.log("PosX: " + positionX + "PosY: " + positionY + "PosZ: "+ positionZ + "\n");
 			if(positionX < -0.01)
 			{
 				console.log("Wut?");

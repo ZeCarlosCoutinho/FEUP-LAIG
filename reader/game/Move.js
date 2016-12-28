@@ -73,6 +73,14 @@ Move.prototype.getImplication = function(board, stack){
     return stack;
 }
 
+
+Move.prototype.isGoingOutOfBoard = function()
+{
+    var Xf = this.destination[0];
+    var Zf = this.destination[1];
+    return isOutOfBoard(Xf, Zf);
+}
+
 isOutOfBoard = function(Xf, Zf){
     return Xf > 9 || Xf < 1 || Zf > 9 || Zf < 1;
 }
