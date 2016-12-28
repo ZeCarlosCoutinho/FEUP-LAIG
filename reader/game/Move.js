@@ -67,6 +67,10 @@ Move.prototype.getImplication = function(board, stack){
     return stack;
 }
 
+Move.prototype.goesOut = function(){
+    return isOutOfBoard(this.destination[0], this.destination[1]);
+}
+
 isOutOfBoard = function(Xf, Zf){
     return Xf > 9 || Xf < 1 || Zf > 9 || Zf < 1;
 }

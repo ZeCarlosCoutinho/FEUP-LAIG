@@ -24,6 +24,7 @@ GameState.prototype.replay = function()
 	if (movesDone.length > 0){
 		//Board Reset
 		this.board.initializePieces();
+		this.board.aux_board.pieces = this.board.destroyedPieces;
 		//this.board.movesDone = [];
 		this.board.turn = 0;
 	
@@ -46,6 +47,7 @@ GameState.prototype.remakeMove = function()
 	
 		//Board Reset
 		this.board.initializePieces();
+		this.board.aux_board.pieces = this.board.destroyedPieces;
 		this.board.movesDone = [];
 	
 		for(var i = 0; i < movesDone.length; i++)

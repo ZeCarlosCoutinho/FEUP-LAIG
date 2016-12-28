@@ -15,7 +15,8 @@ function MyBoard(scene) {
 		this.board = new MyGameBoard(this.scene, 9, 9);
 		this.initializePieces();
 		this.aux_board = new MyAuxiliarBoard(this.scene, 9, 2, 1, 2/9, this.destroyedPieces);
-	
+		this.aux_board_position = [0,0,1];
+
 		this.timer = 0;
 		this.timer_init = 0;
 		this.timer_end = 0;
@@ -35,7 +36,8 @@ function MyBoard(scene) {
 		this.pieces = game.pieces;
 		this.destroyedPieces = game.destroyedPieces;
 		this.aux_board = new MyAuxiliarBoard(this.scene, 9, 2, 1, 2/9, this.destroyedPieces);
-	
+		this.aux_board_position = [0,0,1];
+		
 		this.timer = game.timer;
 		this.timer_init = game.timer_init;
 		this.timer_end = game.timer_end;
@@ -67,7 +69,7 @@ MyBoard.prototype.display = function () {
 		if (this.scene.gameTextures["board"])
 			material.setTexture(this.scene.gameTextures["board"].text);
 		this.scene.gameMaterials["board"].apply();
-		this.scene.translate(0,0,1);
+		this.scene.translate(this.aux_board_position[0], this.aux_board_position[1],this.aux_board_position[2]);
 		this.aux_board.display();
 	this.scene.popMatrix();
 	
@@ -86,7 +88,7 @@ MyBoard.prototype.initializePieces = function () {
 	for (var i = 1; i <=9; i++){
 		this.pieces[i] = [];
 	}
-	this.pieces[1][1] = new MyPiece(this.scene, this.scene.players["red"], 3);
+	this.pieces[7][1] = new MyPiece(this.scene, this.scene.players["red"], 3);
 	this.pieces[1][9] = new MyPiece(this.scene, this.scene.players["red"], 3);
 	this.pieces[2][3] = new MyPiece(this.scene, this.scene.players["red"], 2);
 	this.pieces[2][4] = new MyPiece(this.scene, this.scene.players["red"], 1);
@@ -97,7 +99,7 @@ MyBoard.prototype.initializePieces = function () {
 
 	this.pieces[9][1] = new MyPiece(this.scene, this.scene.players["white"], 3);
 	this.pieces[9][9] = new MyPiece(this.scene, this.scene.players["white"], 3);
-	this.pieces[8][3] = new MyPiece(this.scene, this.scene.players["white"], 2);
+	this.pieces[8][1] = new MyPiece(this.scene, this.scene.players["white"], 2);
 	this.pieces[8][4] = new MyPiece(this.scene, this.scene.players["white"], 1);
 	this.pieces[8][5] = new MyPiece(this.scene, this.scene.players["white"], 1);
 	this.pieces[8][6] = new MyPiece(this.scene, this.scene.players["white"], 1);
