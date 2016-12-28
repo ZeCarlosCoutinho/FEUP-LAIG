@@ -34,8 +34,8 @@ MyPiece.prototype.display = function(){
 		}
         
 		this.scene.pieceObjects[this.size].display(material, texture);
-
-		material.setTexture(null);
+		if(texture)
+			material.setTexture(null);
 	this.scene.popMatrix();
 	
 	if (this.picked & !this.scene.pickMode)

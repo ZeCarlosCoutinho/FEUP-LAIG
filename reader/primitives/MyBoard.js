@@ -14,6 +14,7 @@ function MyBoard(scene) {
 		
 		this.board = new MyGameBoard(this.scene, 9, 9);
 		this.initializePieces();
+		this.aux_board = new MyAuxiliarBoard(this.scene, 9, 2, 1, 2/9, this.destroyedPieces);
 	
 		this.timer = 0;
 		this.timer_init = 0;
@@ -33,6 +34,7 @@ function MyBoard(scene) {
 
 		this.pieces = game.pieces;
 		this.destroyedPieces = game.destroyedPieces;
+		this.aux_board = new MyAuxiliarBoard(this.scene, 9, 2, 1, 2/9, this.destroyedPieces);
 	
 		this.timer = game.timer;
 		this.timer_init = game.timer_init;
@@ -56,17 +58,27 @@ MyBoard.prototype.display = function () {
 	if (this.scene.gameTextures["board"])
 		material.setTexture(this.scene.gameTextures["board"].text);
 	
+	
+	
 	this.scene.gameMaterials["board"].apply();
 	this.state.display();
+
+	this.scene.pushMatrix();
+		if (this.scene.gameTextures["board"])
+			material.setTexture(this.scene.gameTextures["board"].text);
+		this.scene.gameMaterials["board"].apply();
+		this.scene.translate(0,0,1);
+		this.aux_board.display();
+	this.scene.popMatrix();
 	
 	material.setTexture(null);
 	
 };
 
 
-MyBoard.prototype.getSimpleMoveList = function(move){
+/*MyBoard.prototype.getSimpleMoveList = function(move){
 	move.coordinates;
-}
+}*/
 
 MyBoard.prototype.initializePieces = function () {
 	this.pieces = [];
