@@ -42,9 +42,6 @@ Move.prototype.apply = function(board){
     {
         board.destroyedPieces.push(board.pieces[Xi][Zi]);
         //board.almostDestroyedPieces.push(board.pieces[Xi][Zi]);
-
-        //Inserts the piece in the auxiliary Board
-        board.auxiliarBoard.insertPiece(board.pieces[Xi][Zi]);
     }
     else
         board.pieces[Xf][Zf] = board.pieces[Xi][Zi];

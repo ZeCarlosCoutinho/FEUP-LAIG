@@ -601,9 +601,6 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 		case 'game_board':
 			this.primitives[currentPrimitive_id] = new Prim_GameBoard(currentPrimitive_id);
 			break;
-		case 'auxiliar_board':
-			this.primitives[currentPrimitive_id] = new Prim_AuxiliarBoard(currentPrimitive_id);
-			break;
 		default:
 			return "invalid primitive type"
 		}

@@ -66,9 +66,9 @@ MoveSelected.prototype.calculateAnimation = function(){
 	this.animationList = [];
 	var finalTime = this.moveList[0].distance;
 	for (var k in this.moveList){
-		this.animationList.push(new PieceAnimation(this.moveList[k].difference, finalTime - this.moveList[k].distance, this.moveList[k].distance, this.scene.animationSpeed));
-		/*var pointsList = [vec3.fromValues(0, 0, 0), vec3.fromValues(1, 0, 0), vec3.fromValues(0, 0, 1)];
-		this.animationList.push(new DisappearingAnimation(pointsList, 0.1));*/
+		//this.animationList.push(new PieceAnimation(this.moveList[k].difference, finalTime - this.moveList[k].distance, this.moveList[k].distance, this.scene.animationSpeed));
+		var pointsList = [vec3.fromValues(0, 0, 0), vec3.fromValues(1, 0, 0), vec3.fromValues(0, 0, 1)];
+		this.animationList.push(new DisappearingAnimation(pointsList, 0.1));
 	}
 }
 

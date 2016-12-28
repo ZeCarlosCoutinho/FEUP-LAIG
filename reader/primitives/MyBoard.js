@@ -13,7 +13,6 @@ function MyBoard(scene) {
 		this.animation_on = true;
 		
 		this.board = new MyGameBoard(this.scene, 9, 9);
-		this.auxiliarBoard;
 		this.initializePieces();
 	
 		this.timer = 0;
