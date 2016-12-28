@@ -171,6 +171,10 @@
 			<sphere radius="1" slices="20" stacks="20" />
 		</primitive>
 		
+		<primitive id="auxiliarboardtest">
+			<auxiliar_board />
+		</primitive>
+		
 	</primitives>
 	
 	
@@ -280,6 +284,7 @@
 				<componentref id="timer" />
 				<componentref id="sunmoon" />
 				<componentref id="piramid" />
+				<componentref id="auxiliar_board" />
 			</children>
 		</component>
 
@@ -475,6 +480,22 @@
 			
 			<children>
 				<primitiveref id="timer" />
+			</children>
+		</component>
+		
+		<component id="auxiliar_board">
+			<transformation>
+				<translate x="0.05" y="0" z="-0.5" />
+			</transformation>
+			
+			<materials>
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="nebula" />
+			
+			<children>
+				<primitiveref id="auxiliarboardtest" />
 			</children>
 		</component>
 	</components> 

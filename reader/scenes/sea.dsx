@@ -155,6 +155,10 @@
 		<primitive id="boat">
 			<vehicle textureref="wood"/>
 		</primitive>
+		
+		<primitive id="auxiliarboardtest">
+			<auxiliar_board />
+		</primitive>
 	</primitives>
 	
 	
@@ -177,6 +181,7 @@
 				<primitiveref id="game" />
 				<componentref id="timer" />
 				<componentref id="plane" />
+				<componentref id="auxiliar_board" />
 			</children>
 		</component>
 
@@ -406,6 +411,22 @@
 			
 			<children>
 				<primitiveref id="timer" />
+			</children>
+		</component>
+		
+		<component id="auxiliar_board">
+			<transformation>
+				<translate x="0.05" y="0" z="-0.5" />
+			</transformation>
+			
+			<materials>
+				<material id="darkMaterial" />
+			</materials>
+			
+			<texture id="sea" />
+			
+			<children>
+				<primitiveref id="auxiliarboardtest" />
 			</children>
 		</component>
 	</components> 

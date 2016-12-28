@@ -248,6 +248,10 @@
 		<primitive id="tiletest">
 			<tile tx1x="0" tx1y="0" tx2x="0.5" tx2y="0.5" />
 		</primitive>
+		
+		<primitive id="auxiliarboardtest">
+			<auxiliar_board />
+		</primitive>
 	</primitives>
 	
 	
@@ -270,6 +274,7 @@
 				<componentref id="white_scorer" />
 				<primitiveref id="game" />
 				<componentref id="timer" />
+				<componentref id="auxiliar_board" />
 			</children>
 		</component>
 		
@@ -445,6 +450,22 @@
 			
 			<children>
 				<primitiveref id="timer" />
+			</children>
+		</component>
+		
+		<component id="auxiliar_board">
+			<transformation>
+				<translate x="0.05" y="0" z="-0.5" />
+			</transformation>
+			
+			<materials>
+				<material id="reflectingMaterial" />
+			</materials>
+			
+			<texture id="board" />
+			
+			<children>
+				<primitiveref id="auxiliarboardtest" />
 			</children>
 		</component>
 	</components> 
