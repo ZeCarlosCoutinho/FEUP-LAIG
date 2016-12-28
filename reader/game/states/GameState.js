@@ -47,6 +47,7 @@ GameState.prototype.remakeMove = function()
 		//Board Reset
 		this.board.initializePieces();
 		this.board.movesDone = [];
+		this.board.auxiliarBoard.reset();
 	
 		for(var i = 0; i < movesDone.length; i++)
 		{
