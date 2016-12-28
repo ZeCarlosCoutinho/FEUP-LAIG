@@ -144,6 +144,12 @@ MySceneGraph.prototype.parseGame= function(rootElement) {
 		return "either zero or more than one 'board' element found.";
 	else
 		board = board[0];
+
+	var aux_board = game.getElementsByTagName('aux_board');
+	if (aux_board.length != 1) 
+		return "either zero or more than one 'board' element found.";
+	else
+		aux_board = aux_board[0];
 	
 	var pieces = game.getElementsByTagName('pieces');
 	if (pieces.length != 1) 
@@ -163,7 +169,7 @@ MySceneGraph.prototype.parseGame= function(rootElement) {
 	else
 		white = white[0];
 
-	
+	this.aux_board_position = this.readPatternXYZ(aux_board);
 	this.pieces[1] = this.reader.getString(pieces, 'piece1');
 	this.pieces[2] = this.reader.getString(pieces, 'piece2');
 	this.pieces[3] = this.reader.getString(pieces, 'piece3');

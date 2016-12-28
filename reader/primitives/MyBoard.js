@@ -88,7 +88,7 @@ MyBoard.prototype.initializePieces = function () {
 	for (var i = 1; i <=9; i++){
 		this.pieces[i] = [];
 	}
-	this.pieces[7][1] = new MyPiece(this.scene, this.scene.players["red"], 3);
+	this.pieces[1][1] = new MyPiece(this.scene, this.scene.players["red"], 3);
 	this.pieces[1][9] = new MyPiece(this.scene, this.scene.players["red"], 3);
 	this.pieces[2][3] = new MyPiece(this.scene, this.scene.players["red"], 2);
 	this.pieces[2][4] = new MyPiece(this.scene, this.scene.players["red"], 1);
@@ -99,7 +99,7 @@ MyBoard.prototype.initializePieces = function () {
 
 	this.pieces[9][1] = new MyPiece(this.scene, this.scene.players["white"], 3);
 	this.pieces[9][9] = new MyPiece(this.scene, this.scene.players["white"], 3);
-	this.pieces[8][1] = new MyPiece(this.scene, this.scene.players["white"], 2);
+	this.pieces[8][3] = new MyPiece(this.scene, this.scene.players["white"], 2);
 	this.pieces[8][4] = new MyPiece(this.scene, this.scene.players["white"], 1);
 	this.pieces[8][5] = new MyPiece(this.scene, this.scene.players["white"], 1);
 	this.pieces[8][6] = new MyPiece(this.scene, this.scene.players["white"], 1);

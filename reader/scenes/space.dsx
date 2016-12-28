@@ -3,6 +3,7 @@
 	
 	<game>
 		<board material="whiteMaterial" texture="nebula"/>
+		<aux_board x="0.5" y="-5" z="0.5" />
 		<pieces piece1="piece1" piece2="piece2" piece3="piece3"/>
 		<red material="redMaterial" texture="red"/>
 		<white material="whiteMaterial" texture="blue"/>

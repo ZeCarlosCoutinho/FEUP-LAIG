@@ -3,6 +3,7 @@
 	
 	<game>
 		<board material="whiteMaterial" texture="board"/>
+		<aux_board x="0" y="0" z="1.2" />
 		<pieces piece1="piece1" piece2="piece2" piece3="piece3"/>
 		<red material="redMaterial" texture="wood"/>
 		<white material="whiteMaterial" texture="wood"/>
