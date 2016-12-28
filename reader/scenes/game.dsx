@@ -16,7 +16,7 @@
             	<to x="2.5" y="0" z="2.5" />
        	</perspective>
 		
-		<perspective id="view2" near="0.1" far="50" angle="30">
+		<perspective id="view2" near="0.1" far="50" angle="20">
             	<from x="12" y="7" z="2.5" />
             	<to x="2.5" y="0" z="2.5" />
        	</perspective>
