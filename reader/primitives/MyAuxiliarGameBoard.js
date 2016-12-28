@@ -85,10 +85,3 @@ MyAuxiliarGameBoard.prototype.insertPiece = function(piece)
 	}
 }
 
-MyAuxiliarGameBoard.prototype.reset = function()
-{
-	this.board = new MyAuxiliarBoard(this.scene, 9, 9, this.dX, this.dY);
-	this.redPieces = [];
-	this.whitePieces = [];
-}
-
