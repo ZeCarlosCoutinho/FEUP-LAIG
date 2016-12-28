@@ -13,7 +13,7 @@ function DisappearingAnimation(pointsList, speed) {
 	
 	this.pointsList = pointsList;
 	this.derivativesList = [];
-	this.endingTimesList = [];
+	this.pointsInfoList = []; //List with objects with the attributes distance = distanceBetweenPoints, time = TimeTakenUntilThen]
 	this.initializeDerivatives();
 	this.initializeTimes();
 
@@ -61,22 +61,35 @@ DisappearingAnimation.prototype.getAnimationPosition = function(timeDiff)
 	//Convert to seconds
 	timeDiff = timeDiff/1000;
 	
-	for(var i = 0; i < this.endingTimesList.length; i++)
+	for(var i = 0; i < this.pointsInfoList.length; i++)
 	{
-		//When
-		if(this.endingTimesList[i] >= timeDiff)
+		//TODO When timeDiff == 0, this blows up
+		if(this.pointsInfoList[i].time >= timeDiff)
 		{
 			//Get initial point in the segment
 			var initialPointIndex = i - 1;
 			var initialPoint = this.pointsList[initialPointIndex];
 
+			var finalPointInfo = this.pointsInfoList[i];
+
 			//Time after animation segment started
-			var timeInSegment = timeDiff - this.endingTimesList[initialPointIndex];
+			var timeInSegment = timeDiff - this.pointsInfoList[initialPointIndex].time;
+
+			//Calculate angle
+			var cosangleX = this.derivativesList[initialPointIndex][0] / finalPointInfo.distance;
+			var cosangleY = this.derivativesList[initialPointIndex][1] / finalPointInfo.distance;
+			var cosangleZ = this.derivativesList[initialPointIndex][2] / finalPointInfo.distance;
+			if(finalPointInfo.distance == 0)
+			{
+				cosangleX = 0;
+				cosangleY = 0;
+				cosangleZ = 0;
+			}
 
 			//TODO é mesmo esta a fórmula?? Talvez o actualderivative ja seja o speed
-			var positionX = initialPoint[0] + this.speed * this.derivativesList[initialPointIndex][0] * timeInSegment;
-			var positionY = initialPoint[1] + this.speed * this.derivativesList[initialPointIndex][1] * timeInSegment;
-			var positionZ = initialPoint[2] + this.speed * this.derivativesList[initialPointIndex][2] * timeInSegment;
+			var positionX = initialPoint[0] + this.speed * cosangleX * timeInSegment;
+			var positionY = initialPoint[1] + this.speed * cosangleY * timeInSegment;
+			var positionZ = initialPoint[2] + this.speed * cosangleZ * timeInSegment;
 
 			console.log("PosX: " + positionX + "\n");
 			if(positionX < -0.01)
@@ -110,7 +123,10 @@ DisappearingAnimation.prototype.initializeDerivatives = function()
 DisappearingAnimation.prototype.initializeTimes = function()
 {
 	var timeUntilNow = 0.0;
-	this.endingTimesList.push(timeUntilNow);
+	var pointInfo = new Object();
+	pointInfo.time = timeUntilNow;
+	pointInfo.distance = 0;
+	this.pointsInfoList.push(pointInfo);
 	for(var i = 1; i < this.pointsList.length; i++)
 	{
 		//Obtain the time taken in each segment
@@ -121,7 +137,10 @@ DisappearingAnimation.prototype.initializeTimes = function()
 		timeUntilNow = timeUntilNow + timeTaken; //Sum of the times of all the segments processed
 		
 		//Put the time until now in the list
-		this.endingTimesList.push(timeUntilNow);
+		var pointInfo2 = new Object();
+		pointInfo2.time = timeUntilNow;
+		pointInfo2.distance = distance;
+		this.pointsInfoList.push(pointInfo2);
 	}
 }
 
